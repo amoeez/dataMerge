@@ -1,0 +1,33 @@
+--- # default configuration used to read nexus files into McSAS3. this is assumed to be a 1D file in nexus
+# Note that the units are assumed to be 1/(m sr) for I and 1/nm for Q. 
+# Output units can be set, but conversion is not implemented yet. 
+eMin: 0.01 # minimum fractional uncertainty estimate (default: 1% of bin intensity)
+qeMin: 0.01 # minimum fractional uncertainty estimate (default: 1% of bin intensity)
+nbinsLower: 200 # number of bins for the low-Q range
+qCrossover: 1. # point at which we switch over to the high-Q range
+nbinsUpper: 200 # number of bins for the high-Q range (after the qCrossover point)
+outputIUnits: '1/(m sr)' # conversion not implemented yet
+outputQUnits: '1/nm' # conversion not implemented yet
+maskMasked: True # if true, masked values are omitted from the output
+maskSingles: False # if true, bins containing only single datapoints are omitted
+# now we're defining the individual ranges. Not every range needs to be specified, but  
+# ranges:
+#   - rangeId: -1 # sorted by q range, 0 is the dataset with the smallest availalbe qmin. can also be left -1 to determine range by config
+#     qMinPreset: null # null takes the minimum available
+#     qMaxPreset: null # ibid
+#     autoscaleToRange: null # no autoscaling
+#     findByConfig: 127 # for example, the long config 
+#   - rangeId: 2 # not every range needs presets
+#     qMinPreset: 0.01 # not every setting needs specifying
+#     autoscaleToRange: 3
+# we define the output binning details here. At least one output range needs specifying. 
+# These are range segments, ending where the next range begins. 
+outputRanges: # list of range or ranges defining the output binning, from smallest q to largest q. 
+  - outputRangeId: 0 # start from zero, add as many as you need. 
+    qCrossover: 0. #   starting Q for this output range
+    nbins: 200
+    QScaling: 'log' # 'log' or 'linear'
+  - outputRangeId: 1 # second range for WAXS
+    qCrossover: 1. # start this range at Q=1 inverse nm
+    nbins: 300 # bit higher resolution
+    QScaling: 'log' # 'log' or 'linear'
