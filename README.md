@@ -1,3 +1,5 @@
+Note: still very much in beta. It "works for us", but is built to also work for others with minor modificaiton. There are still a few improvements to be made under the hood though. 
+
 # DataMerge
 
 Datamerge is a command-line tool intended for statistically sound merging and/or (re)binning of input datasets. It is a pretty flexible program that can be used for a few different things:
