@@ -1,3 +1,5 @@
+Note: still very much in beta. It "works for us", but is built to also work for others with minor modificaiton. There are still a few improvements to be made under the hood though. 
+
 # DataMerge
 
 Datamerge is a command-line tool intended for statistically sound merging and/or (re)binning of input datasets. It is a pretty flexible program that can be used for a few different things:
@@ -35,3 +37,10 @@ Merging is done on a bin-by-bin basis. By default, the datapoints are weighted b
 ## Output
 
 Datamerge outputs to a NeXus file, containing the results, the datamerge settings, and the input datasets. Output and input datasets can be plotted together in software such as DAWN without further adjustment. 
+
+## Plotting
+
+By default, plots are made that allow you to check the configuration of your ranges. Red lines shows the actual data ranges, blue lines show the configured ranges. 
+
+![test](https://user-images.githubusercontent.com/5449929/200851259-7d7129d5-c135-424c-b6bb-a5f6fdda76a7.png)
+
