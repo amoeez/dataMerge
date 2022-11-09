@@ -32,9 +32,9 @@ import logging
 
 def scatteringDataObjFromNX(filename: Path) -> scatteringDataObj:
     """Returns a populated scatteringDataObj by reading the data from a Processed MOUSE NeXus file"""
-    assert (
-        filename.is_file()
-    ), f'{filename=} cannot be accessed from {Path(".").absolute().as_posix()}'
+    assert filename.is_file(), logging.warning(
+        f'{filename=} cannot be accessed from {Path(".").absolute().as_posix()}'
+    )
     with h5py.File(filename, "r") as h5f:
         so = scatteringDataObj(
             Q=h5f["/processed/result/q"][()].flatten(),  # units of 1/nm
@@ -139,12 +139,14 @@ def outputToNX(
     # nxf[f"/sample_owner"] = self.sampleOwner
     # link the Q uncertainties:
     nxf[f"/datamerge/result/Q"].attrs["uncertainties"] = "QSigma"
+    nxf[f"/datamerge/result/I"].attrs["uncertainties"] = "I_errors"
     # also set as resolution for now
     nxf[f"/datamerge/result/Q"].attrs["resolutions"] = "QSigma"
     # CHECK: this should be automatic no?
     # # set the default path to follow
-    nxf[f"/datamerge"].attrs["default"] = "result"
     nxf.attrs["default"] = "datamerge"
+    nxf[f"/datamerge"].attrs["default"] = "result"
+    # nxf[f"/datamerge/result"].attrs["default"] = "I"
 
     # link main SASentry to datamerge dataset
     nxf["/entry"] = nx.NXlink("/datamerge")

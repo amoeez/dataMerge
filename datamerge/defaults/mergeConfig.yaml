@@ -3,9 +3,6 @@
 # Output units can be set, but conversion is not implemented yet. 
 eMin: 0.01 # minimum fractional uncertainty estimate (default: 1% of bin intensity)
 qeMin: 0.01 # minimum fractional uncertainty estimate (default: 1% of bin intensity)
-nbinsLower: 200 # number of bins for the low-Q range
-qCrossover: 1. # point at which we switch over to the high-Q range
-nbinsUpper: 200 # number of bins for the high-Q range (after the qCrossover point)
 outputIUnits: '1/(m sr)' # conversion not implemented yet
 outputQUnits: '1/nm' # conversion not implemented yet
 maskMasked: True # if true, masked values are omitted from the output
