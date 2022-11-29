@@ -10,6 +10,7 @@ from typing import Optional
 # from dmdataclasses import mergedDataObj
 from readersandwriters import scatteringDataObjFromNX
 from readersandwriters import mergeConfigObjFromYaml
+from readersandwriters import outputToNX
 from mergecore import mergeCore
 import sys
 
@@ -240,7 +241,13 @@ if __name__ == "__main__":
     m = mergeCore(
         config=mergeConfigObjFromYaml(adict["configFile"]),
         dataList=getFiles(adict),
-        ofname=Path(adict["outputFile"]),
     )
-    m.run()
+    filteredMDO = m.run()
+    # export to the final files
+    ofname=Path(adict["outputFile"])
+    logging.debug(f"8. Storing result in output file {ofname}")
+    outputToNX(
+        ofname=ofname, mco=m.config, mdo=filteredMDO, rangeList=m.ranges
+    )
+    # make the plots.
     plotFigure(m, ofname=Path(adict["outputFile"]))

@@ -13,9 +13,6 @@ from dmdataclasses import (
 )
 from typing import List, Optional
 from statsmodels.stats.weightstats import DescrStatsW
-from readersandwriters import outputToNX
-from pathlib import Path
-
 
 @define
 class mergeCore:
@@ -33,11 +30,11 @@ class mergeCore:
     mData: mergedDataObj = field(
         default=mergedDataObj(), validator=validators.instance_of(mergedDataObj)
     )
-    ofname: Path = field(
-        default=Path("datamergeOutput.nxs"),
-        validator=validators.instance_of(Path),
-        converter=Path,
-    )
+    # ofname: Path = field(
+    #     default=Path("datamergeOutput.nxs"),
+    #     validator=validators.instance_of(Path),
+    #     converter=Path,
+    # )
 
     def constructRanges(self, dataList: list) -> None:
         """constructs a full range list for the complete set of loaded data"""
@@ -284,9 +281,9 @@ class mergeCore:
             dfRange = self.preMData.query(
                 "{} <= Q < {}".format(binEdges[binN], binEdges[binN + 1])
             ).copy()
-            if len(dfRange) == 0:
+            if len(dfRange) == 0: # nothing in bin
                 continue
-            elif len(dfRange) == 1:
+            elif len(dfRange) == 1: # one datapoint in bin
                 # might not be necessary to do this..
                 # can't do stats on this:
                 self.mData.Q[binN] = float(dfRange.Q)
@@ -302,10 +299,16 @@ class mergeCore:
                 self.mData.Singles[binN] = True
                 self.mData.Mask[binN] = False
 
-            else:
-                dfRange["wt"] = np.abs(
-                    dfRange.I / (dfRange.ISigma**2)
-                )  # inverse relative weight per point
+            else: # multiple datapoints in bin
+                if self.config.IEWeighting:
+                    dfRange["wt"] = np.abs(
+                        dfRange.I / (dfRange.ISigma**2)
+                    )  # inverse relative weight per point if desired. 
+                else:
+                    dfRange["wt"] = np.abs(
+                        dfRange.I * 0.0 + 1
+                    )  # no datapoint weighting
+
                 # exploit the DescrStatsW package from statsmodels
                 DSI = DescrStatsW(dfRange.I, weights=dfRange.wt)
                 DSQ = DescrStatsW(dfRange.Q, weights=dfRange.wt)
@@ -365,7 +368,7 @@ class mergeCore:
             setattr(newMDO, key, self.mData[key][~mask])
         return newMDO
 
-    def run(self) -> None:
+    def run(self) -> mergedDataObj:
         # config is already read, and the raw data has been loaded into a list of scatteringData objects
         # construct initial list of ranges
         logging.debug("1. constructing ranges. ")
@@ -410,11 +413,5 @@ class mergeCore:
         filteredMDO = self.returnMaskedOutput(
             maskMasked=self.config.maskMasked, maskSingles=self.config.maskSingles
         )
-        # export to the final files
-        logging.debug(f"8. Storing result in output file {self.ofname}")
-        outputToNX(
-            ofname=self.ofname, mco=self.config, mdo=filteredMDO, rangeList=self.ranges
-        )
-        # make the plots.
 
-        return
+        return filteredMDO
