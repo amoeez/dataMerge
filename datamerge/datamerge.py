@@ -238,16 +238,22 @@ if __name__ == "__main__":
 
     adict = vars(args)
 
+    try:
+        dataList = getFiles(adict)
+    except KeyError:
+        logging.warning(
+            f"The nexus files do not contain fully processed data, skipping. \n used settings: {adict}"
+        )
+        sys.exit(0)
+
     m = mergeCore(
         config=mergeConfigObjFromYaml(adict["configFile"]),
-        dataList=getFiles(adict),
+        dataList=dataList,
     )
     filteredMDO = m.run()
     # export to the final files
-    ofname=Path(adict["outputFile"])
+    ofname = Path(adict["outputFile"])
     logging.debug(f"8. Storing result in output file {ofname}")
-    outputToNX(
-        ofname=ofname, mco=m.config, mdo=filteredMDO, rangeList=m.ranges
-    )
+    outputToNX(ofname=ofname, mco=m.config, mdo=filteredMDO, rangeList=m.ranges)
     # make the plots.
     plotFigure(m, ofname=Path(adict["outputFile"]))
