@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from typing import Optional
 from pathlib import Path
 from .mergecore import mergeCore
+import logging
 
 
 def plotFigure(mergecore: mergeCore, ofname: Optional[Path] = None) -> None:
@@ -99,11 +100,12 @@ def plotFigure(mergecore: mergeCore, ofname: Optional[Path] = None) -> None:
         )
 
     # display(fh)
-    plt.savefig(ofname.with_suffix(".pdf"))
-    plt.savefig(
-        ofname.with_suffix(".png"),
-        transparent=True,
-    )
+    if ofname is not None:
+        plt.savefig(ofname.with_suffix(".pdf"))
+        plt.savefig(
+            ofname.with_suffix(".png"),
+            transparent=True,
+        )
 
     # fh = plt.figure(figsize=[10, 8])
     # ah = plt.axes()
