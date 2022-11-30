@@ -7,7 +7,7 @@ from . import _version
 
 __version__ = _version.get_versions()["version"]
 
-from .datamerge import plotFigure
+from .plotting import plotFigure
 from .dmdataclasses import (
     scatteringDataObj,
     rangeConfigObj,

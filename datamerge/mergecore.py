@@ -4,7 +4,7 @@ import logging
 from attrs import field, define, validators
 import numpy as np
 import pandas as pd
-from datamerge.findscaling import findScaling
+from .findscaling import findScaling
 from .dmdataclasses import (
     mergeConfigObj,
     mergedDataObj,
