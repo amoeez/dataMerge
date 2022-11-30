@@ -15,9 +15,9 @@ __date__ = "2022/10/18"
 __status__ = "beta"
 
 
-from .dmdataclasses import outputRangeObj
-from .dmdataclasses import rangeConfigObj
-from .dmdataclasses import (
+from .dataclasses import outputRangeObj
+from .dataclasses import rangeConfigObj
+from .dataclasses import (
     scatteringDataObj,
     mergedDataObj,
     mergeConfigObj,
