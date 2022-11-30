@@ -4,4 +4,20 @@ __version__ = get_versions()["version"]
 del get_versions
 
 from . import _version
-__version__ = _version.get_versions()['version']
+
+__version__ = _version.get_versions()["version"]
+
+from .datamerge import plotFigure
+from .dmdataclasses import (
+    scatteringDataObj,
+    rangeConfigObj,
+    mergeConfigObj,
+    outputRangeObj,
+)
+from .findscaling import findScaling
+from .mergecore import mergeCore
+from .readersandwriters import (
+    scatteringDataObjFromNX,
+    outputToNX,
+    mergeConfigObjFromYaml,
+)

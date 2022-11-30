@@ -14,6 +14,7 @@ from dmdataclasses import (
 from typing import List, Optional
 from statsmodels.stats.weightstats import DescrStatsW
 
+
 @define
 class mergeCore:
     """The core merging function, most of the actual action happens here"""
@@ -281,9 +282,9 @@ class mergeCore:
             dfRange = self.preMData.query(
                 "{} <= Q < {}".format(binEdges[binN], binEdges[binN + 1])
             ).copy()
-            if len(dfRange) == 0: # nothing in bin
+            if len(dfRange) == 0:  # nothing in bin
                 continue
-            elif len(dfRange) == 1: # one datapoint in bin
+            elif len(dfRange) == 1:  # one datapoint in bin
                 # might not be necessary to do this..
                 # can't do stats on this:
                 self.mData.Q[binN] = float(dfRange.Q)
@@ -299,11 +300,11 @@ class mergeCore:
                 self.mData.Singles[binN] = True
                 self.mData.Mask[binN] = False
 
-            else: # multiple datapoints in bin
+            else:  # multiple datapoints in bin
                 if self.config.IEWeighting:
                     dfRange["wt"] = np.abs(
                         dfRange.I / (dfRange.ISigma**2)
-                    )  # inverse relative weight per point if desired. 
+                    )  # inverse relative weight per point if desired.
                 else:
                     dfRange["wt"] = np.abs(
                         dfRange.I * 0.0 + 1
