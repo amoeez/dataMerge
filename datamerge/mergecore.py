@@ -31,11 +31,6 @@ class mergeCore:
     mData: mergedDataObj = field(
         default=mergedDataObj(), validator=validators.instance_of(mergedDataObj)
     )
-    # ofname: Path = field(
-    #     default=Path("datamergeOutput.nxs"),
-    #     validator=validators.instance_of(Path),
-    #     converter=Path,
-    # )
 
     def constructRanges(self, dataList: list) -> None:
         """constructs a full range list for the complete set of loaded data"""

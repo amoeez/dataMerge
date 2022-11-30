@@ -7,7 +7,6 @@ from sys import platform
 import logging
 from typing import Optional
 
-# from dmdataclasses import mergedDataObj
 from datamerge.readersandwriters import scatteringDataObjFromNX
 from datamerge.readersandwriters import mergeConfigObjFromYaml
 from datamerge.readersandwriters import outputToNX
