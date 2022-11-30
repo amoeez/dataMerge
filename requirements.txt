@@ -1,0 +1,4 @@
+attrs>=22
+statsmodels
+h5py
+versioneer
