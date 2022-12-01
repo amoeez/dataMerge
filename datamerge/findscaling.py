@@ -39,22 +39,18 @@ class findScaling(object):
     dataset1: pd.DataFrame = field()
 
     @dataset1.validator
-    def check_dset1(self):
-        assert isinstance(self.dataset1, pd.DataFrame)
+    def check_dset1(instance, attribute, value):
+        assert isinstance(value, pd.DataFrame)
         for key in ["Q", "I", "ISigma"]:
-            assert (
-                key in self.dataset1.keys()
-            ), f"required {key=} is missing from dataset1"
+            assert key in value.keys(), f"required {key=} is missing from dataset1"
 
     dataset2: pd.DataFrame = field(validator=validators.instance_of(pd.DataFrame))
 
     @dataset2.validator
-    def check_dset2(self):
-        assert isinstance(self.dataset2, pd.DataFrame)
+    def check_dset2(instance, attribute, value):
+        assert isinstance(value, pd.DataFrame)
         for key in ["Q", "I", "ISigma"]:
-            assert (
-                key in self.dataset2.keys()
-            ), f"required {key=} is missing from dataset1"
+            assert key in value.keys(), f"required {key=} is missing from dataset1"
 
     backgroundFit: bool = field(default=True, validator=validators.instance_of(bool))
     doInterpolate: bool = field(default=True, validator=validators.instance_of(bool))

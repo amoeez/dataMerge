@@ -386,7 +386,7 @@ class mergeCore:
             self.updateRanges(self.config.ranges)
         # determine scaling factors
         logging.debug("3. applying autoscaling")
-        self.autoScale()
+        # self.autoScale()
         # just checking it makes it to here.
         o = [
             f"{dr.rangeId}({dr.scatteringData.configuration}): {dr.scale}"
