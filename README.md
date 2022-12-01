@@ -15,7 +15,7 @@ It runs using settings read from a configuration file (in YAML format), see merg
 A test case is provided with this repo, which can be run using the command line: 
 
 '''python
-python datamerge\datamerge.py -f .\datamerge\tests\data\20220925\autoproc\group_6\ -C .\datamerge\tests\mergeConfigExample.yaml -o test.nxs
+python main.py -f .\datamerge\tests\data\20220925\autoproc\group_6\ -C .\datamerge\tests\mergeConfigExample.yaml -o test.nxs
 '''
 
 ## Input
