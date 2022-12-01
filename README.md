@@ -12,7 +12,10 @@ It can probably also be run from a Jupyter notebook, but the main intention is t
 
 It runs using settings read from a configuration file (in YAML format), see mergeConfig.yaml in default or mergeConfigExample.yaml in tests. 
 
-A test case is provided with this repo, which can be run using the command line: 
+If you would like to test this, the required dataset is available here: 
+https://figshare.com/articles/dataset/Test_dataset_for_dataMerge/21655646
+
+once unpacked in the correct directory ([your datamerge directory]/datamerge/tests/), datamerge can be run using the command line from its directory: 
 
 '''python
 python main.py -f .\datamerge\tests\data\20220925\autoproc\group_6\ -C .\datamerge\tests\mergeConfigExample.yaml -o test.nxs
