@@ -210,7 +210,8 @@ class mergeCore:
             if outRange.QScaling == "log":
                 qStart = (
                     outRange.qCrossover
-                    if outRange.qCrossover != 0
+                    if (outRange.qCrossover != 0)
+                    and not (np.isinf(outRange.qCrossover))
                     else self.nonZeroQMin()
                 )
                 binEdges += [np.geomspace(qStart, qEnd, num=outRange.nbins + 1)]
@@ -385,6 +386,7 @@ class mergeCore:
             self.updateRanges(self.config.ranges)
         # determine scaling factors
         logging.debug("3. applying autoscaling")
+        self.autoScale()
         # just checking it makes it to here.
         o = [
             f"{dr.rangeId}({dr.scatteringData.configuration}): {dr.scale}"
