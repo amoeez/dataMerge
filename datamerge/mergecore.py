@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 import logging
-from attrs import field, define, validators
+from attrs import field, define, validators, Factory
 import numpy as np
 import pandas as pd
 from .findscaling import findScaling
@@ -23,13 +23,13 @@ class mergeCore:
     # dataList is hardly used, instead the scatteringDataObjs in ranges is used. Depreciate?
     dataList: List[scatteringDataObj] = field(validator=validators.instance_of(list))
     # the following will be constructed in here:
-    ranges: list = field(default=list(), validator=validators.instance_of(list))
+    ranges: list = field(default=Factory(list), validator=validators.instance_of(list))
     preMData: Optional[pd.DataFrame] = field(
         default=None,
         validator=validators.optional(validators.instance_of(pd.DataFrame)),
     )
     mData: mergedDataObj = field(
-        default=mergedDataObj(), validator=validators.instance_of(mergedDataObj)
+        default=Factory(mergedDataObj), validator=validators.instance_of(mergedDataObj)
     )
 
     def constructRanges(self, dataList: list) -> None:

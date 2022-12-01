@@ -112,19 +112,19 @@ class scatteringDataObj(gimmeItems):
     """
 
     Q: np.ndarray = field(
-        default=np.array([0], dtype=float),
+        # default=np.array([0], dtype=float),
         validator=QChecker,
         eq=cmp_using(eq=np.array_equal),
         converter=np.array,
     )
     I: np.ndarray = field(
-        default=np.array([0], dtype=float),
+        # default=np.array([0], dtype=float),
         validator=IChecker,
         eq=cmp_using(eq=np.array_equal),
         converter=np.array,
     )
     ISigma: np.ndarray = field(
-        default=np.array([0], dtype=float),
+        # default=np.array([0], dtype=float),
         validator=validators.optional(IChecker),
         eq=cmp_using(eq=np.array_equal),
         converter=np.array,
@@ -240,9 +240,7 @@ class scatteringDataObj(gimmeItems):
 
 
 @define
-class rangeConfigObj(
-    gimmeItems
-):  # subclassing dict apparently works to resolve an items() issue later on... bit sketch.
+class rangeConfigObj(gimmeItems):
     """
     Defines a single range - for a single dataset that goes into the merge.
     """
