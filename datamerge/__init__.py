@@ -7,6 +7,11 @@ from . import _version
 
 __version__ = _version.get_versions()["version"]
 
+from . import dataclasses
+from . import mergecore
+from . import readersandwriters
+from . import plotting
+
 # from .plotting import plotFigure
 # from .dataclasses import (
 #     scatteringDataObj,
