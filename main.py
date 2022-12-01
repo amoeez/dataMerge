@@ -111,7 +111,7 @@ if __name__ == "__main__":
         logging.warning(
             f"The nexus files do not contain fully processed data, skipping. \n used settings: {adict}"
         )
-        raise
+        # raise
         sys.exit(0)
 
     m = mergeCore(

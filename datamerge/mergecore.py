@@ -203,22 +203,21 @@ class mergeCore:
         )
         for rangeId, outRange in enumerate(self.config.outputRanges):
             qEnd = self.nonZeroQMax()
+            qStart = (
+                outRange.qCrossover
+                if (outRange.qCrossover != 0) and (np.isfinite(outRange.qCrossover))
+                else self.nonZeroQMin()
+            )
             if rangeId < (
                 len(self.config.outputRanges) - 1
             ):  # set qEnd to the start of the next range
-                qEnd = self.config.outputRanges[rangeId + 1].qCrossover
+                newQEnd = self.config.outputRanges[rangeId + 1].qCrossover
+                if np.isfinite(newQEnd):
+                    qEnd = newQEnd
             if outRange.QScaling == "log":
-                qStart = (
-                    outRange.qCrossover
-                    if (outRange.qCrossover != 0)
-                    and not (np.isinf(outRange.qCrossover))
-                    else self.nonZeroQMin()
-                )
                 binEdges += [np.geomspace(qStart, qEnd, num=outRange.nbins + 1)]
             else:
-                binEdges += [
-                    np.linspace(outRange.qCrossover, qEnd, num=outRange.nbins + 1)
-                ]
+                binEdges += [np.linspace(qStart, qEnd, num=outRange.nbins + 1)]
 
         be = np.concatenate(binEdges, dtype=float)
         # add a little to the end to ensure the last datapoint is included:
