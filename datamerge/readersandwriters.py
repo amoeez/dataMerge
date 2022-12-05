@@ -56,6 +56,7 @@ def outputToNX(
     mco: mergeConfigObj,
     mdo: mergedDataObj,
     rangeList: List[rangeConfigObj],
+    writeOriginalData: bool = True,
 ) -> None:
     """
     Stores the configuration, data and range list in the output file.
@@ -86,7 +87,7 @@ def outputToNX(
         nxf[f"/datamerge/ranges/range{drange.rangeId}"] = nx.NXgroup()
         for key, val in drange.items():
             logging.debug(f"{key=}, {val=}")
-            if key in ["scatteringData"]:
+            if key in ["scatteringData"] and writeOriginalData:
                 # nxf[
                 #     f"/datamerge/ranges/range{drange.rangeId}/scatteringData"
                 # ] = nx.NXgroup()
