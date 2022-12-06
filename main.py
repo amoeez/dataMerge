@@ -5,44 +5,37 @@ from pathlib import Path
 import argparse
 from sys import platform
 import logging
-from typing import Optional
+from typing import Optional, List
 
-from datamerge.readersandwriters import scatteringDataObjFromNX
+from datamerge.readersandwriters import SDOListFromFiles
 from datamerge.readersandwriters import mergeConfigObjFromYaml
 from datamerge.readersandwriters import outputToNX
+
 from datamerge.mergecore import mergeCore
 from datamerge.plotting import plotFigure
+from datamerge.dataclasses import scatteringDataObj
 import sys
 
 
 def isMac() -> bool:
     return platform == "darwin"
 
-
-def getFiles(argDict: dict) -> list:
+def filelistFromArgs(argDict:dict) -> list:
     """
     Takes the parsed command-line argument dictionary
-    and returns the list of scatteringDataObjects read from the individual files
+    and returns the list of filenames
     """
     fnames = argDict["dataFiles"]
-
     if len(fnames) == 1:
         if fnames[0].is_dir():
             # glob the files from the globkey in Path
             fnames = sorted(fnames[0].glob(argDict["globKey"]))
             logging.info(f"Found the following files to merge: {fnames}")
     assert len(fnames) > 0, "length of filename list to merge is zero, cannot merge."
+    assert isinstance(fnames, list)
+    return fnames
 
-    scatteringDataList = []
-    for fname in fnames:
-        assert (
-            fname.is_file()
-        ), f"filename {fname} does not exist. Please supply valid filenames"
-        scatteringDataList += [scatteringDataObjFromNX(fname)]
-    return scatteringDataList
-
-
-if __name__ == "__main__":
+def configureParser()->argparse.ArgumentParser:
     # process input arguments
     parser = argparse.ArgumentParser(
         description="""
@@ -88,13 +81,20 @@ if __name__ == "__main__":
         help="Path to the datamerge configuration (yaml) file",
         # required=True,
     )
+    return parser
 
-    if isMac():
-        # on OSX remove automatically provided PID,
-        # otherwise argparse exits and the bundle start fails silently
-        for i in range(len(sys.argv)):
-            if sys.argv[i].startswith("-psn"):  # PID provided by osx
-                del sys.argv[i]
+
+if __name__ == "__main__":
+    
+    parser = configureParser()
+
+    # if isMac():
+    #     # on OSX remove automatically provided PID,
+    #     # otherwise argparse exits and the bundle start fails silently
+    #     for i in range(len(sys.argv)):
+    #         if sys.argv[i].startswith("-psn"):  # PID provided by osx
+    #             del sys.argv[i]
+
     try:
         args = parser.parse_args()
     except SystemExit:
@@ -106,7 +106,7 @@ if __name__ == "__main__":
     adict = vars(args)
 
     try:
-        dataList = getFiles(adict)
+        dataList = SDOListFromFiles(filelistFromArgs(adict))
     except KeyError:
         logging.warning(
             f"The nexus files do not contain fully processed data, skipping. \n used settings: {adict}"

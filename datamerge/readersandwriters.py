@@ -223,6 +223,19 @@ def mergeConfigObjFromYaml(filename: Path) -> mergeConfigObj:
     )
     return mco
 
+def SDOListFromFiles(fnames: List[Path]) -> List[scatteringDataObj]:
+    """
+    Takes a list of file paths
+    and returns the list of scatteringDataObjects read from the individual files
+    """
+
+    scatteringDataList = []
+    for fname in fnames:
+        assert (
+            fname.is_file()
+        ), f"filename {fname} does not exist. Please supply valid filenames"
+        scatteringDataList += [scatteringDataObjFromNX(fname)]
+    return scatteringDataList
 
 if __name__ == "__main__":
     """quick test"""
