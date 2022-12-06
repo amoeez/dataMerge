@@ -130,3 +130,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 tests/data.zip
+test.nxs
+test.pdf
+datamerge/hdf5/_tests/testdata/cylinderHex_r5_s12_T50_large_ranW_0p5.nxs
