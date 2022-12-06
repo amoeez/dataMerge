@@ -1,4 +1,4 @@
-datamerge/tests/data/20220925/
+tests/data/20220925/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -129,4 +129,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-datamerge/tests/data.zip
+tests/data.zip

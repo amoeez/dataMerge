@@ -227,7 +227,7 @@ def mergeConfigObjFromYaml(filename: Path) -> mergeConfigObj:
 if __name__ == "__main__":
     """quick test"""
     so = scatteringDataObjFromNX(
-        Path("datamerge")
+        Path(".")
         / "tests"
         / "data"
         / "20220925"
@@ -236,5 +236,5 @@ if __name__ == "__main__":
         / "20220925_42_expanded_stacked_processed.nxs"
     )
 
-    mco = mergeConfigObjFromYaml(Path("datamerge", "tests", "mergeConfigExample.yaml"))
+    mco = mergeConfigObjFromYaml(Path(".", "tests", "mergeConfigExample.yaml"))
     print(mco)
