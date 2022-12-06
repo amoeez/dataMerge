@@ -92,7 +92,7 @@ def plotFigure(mergecore: mergeCore, ofname: Optional[Path] = None) -> None:
             linewidth=2,
             color="b",
         )
-        print(f" * scaling reporting: {drange.scale:0.04f}")
+
         ah.text(
             x=drange.scatteringData.qMin() * 1.1,
             y=ystart * 1.4,

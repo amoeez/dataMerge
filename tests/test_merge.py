@@ -3,9 +3,10 @@ from pathlib import Path
 import pytest
 import datamerge as dm
 import logging
-
+import sys
 
 def test_integral()->None:
+    logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
     def filelistFromArgs(argDict:dict) -> list:
         """
         Takes the parsed command-line argument dictionary

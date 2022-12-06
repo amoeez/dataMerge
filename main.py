@@ -10,10 +10,8 @@ from typing import Optional, List
 from datamerge.readersandwriters import SDOListFromFiles
 from datamerge.readersandwriters import mergeConfigObjFromYaml
 from datamerge.readersandwriters import outputToNX
-
 from datamerge.mergecore import mergeCore
 from datamerge.plotting import plotFigure
-from datamerge.dataclasses import scatteringDataObj
 import sys
 
 
@@ -87,13 +85,6 @@ def configureParser()->argparse.ArgumentParser:
 if __name__ == "__main__":
     
     parser = configureParser()
-
-    # if isMac():
-    #     # on OSX remove automatically provided PID,
-    #     # otherwise argparse exits and the bundle start fails silently
-    #     for i in range(len(sys.argv)):
-    #         if sys.argv[i].startswith("-psn"):  # PID provided by osx
-    #             del sys.argv[i]
 
     try:
         args = parser.parse_args()
