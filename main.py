@@ -18,7 +18,8 @@ import sys
 def isMac() -> bool:
     return platform == "darwin"
 
-def filelistFromArgs(argDict:dict) -> list:
+
+def filelistFromArgs(argDict: dict) -> list:
     """
     Takes the parsed command-line argument dictionary
     and returns the list of filenames
@@ -33,7 +34,8 @@ def filelistFromArgs(argDict:dict) -> list:
     assert isinstance(fnames, list)
     return fnames
 
-def configureParser()->argparse.ArgumentParser:
+
+def configureParser() -> argparse.ArgumentParser:
     # process input arguments
     parser = argparse.ArgumentParser(
         description="""
@@ -83,7 +85,7 @@ def configureParser()->argparse.ArgumentParser:
 
 
 if __name__ == "__main__":
-    
+
     parser = configureParser()
 
     try:
@@ -102,7 +104,7 @@ if __name__ == "__main__":
         logging.warning(
             f"The nexus files do not contain fully processed data, skipping. \n used settings: {adict}"
         )
-        # raise
+        raise
         sys.exit(0)
 
     m = mergeCore(
@@ -113,6 +115,12 @@ if __name__ == "__main__":
     # export to the final files
     ofname = Path(adict["outputFile"])
     logging.debug(f"8. Storing result in output file {ofname}")
-    outputToNX(ofname=ofname, mco=m.config, mdo=filteredMDO, rangeList=m.ranges)
+    outputToNX(
+        ofname=ofname,
+        mco=m.config,
+        mdo=filteredMDO,
+        rangeList=m.ranges,
+        writeOriginalData=False,
+    )
     # make the plots.
     plotFigure(m, ofname=Path(adict["outputFile"]))

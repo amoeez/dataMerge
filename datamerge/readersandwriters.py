@@ -37,13 +37,20 @@ def scatteringDataObjFromNX(filename: Path) -> scatteringDataObj:
     )
     with h5py.File(filename, "r") as h5f:
         so = scatteringDataObj(
-            Q=h5f["/processed/result/q"][()].flatten(),  # units of 1/nm
+            # Q=h5f["/processed/result/q"][()].flatten(),  # units of 1/nm
+            # # data['QSigma'] = h5f['/processed/result/q_errors'][()].flatten() # units of 1/nm
+            # I=h5f["/processed/result/data"][()].flatten(),  # nominal units of 1/(m sr)
+            # ISigma=h5f["/processed/result/errors"][()].flatten(),
+            # sampleName=h5f["/entry1/sample/name"][()],
+            # sampleOwner=h5f["/entry1/sample/sampleowner"][()],
+            # configuration=h5f["/entry1/instrument/configuration"][()],
+            Q=h5f["/entry/result/Q"][()].flatten(),  # units of 1/nm
             # data['QSigma'] = h5f['/processed/result/q_errors'][()].flatten() # units of 1/nm
-            I=h5f["/processed/result/data"][()].flatten(),  # nominal units of 1/(m sr)
-            ISigma=h5f["/processed/result/errors"][()].flatten(),
-            sampleName=h5f["/entry1/sample/name"][()],
-            sampleOwner=h5f["/entry1/sample/sampleowner"][()],
-            configuration=h5f["/entry1/instrument/configuration"][()],
+            I=h5f["/entry/result/I"][()].flatten(),  # nominal units of 1/(m sr)
+            ISigma=h5f["/entry/result/I_errors"][()].flatten(),
+            sampleName="MOF particle simulation",
+            sampleOwner="Sofya",
+            configuration=1,  # filename.stem.lstrip("1DSlice"),
             filename=filename,
             IUnits="1/(m sr)",
             Qunits="1/nm",
@@ -223,6 +230,7 @@ def mergeConfigObjFromYaml(filename: Path) -> mergeConfigObj:
     )
     return mco
 
+
 def SDOListFromFiles(fnames: List[Path]) -> List[scatteringDataObj]:
     """
     Takes a list of file paths
@@ -236,6 +244,7 @@ def SDOListFromFiles(fnames: List[Path]) -> List[scatteringDataObj]:
         ), f"filename {fname} does not exist. Please supply valid filenames"
         scatteringDataList += [scatteringDataObjFromNX(fname)]
     return scatteringDataList
+
 
 if __name__ == "__main__":
     """quick test"""
