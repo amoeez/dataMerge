@@ -14,6 +14,7 @@ from .dataclasses import (
 )
 from typing import List, Optional
 from statsmodels.stats.weightstats import DescrStatsW
+from multiprocessing.pool import ThreadPool as Pool
 
 
 @define
@@ -33,6 +34,9 @@ class mergeCore:
     )
     mData: mergedDataObj = field(
         default=Factory(mergedDataObj), validator=validators.instance_of(mergedDataObj)
+    )
+    poolSize: int = field(
+        default=50, validator=validators.instance_of(int), converter=int
     )
 
     def constructRanges(self, dataList: list) -> None:
@@ -166,11 +170,13 @@ class mergeCore:
         All the datasets are then put in a single scatteringDataObj instance in self.preMData,
         ready to be merged.
         """
-        df = pd.DataFrame(columns=["Q", "I", "ISigma", "QSigma"])
-        for drange in self.ranges:
-            df2 = self.rangeObjAsDataframe(drange)
-            # add to the pre-merged data:
-            df = pd.concat([df, df2], ignore_index=True, sort=False)
+        # nothing to do
+        if len(self.ranges) == 1:
+            df = self.rangeObjAsDataframe(self.ranges[0])
+        else:
+            with Pool(self.poolSize) as pool:
+                dfs = pool.map(self.rangeObjAsDataframe, self.ranges)
+            df = pd.concat(dfs, ignore_index=True, sort=False)
         self.preMData = df.dropna(thresh=2)
         return
 
@@ -291,18 +297,13 @@ class mergeCore:
                 self.preMData.I * 0.0 + 1
             )  # no datapoint weighting
 
-        # now do the binning per bin.
-        for binN in range(len(binEdges) - 1):
+        def binDfRangeByIndex(binN: int) -> None:
             lowerIndex, upperIndex = edgeIndices[binN], edgeIndices[binN + 1]
             rangeLen = upperIndex - lowerIndex
-            # dfRange = self.preMData.query( # this isn't crazy slow, but is perhaps not ideal. Q should be sorted at this point
-            #     "{} <= Q < {}".format(binEdges[binN], binEdges[binN + 1])
-            # ).copy() # probably don't need the copy, but it complains otherwise
-            # assert dfRange.shape[0]==(edgeIndices[binN+1] - edgeIndices[binN])
-            dfRange = self.preMData.iloc[lowerIndex:upperIndex, :]
             if rangeLen == 0:  # nothing in bin
-                continue
-            elif rangeLen == 1:  # one datapoint in bin
+                return
+            dfRange = self.preMData.iloc[lowerIndex:upperIndex, :]
+            if rangeLen == 1:  # one datapoint in bin
                 # might not be necessary to do this..
                 # can't do stats on this:
                 self.mData.Q[binN] = float(dfRange.Q)
@@ -317,13 +318,12 @@ class mergeCore:
                 self.mData.QSigma[binN] = float(dfRange.QSigma)
                 self.mData.Singles[binN] = True
                 self.mData.Mask[binN] = False
+                return
 
             else:  # multiple datapoints in bin
-
                 # exploit the DescrStatsW package from statsmodels
                 DSI = DescrStatsW(dfRange.I, weights=dfRange.wt)
                 DSQ = DescrStatsW(dfRange.Q, weights=dfRange.wt)
-
                 self.mData.Q[binN] = DSQ.mean
                 self.mData.I[binN] = DSI.mean
                 self.mData.ISigma[binN] = (
@@ -354,6 +354,76 @@ class mergeCore:
                     [self.mData.QSEM[binN], DSQ.mean * self.mergeConfig.qeMin]
                 )
                 self.mData.Mask[binN] = False
+            return
+
+        # separate:
+        with Pool(self.poolSize) as pool:
+            dfRanges = pool.map(binDfRangeByIndex, range(len(binEdges) - 1))
+
+        # # now do the binning per bin.
+
+        # for binN in range(len(binEdges) - 1):
+        #     lowerIndex, upperIndex = edgeIndices[binN], edgeIndices[binN + 1]
+        #     rangeLen = upperIndex - lowerIndex
+        #     # dfRange = self.preMData.query( # this isn't crazy slow, but is perhaps not ideal. Q should be sorted at this point
+        #     #     "{} <= Q < {}".format(binEdges[binN], binEdges[binN + 1])
+        #     # ).copy() # probably don't need the copy, but it complains otherwise
+        #     # assert dfRange.shape[0]==(edgeIndices[binN+1] - edgeIndices[binN])
+        #     dfRange = self.preMData.iloc[lowerIndex:upperIndex, :]
+        #     if rangeLen == 0:  # nothing in bin
+        #         continue
+        #     elif rangeLen == 1:  # one datapoint in bin
+        #         # might not be necessary to do this..
+        #         # can't do stats on this:
+        #         self.mData.Q[binN] = float(dfRange.Q)
+        #         self.mData.I[binN] = float(dfRange.I)
+        #         self.mData.IStd[binN] = float(dfRange.ISigma)
+        #         self.mData.ISEM[binN] = float(dfRange.ISigma)
+        #         self.mData.ISEMw[binN] = float(dfRange.ISigma)
+        #         self.mData.IEPropagated[binN] = float(dfRange.ISigma)
+        #         self.mData.ISigma[binN] = float(dfRange.ISigma)
+        #         self.mData.QStd[binN] = float(dfRange.QSigma)
+        #         self.mData.QSEM[binN] = float(dfRange.QSigma)
+        #         self.mData.QSigma[binN] = float(dfRange.QSigma)
+        #         self.mData.Singles[binN] = True
+        #         self.mData.Mask[binN] = False
+
+        #     else:  # multiple datapoints in bin
+
+        #         # exploit the DescrStatsW package from statsmodels
+        #         DSI = DescrStatsW(dfRange.I, weights=dfRange.wt)
+        #         DSQ = DescrStatsW(dfRange.Q, weights=dfRange.wt)
+
+        #         self.mData.Q[binN] = DSQ.mean
+        #         self.mData.I[binN] = DSI.mean
+        #         self.mData.ISigma[binN] = (
+        #             np.sqrt(((dfRange.wt * dfRange.ISigma) ** 2).sum())
+        #             / dfRange.wt.sum()
+        #         )
+        #         self.mData.IStd[binN] = DSI.std
+        #         # following suggestion regarding V1/V2 from: https://groups.google.com/forum/#!topic/medstats/H4SFKPBDAAM
+        #         self.mData.ISEM[binN] = DSI.std * np.sqrt(
+        #             (dfRange.wt**2).sum() / (dfRange.wt.sum()) ** 2
+        #         )
+        #         if calcSEMw:
+        #             self.mData.ISEMw[binN] = SEMw(
+        #                 dfRange.I, dfRange.wt
+        #             )  # adds considerable time, and we're not using it at the mo.
+        #         self.mData.IEPropagated[binN] = np.max(
+        #             [
+        #                 self.mData.ISEM[binN],
+        #                 self.mData.ISigma[binN],
+        #                 DSI.mean * self.mergeConfig.eMin,
+        #             ]
+        #         )
+        #         self.mData.QStd[binN] = DSQ.std
+        #         self.mData.QSEM[binN] = DSQ.std * np.sqrt(
+        #             (dfRange.wt**2).sum() / (dfRange.wt.sum()) ** 2
+        #         )
+        #         self.mData.QSigma[binN] = np.max(
+        #             [self.mData.QSEM[binN], DSQ.mean * self.mergeConfig.qeMin]
+        #         )
+        #         self.mData.Mask[binN] = False
 
         return
 

@@ -5,7 +5,6 @@ from pathlib import Path
 import argparse
 from sys import platform
 import logging
-from typing import Optional, List
 
 from datamerge.readersandwriters import SDOListFromFiles, readConfigObjFromYaml
 from datamerge.readersandwriters import mergeConfigObjFromYaml
