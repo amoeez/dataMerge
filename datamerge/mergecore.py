@@ -175,7 +175,10 @@ class mergeCore:
             df = self.rangeObjAsDataframe(self.ranges[0])
         else:
             with Pool(self.poolSize) as pool:
-                dfs = pool.map(self.rangeObjAsDataframe, self.ranges)
+                dfs = [
+                    d
+                    for d in pool.imap_unordered(self.rangeObjAsDataframe, self.ranges)
+                ]
             df = pd.concat(dfs, ignore_index=True, sort=False)
         self.preMData = df.dropna(thresh=2)
         return
@@ -356,7 +359,9 @@ class mergeCore:
 
         # separate:
         with Pool(self.poolSize) as pool:
-            pool.map(binDfRangeByIndex, range(len(binEdges) - 1))
+            it = pool.imap_unordered(binDfRangeByIndex, range(len(binEdges) - 1))
+            for _ in it:
+                pass
 
         return
 
