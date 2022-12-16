@@ -224,10 +224,8 @@ class mergeCore:
                 if np.isfinite(newQEnd):
                     qEnd = newQEnd
             if outRange.QScaling == "log":
-                print("\n\n log range")
                 binEdges += [np.geomspace(qStart, qEnd, num=outRange.nbins + 1)]
             else:
-                print("\n\n linear range")
                 binEdges += [np.linspace(qStart, qEnd, num=outRange.nbins + 1)]
 
         be = np.concatenate(binEdges, dtype=float)
