@@ -5,9 +5,8 @@ from pathlib import Path
 import argparse
 from sys import platform
 import logging
-from typing import Optional, List
 
-from datamerge.readersandwriters import SDOListFromFiles
+from datamerge.readersandwriters import SDOListFromFiles, readConfigObjFromYaml
 from datamerge.readersandwriters import mergeConfigObjFromYaml
 from datamerge.readersandwriters import outputToNX
 from datamerge.mergecore import mergeCore
@@ -18,7 +17,8 @@ import sys
 def isMac() -> bool:
     return platform == "darwin"
 
-def filelistFromArgs(argDict:dict) -> list:
+
+def filelistFromArgs(argDict: dict) -> list:
     """
     Takes the parsed command-line argument dictionary
     and returns the list of filenames
@@ -33,7 +33,8 @@ def filelistFromArgs(argDict:dict) -> list:
     assert isinstance(fnames, list)
     return fnames
 
-def configureParser()->argparse.ArgumentParser:
+
+def configureParser() -> argparse.ArgumentParser:
     # process input arguments
     parser = argparse.ArgumentParser(
         description="""
@@ -59,7 +60,7 @@ def configureParser()->argparse.ArgumentParser:
         "-g",
         "--globKey",
         type=str,
-        default="*processed.nxs",
+        default="*.nxs",
         help="If filename path is a directory, this will be the glob key to find the files to merge",
         # required=True,
     )
@@ -79,11 +80,27 @@ def configureParser()->argparse.ArgumentParser:
         help="Path to the datamerge configuration (yaml) file",
         # required=True,
     )
+    parser.add_argument(
+        "-r",
+        "--raiseFileReadWarning",
+        default=False,
+        action="store_true",
+        help="If there is a problem reading in a datafile, raise error instead of skip",
+        # required=True,
+    )
+    parser.add_argument(
+        "-w",
+        "--writeOriginalData",
+        default=False,
+        action="store_true",
+        help="If set, will add the original read-in data to the output file structure",
+        # required=True,
+    )
     return parser
 
 
 if __name__ == "__main__":
-    
+
     parser = configureParser()
 
     try:
@@ -97,22 +114,33 @@ if __name__ == "__main__":
     adict = vars(args)
 
     try:
-        dataList = SDOListFromFiles(filelistFromArgs(adict))
+        dataList = SDOListFromFiles(
+            filelistFromArgs(adict),
+            readConfig=readConfigObjFromYaml(adict["configFile"]),
+        )
     except KeyError:
         logging.warning(
             f"The nexus files do not contain fully processed data, skipping. \n used settings: {adict}"
         )
-        # raise
-        sys.exit(0)
+        if adict["raiseFileReadWarning"]:
+            raise
+        else:
+            sys.exit(0)
 
     m = mergeCore(
-        config=mergeConfigObjFromYaml(adict["configFile"]),
+        mergeConfig=mergeConfigObjFromYaml(adict["configFile"]),
         dataList=dataList,
     )
     filteredMDO = m.run()
     # export to the final files
     ofname = Path(adict["outputFile"])
     logging.debug(f"8. Storing result in output file {ofname}")
-    outputToNX(ofname=ofname, mco=m.config, mdo=filteredMDO, rangeList=m.ranges)
+    outputToNX(
+        ofname=ofname,
+        mco=m.mergeConfig,
+        mdo=filteredMDO,
+        rangeList=m.ranges,
+        writeOriginalData=adict["writeOriginalData"],
+    )
     # make the plots.
     plotFigure(m, ofname=Path(adict["outputFile"]))

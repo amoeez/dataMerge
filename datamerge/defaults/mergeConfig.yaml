@@ -1,5 +1,19 @@
 --- # default configuration used to read nexus files into McSAS3. this is assumed to be a 1D file in nexus
 # Note that the units are assumed to be 1/(m sr) for I and 1/nm for Q. 
+readConfig: # You can adjust the read configuration here: 
+  HDFPaths: 
+    Q: '/processed/result/q'
+    I: '/processed/result/data'
+    ISigma: '/processed/result/errors'
+    sampleName: '/entry1/sample/name'
+    sampleOwner: '/entry1/sample/sampleowner'
+    configuration: '/entry1/instrument/configuration'
+  HDFDefaults: # in case nothing is found in the paths, you can set defaults for some here:
+    sampleName: 'unknown sample name'
+    sampleOwner: 'unknown sample owner'
+    configuration: 0
+    IUnits: '1/(m sr)'
+    QUnits: '1/nm'
 # Output units can be set, but conversion is not implemented yet. 
 eMin: 0.01 # minimum fractional uncertainty estimate (default: 1% of bin intensity)
 qeMin: 0.01 # minimum fractional uncertainty estimate (default: 1% of bin intensity)

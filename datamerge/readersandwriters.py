@@ -15,7 +15,8 @@ __date__ = "2022/10/18"
 __status__ = "beta"
 
 
-from .dataclasses import outputRangeObj
+import numpy as np
+from .dataclasses import HDFDefaultsObj, HDFPathsObj, outputRangeObj, readConfigObj
 from .dataclasses import rangeConfigObj
 from .dataclasses import (
     scatteringDataObj,
@@ -30,25 +31,29 @@ from typing import List
 import logging
 
 
-def scatteringDataObjFromNX(filename: Path) -> scatteringDataObj:
+def scatteringDataObjFromNX(
+    filename: Path, readConfig: readConfigObj
+) -> scatteringDataObj:
     """Returns a populated scatteringDataObj by reading the data from a Processed MOUSE NeXus file"""
     assert filename.is_file(), logging.warning(
         f'{filename=} cannot be accessed from {Path(".").absolute().as_posix()}'
     )
     with h5py.File(filename, "r") as h5f:
-        so = scatteringDataObj(
-            Q=h5f["/processed/result/q"][()].flatten(),  # units of 1/nm
-            # data['QSigma'] = h5f['/processed/result/q_errors'][()].flatten() # units of 1/nm
-            I=h5f["/processed/result/data"][()].flatten(),  # nominal units of 1/(m sr)
-            ISigma=h5f["/processed/result/errors"][()].flatten(),
-            sampleName=h5f["/entry1/sample/name"][()],
-            sampleOwner=h5f["/entry1/sample/sampleowner"][()],
-            configuration=h5f["/entry1/instrument/configuration"][()],
-            filename=filename,
-            IUnits="1/(m sr)",
-            Qunits="1/nm",
-        )
-    return so
+        kvs = {}
+        for key in readConfig.hdfPaths.keys():
+            hPath = getattr(readConfig.hdfPaths, key)
+            if hPath in h5f:
+                val = h5f[hPath][()]
+                if isinstance(val, np.ndarray):
+                    val = val.flatten()
+            else:
+                assert key in readConfig.hdfDefaults.keys(), logging.error(
+                    f"NeXus file {filename=} does not contain information for {key=} at specified HDF5 Path {hPath}"
+                )
+                val = getattr(readConfig.hdfDefaults, key)
+            kvs.update({key: val})
+
+    return scatteringDataObj(filename=filename, **kvs)
 
 
 def outputToNX(
@@ -171,6 +176,20 @@ def outputToNX(
     return
 
 
+def readConfigObjFromYaml(filename: Path) -> readConfigObj:
+    assert (
+        filename.is_file()
+    ), f"Read configuration filename {filename.as_posix()} does not exist"
+    with open(filename, "r") as f:
+        configDict = yaml.safe_load(f)
+    if "readConfig" not in configDict.keys():
+        return readConfigObj(HDFPathsObj(), HDFDefaultsObj())
+    print(configDict["readConfig"])
+    HDFPaths = HDFPathsObj(**configDict["readConfig"].get("HDFPaths", {}))
+    HDFDefaults = HDFDefaultsObj(**configDict["readConfig"].get("HDFDefaults", {}))
+    return readConfigObj(HDFPaths, HDFDefaults)
+
+
 def mergeConfigObjFromYaml(filename: Path) -> mergeConfigObj:
     assert (
         filename.is_file()
@@ -181,7 +200,7 @@ def mergeConfigObjFromYaml(filename: Path) -> mergeConfigObj:
     mcoAcceptableParameters = [  # acceptable parameters are everything in mco except underscore-starting objects and range
         i
         for i in dir(mergeConfigObj)
-        if (not i.startswith("_") and not i in ["ranges", "filename", "outputRanges"])
+        if (not i.startswith("_") and i not in ["ranges", "filename", "outputRanges"])
     ]
     # now we set some of these parameters if we have them in configDict:
     mcoFeedParams = {
@@ -223,9 +242,12 @@ def mergeConfigObjFromYaml(filename: Path) -> mergeConfigObj:
     )
     return mco
 
-def SDOListFromFiles(fnames: List[Path]) -> List[scatteringDataObj]:
+
+def SDOListFromFiles(
+    fnames: List[Path], readConfig: readConfigObj
+) -> List[scatteringDataObj]:
     """
-    Takes a list of file paths
+    Takes a list of file paths and a read configuration
     and returns the list of scatteringDataObjects read from the individual files
     """
 
@@ -234,8 +256,9 @@ def SDOListFromFiles(fnames: List[Path]) -> List[scatteringDataObj]:
         assert (
             fname.is_file()
         ), f"filename {fname} does not exist. Please supply valid filenames"
-        scatteringDataList += [scatteringDataObjFromNX(fname)]
+        scatteringDataList += [scatteringDataObjFromNX(fname, readConfig)]
     return scatteringDataList
+
 
 if __name__ == "__main__":
     """quick test"""
