@@ -20,7 +20,9 @@ from statsmodels.stats.weightstats import DescrStatsW
 class mergeCore:
     """The core merging function, most of the actual action happens here"""
 
-    config: mergeConfigObj = field(validator=validators.instance_of(mergeConfigObj))
+    mergeConfig: mergeConfigObj = field(
+        validator=validators.instance_of(mergeConfigObj)
+    )
     # dataList is hardly used, instead the scatteringDataObjs in ranges is used. Depreciate?
     dataList: List[scatteringDataObj] = field(validator=validators.instance_of(list))
     # the following will be constructed in here:
@@ -125,8 +127,8 @@ class mergeCore:
             ),
             scaling=rangeObj.scale,
         )
-        df.ISigma.clip(lower=self.config.eMin * df.I, inplace=True)
-        df.QSigma.clip(lower=self.config.qeMin * df.Q, inplace=True)
+        df.ISigma.clip(lower=self.mergeConfig.eMin * df.I, inplace=True)
+        df.QSigma.clip(lower=self.mergeConfig.qeMin * df.Q, inplace=True)
         return df
 
     def autoScale(self) -> None:
@@ -177,13 +179,6 @@ class mergeCore:
             self.preMData.sort_values(by="Q", inplace=True)
         return
 
-    # def findBinEdgeIndices(self, sortedArray:np.ndarray, binEdges:np.ndarray) -> np.ndarray:
-    #     """
-    #     Finds at which index the binEdges should be in the sorted preMarray. 
-    #     Uses np.searchsorted to speed things up. 
-    #     """
-    #     return np.searchsorted(sortedArray, binEdges)
-
     def nonZeroQMin(self) -> float:
         """Returns the smallest nonzero q value for all input ranges for starting the binning at."""
         qMin = np.inf
@@ -206,10 +201,10 @@ class mergeCore:
 
     def createBinEdges(self) -> np.ndarray:
         binEdges = list()
-        assert self.config.outputRanges is not None, logging.error(
+        assert self.mergeConfig.outputRanges is not None, logging.error(
             "at least one output range should be specified"
         )
-        for rangeId, outRange in enumerate(self.config.outputRanges):
+        for rangeId, outRange in enumerate(self.mergeConfig.outputRanges):
             qEnd = self.nonZeroQMax()
             qStart = (
                 outRange.qCrossover
@@ -217,14 +212,16 @@ class mergeCore:
                 else self.nonZeroQMin()
             )
             if rangeId < (
-                len(self.config.outputRanges) - 1
+                len(self.mergeConfig.outputRanges) - 1
             ):  # set qEnd to the start of the next range
-                newQEnd = self.config.outputRanges[rangeId + 1].qCrossover
+                newQEnd = self.mergeConfig.outputRanges[rangeId + 1].qCrossover
                 if np.isfinite(newQEnd):
                     qEnd = newQEnd
             if outRange.QScaling == "log":
+                print("\n\n log range")
                 binEdges += [np.geomspace(qStart, qEnd, num=outRange.nbins + 1)]
             else:
+                print("\n\n linear range")
                 binEdges += [np.linspace(qStart, qEnd, num=outRange.nbins + 1)]
 
         be = np.concatenate(binEdges, dtype=float)
@@ -235,7 +232,7 @@ class mergeCore:
         be[-1] = be[-1] + 1e-3 * (be[-1] - be[-2])
         return be
 
-    def mergyMagic(self, binEdges: np.ndarray, calcSEMw:bool=False) -> None:
+    def mergyMagic(self, binEdges: np.ndarray, calcSEMw: bool = False) -> None:
         # define weighted standard error on the mean:
         def SEMw(x, w):
             """
@@ -280,10 +277,12 @@ class mergeCore:
         assert self.preMData is not None, logging.warning(
             "self.preMData cannot be none at the merging step"
         )
-        
-        edgeIndices = np.searchsorted(self.preMData.Q.values, binEdges)# last edge should be slightly outside last
+
+        edgeIndices = np.searchsorted(
+            self.preMData.Q.values, binEdges
+        )  # last edge should be slightly outside last
         # we can precalculate the weights for all datapoints:
-        if self.config.IEWeighting:
+        if self.mergeConfig.IEWeighting:
             self.preMData["wt"] = np.abs(
                 self.preMData.I / (self.preMData.ISigma**2)
             )  # inverse relative weight per point if desired.
@@ -294,13 +293,13 @@ class mergeCore:
 
         # now do the binning per bin.
         for binN in range(len(binEdges) - 1):
-            lowerIndex, upperIndex = edgeIndices[binN], edgeIndices[binN+1]
-            rangeLen = upperIndex-lowerIndex
+            lowerIndex, upperIndex = edgeIndices[binN], edgeIndices[binN + 1]
+            rangeLen = upperIndex - lowerIndex
             # dfRange = self.preMData.query( # this isn't crazy slow, but is perhaps not ideal. Q should be sorted at this point
             #     "{} <= Q < {}".format(binEdges[binN], binEdges[binN + 1])
             # ).copy() # probably don't need the copy, but it complains otherwise
             # assert dfRange.shape[0]==(edgeIndices[binN+1] - edgeIndices[binN])
-            dfRange = self.preMData.iloc[lowerIndex:upperIndex,:]
+            dfRange = self.preMData.iloc[lowerIndex:upperIndex, :]
             if rangeLen == 0:  # nothing in bin
                 continue
             elif rangeLen == 1:  # one datapoint in bin
@@ -319,7 +318,6 @@ class mergeCore:
                 self.mData.Singles[binN] = True
                 self.mData.Mask[binN] = False
 
-
             else:  # multiple datapoints in bin
 
                 # exploit the DescrStatsW package from statsmodels
@@ -337,12 +335,15 @@ class mergeCore:
                 self.mData.ISEM[binN] = DSI.std * np.sqrt(
                     (dfRange.wt**2).sum() / (dfRange.wt.sum()) ** 2
                 )
-                if calcSEMw: self.mData.ISEMw[binN] = SEMw(dfRange.I, dfRange.wt) # adds considerable time, and we're not using it at the mo.
+                if calcSEMw:
+                    self.mData.ISEMw[binN] = SEMw(
+                        dfRange.I, dfRange.wt
+                    )  # adds considerable time, and we're not using it at the mo.
                 self.mData.IEPropagated[binN] = np.max(
                     [
                         self.mData.ISEM[binN],
                         self.mData.ISigma[binN],
-                        DSI.mean * self.config.eMin,
+                        DSI.mean * self.mergeConfig.eMin,
                     ]
                 )
                 self.mData.QStd[binN] = DSQ.std
@@ -350,7 +351,7 @@ class mergeCore:
                     (dfRange.wt**2).sum() / (dfRange.wt.sum()) ** 2
                 )
                 self.mData.QSigma[binN] = np.max(
-                    [self.mData.QSEM[binN], DSQ.mean * self.config.qeMin]
+                    [self.mData.QSEM[binN], DSQ.mean * self.mergeConfig.qeMin]
                 )
                 self.mData.Mask[binN] = False
 
@@ -397,10 +398,10 @@ class mergeCore:
             for dr in self.ranges
         ]
         # update ranges with custom configuration if necessary
-        if self.config.ranges is not None:
+        if self.mergeConfig.ranges is not None:
             logging.info(f"2.1 updating ranges. t={time.time() - starttime}")
-            logging.debug(f"{self.config.ranges=}")
-            self.updateRanges(self.config.ranges)
+            logging.debug(f"{self.mergeConfig.ranges=}")
+            self.updateRanges(self.mergeConfig.ranges)
         # determine scaling factors
         logging.info(f"3. applying autoscaling, t={time.time() - starttime}")
         # self.autoScale()
@@ -410,7 +411,7 @@ class mergeCore:
             for dr in self.ranges
         ]
         logging.info(f"AutoScale done, scaling factors: {o}")
-        logging.debug(f"{self.config.outputRanges=}")
+        logging.debug(f"{self.mergeConfig.outputRanges=}")
         # do I need to resort the data by Q? I don't think so... was part of the original though.
         # read all the data into a single dataframe, taking care of scaling, clipping and masking
         logging.info(f"4. concatenating original data, t={time.time() - starttime}")
@@ -420,16 +421,17 @@ class mergeCore:
         self.sortUnmergedData()
         # apply mergyMagic to the list of q Edges.
         logging.info(f"6. creating bin edges, t={time.time() - starttime}")
-        binEdges=self.createBinEdges()
+        binEdges = self.createBinEdges()
         logging.info(f"6. merging within bin edges, t={time.time() - starttime}")
-        # this is the bottleneck... not surprising but still. 
+        # this is the bottleneck... not surprising but still.
         self.mergyMagic(binEdges=binEdges)
         # filter result
         logging.info(
-            f"7. filtering out invalid points from merged data with {self.config.maskMasked=} and {self.config.maskSingles=}, t={time.time() - starttime}"
+            f"7. filtering out invalid points from merged data with {self.mergeConfig.maskMasked=} and {self.mergeConfig.maskSingles=}, t={time.time() - starttime}"
         )
         filteredMDO = self.returnMaskedOutput(
-            maskMasked=self.config.maskMasked, maskSingles=self.config.maskSingles
+            maskMasked=self.mergeConfig.maskMasked,
+            maskSingles=self.mergeConfig.maskSingles,
         )
         logging.info(f"7.1 done filtering, t={time.time() - starttime}")
 

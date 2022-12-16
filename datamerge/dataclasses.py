@@ -13,6 +13,7 @@ __license__ = "GPLv3+"
 __date__ = "2022/10/18"
 __status__ = "beta"
 
+from attrs import Factory
 from attrs import define, validators, field, cmp_using, fields
 from pathlib import Path
 import numpy as np
@@ -304,6 +305,78 @@ class outputRangeObj(gimmeItems):
         default="log",
         validator=[validators.instance_of(str), scalingChecker],
         converter=str,
+    )
+
+
+@define
+class HDFDefaultsObj(gimmeItems):
+    """In case the preset HDF5 paths are empty, defaults can be used for some non-critical items"""
+
+    sampleName: str = field(
+        default="", validator=validators.instance_of(str), converter=str
+    )
+    sampleOwner: str = field(
+        default="", validator=validators.instance_of(str), converter=str
+    )
+    configuration: int = field(
+        default=1, validator=validators.instance_of(int), converter=int
+    )
+    IUnits: str = field(
+        default="1/(m sr)", validator=validators.instance_of(str), converter=str
+    )
+    QUnits: str = field(
+        default="1/nm", validator=validators.instance_of(str), converter=str
+    )
+
+
+@define
+class HDFPathsObj(gimmeItems):
+    """
+    Config carrying the HDF5 path locations for reading datafiles.
+    """
+
+    Q: str = field(
+        default="/entry/result/Q", validator=validators.instance_of(str), converter=str
+    )
+    I: str = field(
+        default="/entry/result/I", validator=validators.instance_of(str), converter=str
+    )
+    ISigma: str = field(
+        default="/entry/result/ISigma",
+        validator=validators.instance_of(str),
+        converter=str,
+    )
+    sampleName: str = field(
+        default="/entry1/sample/name",
+        validator=validators.instance_of(str),
+        converter=str,
+    )
+    sampleOwner: str = field(
+        default="/entry1/sample/sampleowner",
+        validator=validators.instance_of(str),
+        converter=str,
+    )
+    configuration: str = field(
+        default="/entry1/instrument/confuration",
+        validator=validators.instance_of(str),
+        converter=str,
+    )
+
+
+@define
+class readConfigObj(gimmeItems):
+    """
+    Object that carries information on how to read the datafiles
+    """
+
+    hdfPaths: HDFPathsObj = field(
+        default=Factory(HDFPathsObj),
+        validator=validators.instance_of(HDFPathsObj),
+    )
+
+    hdfDefaults: HDFDefaultsObj = field(
+        default=Factory(HDFDefaultsObj),
+        validator=validators.instance_of(HDFDefaultsObj),
     )
 
 
