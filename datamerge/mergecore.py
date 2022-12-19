@@ -359,9 +359,12 @@ class mergeCore:
 
         # separate:
         with Pool(self.poolSize) as pool:
-            it = pool.imap_unordered(binDfRangeByIndex, range(len(binEdges) - 1))
-            for _ in it:
-                pass
+            _ = [
+                i
+                for i in pool.imap_unordered(
+                    binDfRangeByIndex, range(len(binEdges) - 1)
+                )
+            ]
 
         return
 
