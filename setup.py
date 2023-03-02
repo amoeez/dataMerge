@@ -1,7 +1,11 @@
 from pathlib import Path
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, Extension
 import sys
 import versioneer
+from Cython.Build import cythonize
+from Cython.Compiler import Options
+import numpy as np
+
 
 min_version = (3, 8)
 if sys.version_info < min_version:
@@ -44,6 +48,10 @@ extras_require = {}
 extras_require["base"] = read_requirements_from_here(here, "requirements.txt")
 # extras_require["h5tools"] = read_requirements_from_here(here, "requirements-hdf5.txt")
 
+extensions = [Extension("binstats", 
+                        ["datamerge/binstats.pyx"],
+                        include_dirs = [np.get_include()])]
+
 setup(
     name="dataMerge",
     version=versioneer.get_version(),
@@ -64,4 +72,7 @@ setup(
         "Natural Language :: English",
         "Programming Language :: Python :: 3",
     ],
+    ext_modules=cythonize(extensions)
+    
 )
+

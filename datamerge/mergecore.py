@@ -15,6 +15,8 @@ from .dataclasses import (
 from typing import List, Optional
 from statsmodels.stats.weightstats import DescrStatsW
 from multiprocessing.pool import ThreadPool as Pool
+import importlib.util
+import sys
 
 
 @define
@@ -322,39 +324,80 @@ class mergeCore:
                 return
 
             else:  # multiple datapoints in bin
-                # exploit the DescrStatsW package from statsmodels
-                DSI = DescrStatsW(dfRange.I, weights=dfRange.wt)
-                DSQ = DescrStatsW(dfRange.Q, weights=dfRange.wt)
-                self.mData.Q[binN] = DSQ.mean
-                self.mData.I[binN] = DSI.mean
-                self.mData.ISigma[binN] = (
-                    np.sqrt(((dfRange.wt * dfRange.ISigma) ** 2).sum())
-                    / dfRange.wt.sum()
-                )
-                self.mData.IStd[binN] = DSI.std
-                # following suggestion regarding V1/V2 from: https://groups.google.com/forum/#!topic/medstats/H4SFKPBDAAM
-                self.mData.ISEM[binN] = DSI.std * np.sqrt(
-                    (dfRange.wt**2).sum() / (dfRange.wt.sum()) ** 2
-                )
-                if calcSEMw:
-                    self.mData.ISEMw[binN] = SEMw(
-                        dfRange.I, dfRange.wt
-                    )  # adds considerable time, and we're not using it at the mo.
-                self.mData.IEPropagated[binN] = np.max(
-                    [
-                        self.mData.ISEM[binN],
-                        self.mData.ISigma[binN],
-                        DSI.mean * self.mergeConfig.eMin,
-                    ]
-                )
-                self.mData.QStd[binN] = DSQ.std
-                self.mData.QSEM[binN] = DSQ.std * np.sqrt(
-                    (dfRange.wt**2).sum() / (dfRange.wt.sum()) ** 2
-                )
-                self.mData.QSigma[binN] = np.max(
-                    [self.mData.QSEM[binN], DSQ.mean * self.mergeConfig.qeMin]
-                )
-                self.mData.Mask[binN] = False
+                name = 'binstats'
+                # check if cython modules are available
+                if (spec := importlib.util.find_spec(name)) is not None:
+                    module = importlib.util.module_from_spec(spec)
+                    sys.modules[name] = module
+                    spec.loader.exec_module(module)
+                    logging.info("Faster cythonized rebinnning statistics functions will be used")
+                    I_values = dfRange.I.values
+                    Q_values = dfRange.Q.values
+                    I_sigma = dfRange.ISigma.values
+                    weights = dfRange.wt.values
+
+                    if self.preMData.dtypes.I == 'float64':
+                        self.mData.I[binN] = module.weighted_mean(I_values, weights)
+                        self.mData.IStd[binN] = module.std_ddof(I_values, weights)
+                        # following suggestion regarding V1/V2 from: https://groups.google.com/forum/#!topic/medstats/H4SFKPBDAAM
+                        self.mData.ISEM[binN] = module.sem(I_values, weights)
+                        
+                        if calcSEMw:
+                            self.mData.ISEMw[binN] = module.sem_weighted(I_values, weights)
+                    else:
+                        self.mData.I[binN] = module.weighted_mean_sp(I_values, weights)
+                        self.mData.IStd[binN] = module.std_ddof_sp(I_values, weights)
+                        self.mData.ISEM[binN] = module.sem_sp(I_values, weights)
+                        
+                        if calcSEMw:
+                            self.mData.ISEMw[binN] = module.sem_weighted_sp(I_values, weights)
+
+                    if self.preMData.dtypes.ISigma == 'float64':
+                        self.mData.ISigma[binN] = module.sigma(I_sigma, weights)
+                    else: 
+                        self.mData.ISigma[binN] = module.sigma_sp(I_sigma, weights)
+                    self.mData.IEPropagated[binN] = module.propagated_error(self.mData.ISEM[binN], self.mData.ISigma[binN], self.mData.I[binN], self.mergeConfig.eMin)
+
+                    self.mData.Q[binN] = module.weighted_mean(Q_values, weights)
+                    self.mData.QStd[binN] = module.std_ddof(Q_values, weights)
+                    self.mData.QSEM[binN] = module.sem(Q_values, weights)
+                    self.mData.QSigma[binN] = module.propagated_error(self.mData.QSEM[binN], -0.1, self.mData.Q[binN], self.mergeConfig.eMin) # instead of second value which was I sigma in the above call of the func, set to negative
+                    self.mData.Mask[binN] = False
+                else:
+                    logging.info("Slower python rebinnning statistics functions will be used")
+                    # exploit the DescrStatsW package from statsmodels
+                    DSI = DescrStatsW(dfRange.I, weights=dfRange.wt)
+                    DSQ = DescrStatsW(dfRange.Q, weights=dfRange.wt)
+                    self.mData.Q[binN] = DSQ.mean
+                    self.mData.I[binN] = DSI.mean
+                    self.mData.ISigma[binN] = (
+                        np.sqrt(((dfRange.wt * dfRange.ISigma) ** 2).sum())
+                        / dfRange.wt.sum()
+                    )
+                    self.mData.IStd[binN] = DSI.std
+                    # following suggestion regarding V1/V2 from: https://groups.google.com/forum/#!topic/medstats/H4SFKPBDAAM
+                    self.mData.ISEM[binN] = DSI.std * np.sqrt(
+                        (dfRange.wt**2).sum() / (dfRange.wt.sum()) ** 2
+                    )
+                    if calcSEMw:
+                        self.mData.ISEMw[binN] = SEMw(
+                            dfRange.I, dfRange.wt
+                        )  # adds considerable time, and we're not using it at the mo.
+                    self.mData.IEPropagated[binN] = np.max(
+                        [
+                            self.mData.ISEM[binN],
+                            self.mData.ISigma[binN],
+                            DSI.mean * self.mergeConfig.eMin,
+                        ]
+                    )
+                    self.mData.QStd[binN] = DSQ.std
+                    self.mData.QSEM[binN] = DSQ.std * np.sqrt(
+                        (dfRange.wt**2).sum() / (dfRange.wt.sum()) ** 2
+                    )
+                    self.mData.QSigma[binN] = np.max(
+                        [self.mData.QSEM[binN], DSQ.mean * self.mergeConfig.qeMin]
+                    )
+                    self.mData.Mask[binN] = False
             return
 
         # separate:
