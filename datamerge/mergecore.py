@@ -330,7 +330,6 @@ class mergeCore:
                     module = importlib.util.module_from_spec(spec)
                     sys.modules[name] = module
                     spec.loader.exec_module(module)
-                    logging.info("Faster cythonized rebinnning statistics functions will be used")
                     I_values = dfRange.I.values
                     Q_values = dfRange.Q.values
                     I_sigma = dfRange.ISigma.values
@@ -364,7 +363,6 @@ class mergeCore:
                     self.mData.QSigma[binN] = module.propagated_error(self.mData.QSEM[binN], -0.1, self.mData.Q[binN], self.mergeConfig.eMin) # instead of second value which was I sigma in the above call of the func, set to negative
                     self.mData.Mask[binN] = False
                 else:
-                    logging.info("Slower python rebinnning statistics functions will be used")
                     # exploit the DescrStatsW package from statsmodels
                     DSI = DescrStatsW(dfRange.I, weights=dfRange.wt)
                     DSQ = DescrStatsW(dfRange.Q, weights=dfRange.wt)
