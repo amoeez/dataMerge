@@ -5,7 +5,7 @@ Note: still very much in beta. It "works for us", but is built to also work for 
 Datamerge is a command-line tool intended for statistically sound merging and/or (re)binning of input datasets. It is a pretty flexible program that can be used for a few different things:
 
 1. initial binning of 2D data into a 1D curve. 
-2. rebinning a 1D dataset to use fewer points or using a different spacing arrangement between points
+2. rebinning a 1D dataset to use fewer points or using a different spacing arrangement between points (see details for faster execution below)
 3. merging multiple datasets into a single, wide-range dataset. This is great for getting good datapoint statistics. 
 
 It can probably also be run from a Jupyter notebook, but the main intention is to make this part of the standard data processing pipeline. 
@@ -36,6 +36,10 @@ Data can be autoscaled, this helps when one dataset's vertical scaling is more r
 ## Merging
 
 Merging is done on a bin-by-bin basis. By default, the datapoints are weighted by their uncertainty: uncertain datapoints are weighted less heavily than accurate datapoints. This has been described in [our recent paper](https://iopscience.iop.org/article/10.1088/1748-0221/16/06/P06034). Additional uncertainty estimates in both I and Q are determined during the binning procedure, which can be used in subsequent analyses. 
+
+The implementation includes statistical functions for averaging and uncertainty estimation written in cython, to allow faster rebinning. To employ this faster implementation there is a `binstats.pyx` script that needs to be compiled.This is however integrated into the setup.py script available, such that the only requirment to use it, is installed Cython (pip install Cython). Upon installation of a package `binstats.so` instance will be automatically created  (or .pyd on Windows) compartible with your operational system. 
+
+In case you dont want to use the cythonized version, comment out the last line in the `setup.py` script and use functions for merging as is.
 
 ## Output
 
