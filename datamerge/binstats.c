@@ -1379,7 +1379,7 @@ struct __pyx_opt_args_8binstats_std_ddof_sp;
 struct __pyx_opt_args_8binstats_sem;
 struct __pyx_opt_args_8binstats_sem_sp;
 
-/* "binstats.pyx":128
+/* "binstats.pyx":139
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cpdef double var_ddof(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof =0):             # <<<<<<<<<<<<<<
@@ -1391,11 +1391,11 @@ struct __pyx_opt_args_8binstats_var_ddof {
   int ddof;
 };
 
-/* "binstats.pyx":133
+/* "binstats.pyx":144
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
- * cpdef double var_ddof_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof =0):             # <<<<<<<<<<<<<<
- *     return sumsquares_sp(values, weights)/(sum_weights(weights) - ddof)
+ * cpdef double var_ddof_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights, int ddof =0):             # <<<<<<<<<<<<<<
+ *     return sumsquares_sp(values, weights)/(sum_weights_sp(weights) - ddof)
  * 
  */
 struct __pyx_opt_args_8binstats_var_ddof_sp {
@@ -1403,7 +1403,7 @@ struct __pyx_opt_args_8binstats_var_ddof_sp {
   int ddof;
 };
 
-/* "binstats.pyx":138
+/* "binstats.pyx":149
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cpdef double std_ddof(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof =0):             # <<<<<<<<<<<<<<
@@ -1415,10 +1415,10 @@ struct __pyx_opt_args_8binstats_std_ddof {
   int ddof;
 };
 
-/* "binstats.pyx":143
+/* "binstats.pyx":154
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
- * cpdef double std_ddof_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof =0):             # <<<<<<<<<<<<<<
+ * cpdef double std_ddof_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights, int ddof =0):             # <<<<<<<<<<<<<<
  *     return sqrt(var_ddof_sp(values, weights, ddof))
  * 
  */
@@ -1427,7 +1427,7 @@ struct __pyx_opt_args_8binstats_std_ddof_sp {
   int ddof;
 };
 
-/* "binstats.pyx":148
+/* "binstats.pyx":159
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cpdef double sem(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof = 0):             # <<<<<<<<<<<<<<
@@ -1439,11 +1439,11 @@ struct __pyx_opt_args_8binstats_sem {
   int ddof;
 };
 
-/* "binstats.pyx":160
+/* "binstats.pyx":171
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
- * cpdef double sem_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof = 0):             # <<<<<<<<<<<<<<
- *     cdef double weights_sum = sum_weights(weights)
+ * cpdef double sem_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights, int ddof = 0):             # <<<<<<<<<<<<<<
+ *     cdef double weights_sum = sum_weights_sp(weights)
  *     cdef double sum_squared_weights = 0
  */
 struct __pyx_opt_args_8binstats_sem_sp {
@@ -2406,6 +2406,7 @@ static PyObject *indirect_contiguous = 0;
 static int __pyx_memoryview_thread_locks_used;
 static PyThread_type_lock __pyx_memoryview_thread_locks[8];
 static double __pyx_f_8binstats_sum_weights(PyArrayObject *, int __pyx_skip_dispatch); /*proto*/
+static double __pyx_f_8binstats_sum_weights_sp(PyArrayObject *, int __pyx_skip_dispatch); /*proto*/
 static double __pyx_f_8binstats_sum(PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch); /*proto*/
 static double __pyx_f_8binstats_sum_sp(PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch); /*proto*/
 static double __pyx_f_8binstats_weighted_mean(PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch); /*proto*/
@@ -2671,25 +2672,26 @@ static PyObject *__pyx_n_s_update;
 static PyObject *__pyx_n_s_values;
 static PyObject *__pyx_n_s_weights;
 static PyObject *__pyx_pf_8binstats_sum_weights(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_weights); /* proto */
-static PyObject *__pyx_pf_8binstats_2sum(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights); /* proto */
-static PyObject *__pyx_pf_8binstats_4sum_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights); /* proto */
-static PyObject *__pyx_pf_8binstats_6weighted_mean(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights); /* proto */
-static PyObject *__pyx_pf_8binstats_8weighted_mean_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights); /* proto */
-static PyObject *__pyx_pf_8binstats_10demeaned(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights); /* proto */
-static PyObject *__pyx_pf_8binstats_12demeaned_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights); /* proto */
-static PyObject *__pyx_pf_8binstats_14sumsquares(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights); /* proto */
-static PyObject *__pyx_pf_8binstats_16sumsquares_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights); /* proto */
-static PyObject *__pyx_pf_8binstats_18sigma(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_sigma_values, PyArrayObject *__pyx_v_weights); /* proto */
-static PyObject *__pyx_pf_8binstats_20sigma_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_sigma_values, PyArrayObject *__pyx_v_weights); /* proto */
-static PyObject *__pyx_pf_8binstats_22var_ddof(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, int __pyx_v_ddof); /* proto */
-static PyObject *__pyx_pf_8binstats_24var_ddof_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, int __pyx_v_ddof); /* proto */
-static PyObject *__pyx_pf_8binstats_26std_ddof(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, int __pyx_v_ddof); /* proto */
-static PyObject *__pyx_pf_8binstats_28std_ddof_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, int __pyx_v_ddof); /* proto */
-static PyObject *__pyx_pf_8binstats_30sem(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, int __pyx_v_ddof); /* proto */
-static PyObject *__pyx_pf_8binstats_32sem_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, int __pyx_v_ddof); /* proto */
-static PyObject *__pyx_pf_8binstats_34propagated_error(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_sem_value, double __pyx_v_sigma_value, double __pyx_v_mean_value, double __pyx_v_min_multiplier); /* proto */
-static PyObject *__pyx_pf_8binstats_36sem_weighted(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights); /* proto */
-static PyObject *__pyx_pf_8binstats_38sem_weighted_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights); /* proto */
+static PyObject *__pyx_pf_8binstats_2sum_weights_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_weights); /* proto */
+static PyObject *__pyx_pf_8binstats_4sum(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights); /* proto */
+static PyObject *__pyx_pf_8binstats_6sum_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights); /* proto */
+static PyObject *__pyx_pf_8binstats_8weighted_mean(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights); /* proto */
+static PyObject *__pyx_pf_8binstats_10weighted_mean_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights); /* proto */
+static PyObject *__pyx_pf_8binstats_12demeaned(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights); /* proto */
+static PyObject *__pyx_pf_8binstats_14demeaned_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights); /* proto */
+static PyObject *__pyx_pf_8binstats_16sumsquares(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights); /* proto */
+static PyObject *__pyx_pf_8binstats_18sumsquares_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights); /* proto */
+static PyObject *__pyx_pf_8binstats_20sigma(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_sigma_values, PyArrayObject *__pyx_v_weights); /* proto */
+static PyObject *__pyx_pf_8binstats_22sigma_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_sigma_values, PyArrayObject *__pyx_v_weights); /* proto */
+static PyObject *__pyx_pf_8binstats_24var_ddof(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, int __pyx_v_ddof); /* proto */
+static PyObject *__pyx_pf_8binstats_26var_ddof_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, int __pyx_v_ddof); /* proto */
+static PyObject *__pyx_pf_8binstats_28std_ddof(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, int __pyx_v_ddof); /* proto */
+static PyObject *__pyx_pf_8binstats_30std_ddof_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, int __pyx_v_ddof); /* proto */
+static PyObject *__pyx_pf_8binstats_32sem(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, int __pyx_v_ddof); /* proto */
+static PyObject *__pyx_pf_8binstats_34sem_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, int __pyx_v_ddof); /* proto */
+static PyObject *__pyx_pf_8binstats_36propagated_error(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_sem_value, double __pyx_v_sigma_value, double __pyx_v_mean_value, double __pyx_v_min_multiplier); /* proto */
+static PyObject *__pyx_pf_8binstats_38sem_weighted(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights); /* proto */
+static PyObject *__pyx_pf_8binstats_40sem_weighted_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array___cinit__(struct __pyx_array_obj *__pyx_v_self, PyObject *__pyx_v_shape, Py_ssize_t __pyx_v_itemsize, PyObject *__pyx_v_format, PyObject *__pyx_v_mode, int __pyx_v_allocate_buffer); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array_2__getbuffer__(struct __pyx_array_obj *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_array___pyx_pf_15View_dot_MemoryView_5array_4__dealloc__(struct __pyx_array_obj *__pyx_v_self); /* proto */
@@ -2970,12 +2972,207 @@ static PyObject *__pyx_pf_8binstats_sum_weights(CYTHON_UNUSED PyObject *__pyx_se
 /* "binstats.pyx":25
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
+ * cpdef double sum_weights_sp(np.ndarray[float, ndim=1] weights):             # <<<<<<<<<<<<<<
+ *     cdef double sum_weights = 0
+ *     cdef Py_ssize_t i
+ */
+
+static PyObject *__pyx_pw_8binstats_3sum_weights_sp(PyObject *__pyx_self, PyObject *__pyx_v_weights); /*proto*/
+static double __pyx_f_8binstats_sum_weights_sp(PyArrayObject *__pyx_v_weights, CYTHON_UNUSED int __pyx_skip_dispatch) {
+  double __pyx_v_sum_weights;
+  Py_ssize_t __pyx_v_i;
+  Py_ssize_t __pyx_v_N;
+  __Pyx_memviewslice __pyx_v_view_w = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_LocalBuf_ND __pyx_pybuffernd_weights;
+  __Pyx_Buffer __pyx_pybuffer_weights;
+  double __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_memviewslice __pyx_t_1 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  Py_ssize_t __pyx_t_2;
+  Py_ssize_t __pyx_t_3;
+  Py_ssize_t __pyx_t_4;
+  Py_ssize_t __pyx_t_5;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("sum_weights_sp", 0);
+  __pyx_pybuffer_weights.pybuffer.buf = NULL;
+  __pyx_pybuffer_weights.refcount = 0;
+  __pyx_pybuffernd_weights.data = NULL;
+  __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
+  {
+    __Pyx_BufFmt_StackElem __pyx_stack[1];
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 25, __pyx_L1_error)
+  }
+  __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
+
+  /* "binstats.pyx":26
+ * @cython.wraparound(False)
+ * cpdef double sum_weights_sp(np.ndarray[float, ndim=1] weights):
+ *     cdef double sum_weights = 0             # <<<<<<<<<<<<<<
+ *     cdef Py_ssize_t i
+ *     cdef Py_ssize_t N = weights.shape[0]
+ */
+  __pyx_v_sum_weights = 0.0;
+
+  /* "binstats.pyx":28
+ *     cdef double sum_weights = 0
+ *     cdef Py_ssize_t i
+ *     cdef Py_ssize_t N = weights.shape[0]             # <<<<<<<<<<<<<<
+ *     cdef float[::1] view_w = weights
+ *     for i in range(N):
+ */
+  __pyx_v_N = (__pyx_v_weights->dimensions[0]);
+
+  /* "binstats.pyx":29
+ *     cdef Py_ssize_t i
+ *     cdef Py_ssize_t N = weights.shape[0]
+ *     cdef float[::1] view_w = weights             # <<<<<<<<<<<<<<
+ *     for i in range(N):
+ *         sum_weights += view_w[i]
+ */
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_float(((PyObject *)__pyx_v_weights), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 29, __pyx_L1_error)
+  __pyx_v_view_w = __pyx_t_1;
+  __pyx_t_1.memview = NULL;
+  __pyx_t_1.data = NULL;
+
+  /* "binstats.pyx":30
+ *     cdef Py_ssize_t N = weights.shape[0]
+ *     cdef float[::1] view_w = weights
+ *     for i in range(N):             # <<<<<<<<<<<<<<
+ *         sum_weights += view_w[i]
+ *     return sum_weights
+ */
+  __pyx_t_2 = __pyx_v_N;
+  __pyx_t_3 = __pyx_t_2;
+  for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
+    __pyx_v_i = __pyx_t_4;
+
+    /* "binstats.pyx":31
+ *     cdef float[::1] view_w = weights
+ *     for i in range(N):
+ *         sum_weights += view_w[i]             # <<<<<<<<<<<<<<
+ *     return sum_weights
+ * 
+ */
+    __pyx_t_5 = __pyx_v_i;
+    __pyx_v_sum_weights = (__pyx_v_sum_weights + (*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_w.data) + __pyx_t_5)) ))));
+  }
+
+  /* "binstats.pyx":32
+ *     for i in range(N):
+ *         sum_weights += view_w[i]
+ *     return sum_weights             # <<<<<<<<<<<<<<
+ * 
+ * @cython.boundscheck(False)
+ */
+  __pyx_r = __pyx_v_sum_weights;
+  goto __pyx_L0;
+
+  /* "binstats.pyx":25
+ * @cython.boundscheck(False)
+ * @cython.wraparound(False)
+ * cpdef double sum_weights_sp(np.ndarray[float, ndim=1] weights):             # <<<<<<<<<<<<<<
+ *     cdef double sum_weights = 0
+ *     cdef Py_ssize_t i
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __PYX_XDEC_MEMVIEW(&__pyx_t_1, 1);
+  { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
+    __Pyx_PyThreadState_declare
+    __Pyx_PyThreadState_assign
+    __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
+    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_weights.rcbuffer->pybuffer);
+  __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
+  __Pyx_WriteUnraisable("binstats.sum_weights_sp", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __pyx_r = 0;
+  goto __pyx_L2;
+  __pyx_L0:;
+  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_weights.rcbuffer->pybuffer);
+  __pyx_L2:;
+  __PYX_XDEC_MEMVIEW(&__pyx_v_view_w, 1);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_8binstats_3sum_weights_sp(PyObject *__pyx_self, PyObject *__pyx_v_weights); /*proto*/
+static PyObject *__pyx_pw_8binstats_3sum_weights_sp(PyObject *__pyx_self, PyObject *__pyx_v_weights) {
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("sum_weights_sp (wrapper)", 0);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 25, __pyx_L1_error)
+  __pyx_r = __pyx_pf_8binstats_2sum_weights_sp(__pyx_self, ((PyArrayObject *)__pyx_v_weights));
+
+  /* function exit code */
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_8binstats_2sum_weights_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_weights) {
+  __Pyx_LocalBuf_ND __pyx_pybuffernd_weights;
+  __Pyx_Buffer __pyx_pybuffer_weights;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("sum_weights_sp", 0);
+  __pyx_pybuffer_weights.pybuffer.buf = NULL;
+  __pyx_pybuffer_weights.refcount = 0;
+  __pyx_pybuffernd_weights.data = NULL;
+  __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
+  {
+    __Pyx_BufFmt_StackElem __pyx_stack[1];
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 25, __pyx_L1_error)
+  }
+  __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_8binstats_sum_weights_sp(__pyx_v_weights, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
+    __Pyx_PyThreadState_declare
+    __Pyx_PyThreadState_assign
+    __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
+    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_weights.rcbuffer->pybuffer);
+  __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
+  __Pyx_AddTraceback("binstats.sum_weights_sp", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  goto __pyx_L2;
+  __pyx_L0:;
+  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_weights.rcbuffer->pybuffer);
+  __pyx_L2:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "binstats.pyx":36
+ * @cython.boundscheck(False)
+ * @cython.wraparound(False)
  * cpdef double sum(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights):             # <<<<<<<<<<<<<<
  *     cdef double sum = 0
  *     cdef Py_ssize_t i
  */
 
-static PyObject *__pyx_pw_8binstats_3sum(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_5sum(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static double __pyx_f_8binstats_sum(PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, CYTHON_UNUSED int __pyx_skip_dispatch) {
   double __pyx_v_sum;
   Py_ssize_t __pyx_v_i;
@@ -3008,16 +3205,16 @@ static double __pyx_f_8binstats_sum(PyArrayObject *__pyx_v_values, PyArrayObject
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 25, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 36, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 25, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 36, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
 
-  /* "binstats.pyx":26
+  /* "binstats.pyx":37
  * @cython.wraparound(False)
  * cpdef double sum(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights):
  *     cdef double sum = 0             # <<<<<<<<<<<<<<
@@ -3026,7 +3223,7 @@ static double __pyx_f_8binstats_sum(PyArrayObject *__pyx_v_values, PyArrayObject
  */
   __pyx_v_sum = 0.0;
 
-  /* "binstats.pyx":28
+  /* "binstats.pyx":39
  *     cdef double sum = 0
  *     cdef Py_ssize_t i
  *     cdef Py_ssize_t N = weights.shape[0]             # <<<<<<<<<<<<<<
@@ -3035,31 +3232,31 @@ static double __pyx_f_8binstats_sum(PyArrayObject *__pyx_v_values, PyArrayObject
  */
   __pyx_v_N = (__pyx_v_weights->dimensions[0]);
 
-  /* "binstats.pyx":29
+  /* "binstats.pyx":40
  *     cdef Py_ssize_t i
  *     cdef Py_ssize_t N = weights.shape[0]
  *     cdef double[::1] view_v = values             # <<<<<<<<<<<<<<
  *     cdef double[::1] view_w = weights
  *     for i in range(N):
  */
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(((PyObject *)__pyx_v_values), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 29, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(((PyObject *)__pyx_v_values), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 40, __pyx_L1_error)
   __pyx_v_view_v = __pyx_t_1;
   __pyx_t_1.memview = NULL;
   __pyx_t_1.data = NULL;
 
-  /* "binstats.pyx":30
+  /* "binstats.pyx":41
  *     cdef Py_ssize_t N = weights.shape[0]
  *     cdef double[::1] view_v = values
  *     cdef double[::1] view_w = weights             # <<<<<<<<<<<<<<
  *     for i in range(N):
  *         sum += view_v[i]* view_w[i]
  */
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(((PyObject *)__pyx_v_weights), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 30, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(((PyObject *)__pyx_v_weights), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 41, __pyx_L1_error)
   __pyx_v_view_w = __pyx_t_1;
   __pyx_t_1.memview = NULL;
   __pyx_t_1.data = NULL;
 
-  /* "binstats.pyx":31
+  /* "binstats.pyx":42
  *     cdef double[::1] view_v = values
  *     cdef double[::1] view_w = weights
  *     for i in range(N):             # <<<<<<<<<<<<<<
@@ -3071,7 +3268,7 @@ static double __pyx_f_8binstats_sum(PyArrayObject *__pyx_v_values, PyArrayObject
   for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
     __pyx_v_i = __pyx_t_4;
 
-    /* "binstats.pyx":32
+    /* "binstats.pyx":43
  *     cdef double[::1] view_w = weights
  *     for i in range(N):
  *         sum += view_v[i]* view_w[i]             # <<<<<<<<<<<<<<
@@ -3083,7 +3280,7 @@ static double __pyx_f_8binstats_sum(PyArrayObject *__pyx_v_values, PyArrayObject
     __pyx_v_sum = (__pyx_v_sum + ((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_v.data) + __pyx_t_5)) ))) * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_6)) )))));
   }
 
-  /* "binstats.pyx":33
+  /* "binstats.pyx":44
  *     for i in range(N):
  *         sum += view_v[i]* view_w[i]
  *     return sum             # <<<<<<<<<<<<<<
@@ -3093,7 +3290,7 @@ static double __pyx_f_8binstats_sum(PyArrayObject *__pyx_v_values, PyArrayObject
   __pyx_r = __pyx_v_sum;
   goto __pyx_L0;
 
-  /* "binstats.pyx":25
+  /* "binstats.pyx":36
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cpdef double sum(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights):             # <<<<<<<<<<<<<<
@@ -3125,8 +3322,8 @@ static double __pyx_f_8binstats_sum(PyArrayObject *__pyx_v_values, PyArrayObject
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8binstats_3sum(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_8binstats_3sum(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8binstats_5sum(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_5sum(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_values = 0;
   PyArrayObject *__pyx_v_weights = 0;
   int __pyx_lineno = 0;
@@ -3158,11 +3355,11 @@ static PyObject *__pyx_pw_8binstats_3sum(PyObject *__pyx_self, PyObject *__pyx_a
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_weights)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("sum", 1, 2, 2, 1); __PYX_ERR(0, 25, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("sum", 1, 2, 2, 1); __PYX_ERR(0, 36, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "sum") < 0)) __PYX_ERR(0, 25, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "sum") < 0)) __PYX_ERR(0, 36, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -3175,15 +3372,15 @@ static PyObject *__pyx_pw_8binstats_3sum(PyObject *__pyx_self, PyObject *__pyx_a
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("sum", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 25, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("sum", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 36, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("binstats.sum", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 25, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 25, __pyx_L1_error)
-  __pyx_r = __pyx_pf_8binstats_2sum(__pyx_self, __pyx_v_values, __pyx_v_weights);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 36, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 36, __pyx_L1_error)
+  __pyx_r = __pyx_pf_8binstats_4sum(__pyx_self, __pyx_v_values, __pyx_v_weights);
 
   /* function exit code */
   goto __pyx_L0;
@@ -3194,7 +3391,7 @@ static PyObject *__pyx_pw_8binstats_3sum(PyObject *__pyx_self, PyObject *__pyx_a
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8binstats_2sum(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights) {
+static PyObject *__pyx_pf_8binstats_4sum(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_values;
   __Pyx_Buffer __pyx_pybuffer_values;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_weights;
@@ -3216,16 +3413,16 @@ static PyObject *__pyx_pf_8binstats_2sum(CYTHON_UNUSED PyObject *__pyx_self, PyA
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 25, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 36, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 25, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 36, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_8binstats_sum(__pyx_v_values, __pyx_v_weights, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_8binstats_sum(__pyx_v_values, __pyx_v_weights, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 36, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3253,15 +3450,15 @@ static PyObject *__pyx_pf_8binstats_2sum(CYTHON_UNUSED PyObject *__pyx_self, PyA
   return __pyx_r;
 }
 
-/* "binstats.pyx":37
+/* "binstats.pyx":48
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
- * cpdef double sum_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights):             # <<<<<<<<<<<<<<
+ * cpdef double sum_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights):             # <<<<<<<<<<<<<<
  *     cdef double sum = 0
  *     cdef Py_ssize_t i
  */
 
-static PyObject *__pyx_pw_8binstats_5sum_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_7sum_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static double __pyx_f_8binstats_sum_sp(PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, CYTHON_UNUSED int __pyx_skip_dispatch) {
   double __pyx_v_sum;
   Py_ssize_t __pyx_v_i;
@@ -3275,12 +3472,11 @@ static double __pyx_f_8binstats_sum_sp(PyArrayObject *__pyx_v_values, PyArrayObj
   double __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_memviewslice __pyx_t_1 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  __Pyx_memviewslice __pyx_t_2 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  Py_ssize_t __pyx_t_2;
   Py_ssize_t __pyx_t_3;
   Py_ssize_t __pyx_t_4;
   Py_ssize_t __pyx_t_5;
   Py_ssize_t __pyx_t_6;
-  Py_ssize_t __pyx_t_7;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -3295,82 +3491,82 @@ static double __pyx_f_8binstats_sum_sp(PyArrayObject *__pyx_v_values, PyArrayObj
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 37, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 48, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 37, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 48, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
 
-  /* "binstats.pyx":38
+  /* "binstats.pyx":49
  * @cython.wraparound(False)
- * cpdef double sum_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights):
+ * cpdef double sum_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights):
  *     cdef double sum = 0             # <<<<<<<<<<<<<<
  *     cdef Py_ssize_t i
  *     cdef Py_ssize_t N = weights.shape[0]
  */
   __pyx_v_sum = 0.0;
 
-  /* "binstats.pyx":40
+  /* "binstats.pyx":51
  *     cdef double sum = 0
  *     cdef Py_ssize_t i
  *     cdef Py_ssize_t N = weights.shape[0]             # <<<<<<<<<<<<<<
  *     cdef float[::1] view_v = values
- *     cdef double[::1] view_w = weights
+ *     cdef float[::1] view_w = weights
  */
   __pyx_v_N = (__pyx_v_weights->dimensions[0]);
 
-  /* "binstats.pyx":41
+  /* "binstats.pyx":52
  *     cdef Py_ssize_t i
  *     cdef Py_ssize_t N = weights.shape[0]
  *     cdef float[::1] view_v = values             # <<<<<<<<<<<<<<
- *     cdef double[::1] view_w = weights
+ *     cdef float[::1] view_w = weights
  *     for i in range(N):
  */
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_float(((PyObject *)__pyx_v_values), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 41, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_float(((PyObject *)__pyx_v_values), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 52, __pyx_L1_error)
   __pyx_v_view_v = __pyx_t_1;
   __pyx_t_1.memview = NULL;
   __pyx_t_1.data = NULL;
 
-  /* "binstats.pyx":42
+  /* "binstats.pyx":53
  *     cdef Py_ssize_t N = weights.shape[0]
  *     cdef float[::1] view_v = values
- *     cdef double[::1] view_w = weights             # <<<<<<<<<<<<<<
+ *     cdef float[::1] view_w = weights             # <<<<<<<<<<<<<<
  *     for i in range(N):
  *         sum += view_v[i]* view_w[i]
  */
-  __pyx_t_2 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(((PyObject *)__pyx_v_weights), PyBUF_WRITABLE); if (unlikely(!__pyx_t_2.memview)) __PYX_ERR(0, 42, __pyx_L1_error)
-  __pyx_v_view_w = __pyx_t_2;
-  __pyx_t_2.memview = NULL;
-  __pyx_t_2.data = NULL;
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_float(((PyObject *)__pyx_v_weights), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_v_view_w = __pyx_t_1;
+  __pyx_t_1.memview = NULL;
+  __pyx_t_1.data = NULL;
 
-  /* "binstats.pyx":43
+  /* "binstats.pyx":54
  *     cdef float[::1] view_v = values
- *     cdef double[::1] view_w = weights
+ *     cdef float[::1] view_w = weights
  *     for i in range(N):             # <<<<<<<<<<<<<<
  *         sum += view_v[i]* view_w[i]
  *     return sum
  */
-  __pyx_t_3 = __pyx_v_N;
-  __pyx_t_4 = __pyx_t_3;
-  for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
-    __pyx_v_i = __pyx_t_5;
+  __pyx_t_2 = __pyx_v_N;
+  __pyx_t_3 = __pyx_t_2;
+  for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
+    __pyx_v_i = __pyx_t_4;
 
-    /* "binstats.pyx":44
- *     cdef double[::1] view_w = weights
+    /* "binstats.pyx":55
+ *     cdef float[::1] view_w = weights
  *     for i in range(N):
  *         sum += view_v[i]* view_w[i]             # <<<<<<<<<<<<<<
  *     return sum
  * 
  */
+    __pyx_t_5 = __pyx_v_i;
     __pyx_t_6 = __pyx_v_i;
-    __pyx_t_7 = __pyx_v_i;
-    __pyx_v_sum = (__pyx_v_sum + ((*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_v.data) + __pyx_t_6)) ))) * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_7)) )))));
+    __pyx_v_sum = (__pyx_v_sum + ((*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_v.data) + __pyx_t_5)) ))) * (*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_w.data) + __pyx_t_6)) )))));
   }
 
-  /* "binstats.pyx":45
+  /* "binstats.pyx":56
  *     for i in range(N):
  *         sum += view_v[i]* view_w[i]
  *     return sum             # <<<<<<<<<<<<<<
@@ -3380,10 +3576,10 @@ static double __pyx_f_8binstats_sum_sp(PyArrayObject *__pyx_v_values, PyArrayObj
   __pyx_r = __pyx_v_sum;
   goto __pyx_L0;
 
-  /* "binstats.pyx":37
+  /* "binstats.pyx":48
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
- * cpdef double sum_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights):             # <<<<<<<<<<<<<<
+ * cpdef double sum_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights):             # <<<<<<<<<<<<<<
  *     cdef double sum = 0
  *     cdef Py_ssize_t i
  */
@@ -3391,7 +3587,6 @@ static double __pyx_f_8binstats_sum_sp(PyArrayObject *__pyx_v_values, PyArrayObj
   /* function exit code */
   __pyx_L1_error:;
   __PYX_XDEC_MEMVIEW(&__pyx_t_1, 1);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_2, 1);
   { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
     __Pyx_PyThreadState_declare
     __Pyx_PyThreadState_assign
@@ -3413,8 +3608,8 @@ static double __pyx_f_8binstats_sum_sp(PyArrayObject *__pyx_v_values, PyArrayObj
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8binstats_5sum_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_8binstats_5sum_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8binstats_7sum_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_7sum_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_values = 0;
   PyArrayObject *__pyx_v_weights = 0;
   int __pyx_lineno = 0;
@@ -3446,11 +3641,11 @@ static PyObject *__pyx_pw_8binstats_5sum_sp(PyObject *__pyx_self, PyObject *__py
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_weights)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("sum_sp", 1, 2, 2, 1); __PYX_ERR(0, 37, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("sum_sp", 1, 2, 2, 1); __PYX_ERR(0, 48, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "sum_sp") < 0)) __PYX_ERR(0, 37, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "sum_sp") < 0)) __PYX_ERR(0, 48, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -3463,15 +3658,15 @@ static PyObject *__pyx_pw_8binstats_5sum_sp(PyObject *__pyx_self, PyObject *__py
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("sum_sp", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 37, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("sum_sp", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 48, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("binstats.sum_sp", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 37, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 37, __pyx_L1_error)
-  __pyx_r = __pyx_pf_8binstats_4sum_sp(__pyx_self, __pyx_v_values, __pyx_v_weights);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 48, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 48, __pyx_L1_error)
+  __pyx_r = __pyx_pf_8binstats_6sum_sp(__pyx_self, __pyx_v_values, __pyx_v_weights);
 
   /* function exit code */
   goto __pyx_L0;
@@ -3482,7 +3677,7 @@ static PyObject *__pyx_pw_8binstats_5sum_sp(PyObject *__pyx_self, PyObject *__py
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8binstats_4sum_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights) {
+static PyObject *__pyx_pf_8binstats_6sum_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_values;
   __Pyx_Buffer __pyx_pybuffer_values;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_weights;
@@ -3504,16 +3699,16 @@ static PyObject *__pyx_pf_8binstats_4sum_sp(CYTHON_UNUSED PyObject *__pyx_self, 
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 37, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 48, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 37, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 48, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_8binstats_sum_sp(__pyx_v_values, __pyx_v_weights, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 37, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_8binstats_sum_sp(__pyx_v_values, __pyx_v_weights, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 48, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3541,7 +3736,7 @@ static PyObject *__pyx_pf_8binstats_4sum_sp(CYTHON_UNUSED PyObject *__pyx_self, 
   return __pyx_r;
 }
 
-/* "binstats.pyx":49
+/* "binstats.pyx":60
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cpdef double weighted_mean(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights):             # <<<<<<<<<<<<<<
@@ -3549,7 +3744,7 @@ static PyObject *__pyx_pf_8binstats_4sum_sp(CYTHON_UNUSED PyObject *__pyx_self, 
  * 
  */
 
-static PyObject *__pyx_pw_8binstats_7weighted_mean(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_9weighted_mean(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static double __pyx_f_8binstats_weighted_mean(PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, CYTHON_UNUSED int __pyx_skip_dispatch) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_values;
   __Pyx_Buffer __pyx_pybuffer_values;
@@ -3573,16 +3768,16 @@ static double __pyx_f_8binstats_weighted_mean(PyArrayObject *__pyx_v_values, PyA
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 49, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 60, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 49, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 60, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
 
-  /* "binstats.pyx":50
+  /* "binstats.pyx":61
  * @cython.wraparound(False)
  * cpdef double weighted_mean(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights):
  *     return sum(values, weights) / sum_weights(weights)             # <<<<<<<<<<<<<<
@@ -3593,12 +3788,12 @@ static double __pyx_f_8binstats_weighted_mean(PyArrayObject *__pyx_v_values, PyA
   __pyx_t_2 = __pyx_f_8binstats_sum_weights(((PyArrayObject *)__pyx_v_weights), 0);
   if (unlikely(__pyx_t_2 == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-    __PYX_ERR(0, 50, __pyx_L1_error)
+    __PYX_ERR(0, 61, __pyx_L1_error)
   }
   __pyx_r = (__pyx_t_1 / __pyx_t_2);
   goto __pyx_L0;
 
-  /* "binstats.pyx":49
+  /* "binstats.pyx":60
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cpdef double weighted_mean(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights):             # <<<<<<<<<<<<<<
@@ -3627,8 +3822,8 @@ static double __pyx_f_8binstats_weighted_mean(PyArrayObject *__pyx_v_values, PyA
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8binstats_7weighted_mean(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_8binstats_7weighted_mean(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8binstats_9weighted_mean(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_9weighted_mean(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_values = 0;
   PyArrayObject *__pyx_v_weights = 0;
   int __pyx_lineno = 0;
@@ -3660,11 +3855,11 @@ static PyObject *__pyx_pw_8binstats_7weighted_mean(PyObject *__pyx_self, PyObjec
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_weights)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("weighted_mean", 1, 2, 2, 1); __PYX_ERR(0, 49, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("weighted_mean", 1, 2, 2, 1); __PYX_ERR(0, 60, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "weighted_mean") < 0)) __PYX_ERR(0, 49, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "weighted_mean") < 0)) __PYX_ERR(0, 60, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -3677,15 +3872,15 @@ static PyObject *__pyx_pw_8binstats_7weighted_mean(PyObject *__pyx_self, PyObjec
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("weighted_mean", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 49, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("weighted_mean", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 60, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("binstats.weighted_mean", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 49, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 49, __pyx_L1_error)
-  __pyx_r = __pyx_pf_8binstats_6weighted_mean(__pyx_self, __pyx_v_values, __pyx_v_weights);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 60, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_r = __pyx_pf_8binstats_8weighted_mean(__pyx_self, __pyx_v_values, __pyx_v_weights);
 
   /* function exit code */
   goto __pyx_L0;
@@ -3696,7 +3891,7 @@ static PyObject *__pyx_pw_8binstats_7weighted_mean(PyObject *__pyx_self, PyObjec
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8binstats_6weighted_mean(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights) {
+static PyObject *__pyx_pf_8binstats_8weighted_mean(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_values;
   __Pyx_Buffer __pyx_pybuffer_values;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_weights;
@@ -3718,16 +3913,16 @@ static PyObject *__pyx_pf_8binstats_6weighted_mean(CYTHON_UNUSED PyObject *__pyx
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 49, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 60, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 49, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 60, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_8binstats_weighted_mean(__pyx_v_values, __pyx_v_weights, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 49, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_8binstats_weighted_mean(__pyx_v_values, __pyx_v_weights, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3755,15 +3950,15 @@ static PyObject *__pyx_pf_8binstats_6weighted_mean(CYTHON_UNUSED PyObject *__pyx
   return __pyx_r;
 }
 
-/* "binstats.pyx":54
+/* "binstats.pyx":65
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
- * cpdef double weighted_mean_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights):             # <<<<<<<<<<<<<<
- *     return sum_sp(values, weights) / sum_weights(weights)
+ * cpdef double weighted_mean_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights):             # <<<<<<<<<<<<<<
+ *     return sum_sp(values, weights) / sum_weights_sp(weights)
  * 
  */
 
-static PyObject *__pyx_pw_8binstats_9weighted_mean_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_11weighted_mean_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static double __pyx_f_8binstats_weighted_mean_sp(PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, CYTHON_UNUSED int __pyx_skip_dispatch) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_values;
   __Pyx_Buffer __pyx_pybuffer_values;
@@ -3787,36 +3982,36 @@ static double __pyx_f_8binstats_weighted_mean_sp(PyArrayObject *__pyx_v_values, 
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 54, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 65, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 54, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 65, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
 
-  /* "binstats.pyx":55
+  /* "binstats.pyx":66
  * @cython.wraparound(False)
- * cpdef double weighted_mean_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights):
- *     return sum_sp(values, weights) / sum_weights(weights)             # <<<<<<<<<<<<<<
+ * cpdef double weighted_mean_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights):
+ *     return sum_sp(values, weights) / sum_weights_sp(weights)             # <<<<<<<<<<<<<<
  * 
  * @cython.boundscheck(False)
  */
   __pyx_t_1 = __pyx_f_8binstats_sum_sp(((PyArrayObject *)__pyx_v_values), ((PyArrayObject *)__pyx_v_weights), 0);
-  __pyx_t_2 = __pyx_f_8binstats_sum_weights(((PyArrayObject *)__pyx_v_weights), 0);
+  __pyx_t_2 = __pyx_f_8binstats_sum_weights_sp(((PyArrayObject *)__pyx_v_weights), 0);
   if (unlikely(__pyx_t_2 == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-    __PYX_ERR(0, 55, __pyx_L1_error)
+    __PYX_ERR(0, 66, __pyx_L1_error)
   }
   __pyx_r = (__pyx_t_1 / __pyx_t_2);
   goto __pyx_L0;
 
-  /* "binstats.pyx":54
+  /* "binstats.pyx":65
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
- * cpdef double weighted_mean_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights):             # <<<<<<<<<<<<<<
- *     return sum_sp(values, weights) / sum_weights(weights)
+ * cpdef double weighted_mean_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights):             # <<<<<<<<<<<<<<
+ *     return sum_sp(values, weights) / sum_weights_sp(weights)
  * 
  */
 
@@ -3841,8 +4036,8 @@ static double __pyx_f_8binstats_weighted_mean_sp(PyArrayObject *__pyx_v_values, 
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8binstats_9weighted_mean_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_8binstats_9weighted_mean_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8binstats_11weighted_mean_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_11weighted_mean_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_values = 0;
   PyArrayObject *__pyx_v_weights = 0;
   int __pyx_lineno = 0;
@@ -3874,11 +4069,11 @@ static PyObject *__pyx_pw_8binstats_9weighted_mean_sp(PyObject *__pyx_self, PyOb
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_weights)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("weighted_mean_sp", 1, 2, 2, 1); __PYX_ERR(0, 54, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("weighted_mean_sp", 1, 2, 2, 1); __PYX_ERR(0, 65, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "weighted_mean_sp") < 0)) __PYX_ERR(0, 54, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "weighted_mean_sp") < 0)) __PYX_ERR(0, 65, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -3891,15 +4086,15 @@ static PyObject *__pyx_pw_8binstats_9weighted_mean_sp(PyObject *__pyx_self, PyOb
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("weighted_mean_sp", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 54, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("weighted_mean_sp", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 65, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("binstats.weighted_mean_sp", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 54, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 54, __pyx_L1_error)
-  __pyx_r = __pyx_pf_8binstats_8weighted_mean_sp(__pyx_self, __pyx_v_values, __pyx_v_weights);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 65, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 65, __pyx_L1_error)
+  __pyx_r = __pyx_pf_8binstats_10weighted_mean_sp(__pyx_self, __pyx_v_values, __pyx_v_weights);
 
   /* function exit code */
   goto __pyx_L0;
@@ -3910,7 +4105,7 @@ static PyObject *__pyx_pw_8binstats_9weighted_mean_sp(PyObject *__pyx_self, PyOb
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8binstats_8weighted_mean_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights) {
+static PyObject *__pyx_pf_8binstats_10weighted_mean_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_values;
   __Pyx_Buffer __pyx_pybuffer_values;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_weights;
@@ -3932,16 +4127,16 @@ static PyObject *__pyx_pf_8binstats_8weighted_mean_sp(CYTHON_UNUSED PyObject *__
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 54, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 65, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 54, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 65, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_8binstats_weighted_mean_sp(__pyx_v_values, __pyx_v_weights, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 54, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_8binstats_weighted_mean_sp(__pyx_v_values, __pyx_v_weights, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3969,7 +4164,7 @@ static PyObject *__pyx_pf_8binstats_8weighted_mean_sp(CYTHON_UNUSED PyObject *__
   return __pyx_r;
 }
 
-/* "binstats.pyx":59
+/* "binstats.pyx":70
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cpdef double[::1] demeaned(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights):             # <<<<<<<<<<<<<<
@@ -3977,7 +4172,7 @@ static PyObject *__pyx_pf_8binstats_8weighted_mean_sp(CYTHON_UNUSED PyObject *__
  *     cdef Py_ssize_t N = weights.shape[0]
  */
 
-static PyObject *__pyx_pw_8binstats_11demeaned(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_13demeaned(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static __Pyx_memviewslice __pyx_f_8binstats_demeaned(PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, CYTHON_UNUSED int __pyx_skip_dispatch) {
   double __pyx_v_w_mean;
   Py_ssize_t __pyx_v_N;
@@ -4009,16 +4204,16 @@ static __Pyx_memviewslice __pyx_f_8binstats_demeaned(PyArrayObject *__pyx_v_valu
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 59, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 70, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 59, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 70, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
 
-  /* "binstats.pyx":60
+  /* "binstats.pyx":71
  * @cython.wraparound(False)
  * cpdef double[::1] demeaned(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights):
  *     cdef double w_mean = weighted_mean(values, weights)             # <<<<<<<<<<<<<<
@@ -4027,7 +4222,7 @@ static __Pyx_memviewslice __pyx_f_8binstats_demeaned(PyArrayObject *__pyx_v_valu
  */
   __pyx_v_w_mean = __pyx_f_8binstats_weighted_mean(((PyArrayObject *)__pyx_v_values), ((PyArrayObject *)__pyx_v_weights), 0);
 
-  /* "binstats.pyx":61
+  /* "binstats.pyx":72
  * cpdef double[::1] demeaned(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights):
  *     cdef double w_mean = weighted_mean(values, weights)
  *     cdef Py_ssize_t N = weights.shape[0]             # <<<<<<<<<<<<<<
@@ -4036,19 +4231,19 @@ static __Pyx_memviewslice __pyx_f_8binstats_demeaned(PyArrayObject *__pyx_v_valu
  */
   __pyx_v_N = (__pyx_v_weights->dimensions[0]);
 
-  /* "binstats.pyx":62
+  /* "binstats.pyx":73
  *     cdef double w_mean = weighted_mean(values, weights)
  *     cdef Py_ssize_t N = weights.shape[0]
  *     cdef double[::1] view_v = values             # <<<<<<<<<<<<<<
  *     for i in range(N):
  *         view_v[i] =  view_v[i] - w_mean
  */
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(((PyObject *)__pyx_v_values), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(((PyObject *)__pyx_v_values), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 73, __pyx_L1_error)
   __pyx_v_view_v = __pyx_t_1;
   __pyx_t_1.memview = NULL;
   __pyx_t_1.data = NULL;
 
-  /* "binstats.pyx":63
+  /* "binstats.pyx":74
  *     cdef Py_ssize_t N = weights.shape[0]
  *     cdef double[::1] view_v = values
  *     for i in range(N):             # <<<<<<<<<<<<<<
@@ -4060,7 +4255,7 @@ static __Pyx_memviewslice __pyx_f_8binstats_demeaned(PyArrayObject *__pyx_v_valu
   for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
     __pyx_v_i = __pyx_t_4;
 
-    /* "binstats.pyx":64
+    /* "binstats.pyx":75
  *     cdef double[::1] view_v = values
  *     for i in range(N):
  *         view_v[i] =  view_v[i] - w_mean             # <<<<<<<<<<<<<<
@@ -4072,20 +4267,20 @@ static __Pyx_memviewslice __pyx_f_8binstats_demeaned(PyArrayObject *__pyx_v_valu
     *((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_v.data) + __pyx_t_6)) )) = ((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_v.data) + __pyx_t_5)) ))) - __pyx_v_w_mean);
   }
 
-  /* "binstats.pyx":65
+  /* "binstats.pyx":76
  *     for i in range(N):
  *         view_v[i] =  view_v[i] - w_mean
  *     return values             # <<<<<<<<<<<<<<
  * 
  * @cython.boundscheck(False)
  */
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(((PyObject *)__pyx_v_values), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(((PyObject *)__pyx_v_values), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 76, __pyx_L1_error)
   __pyx_r = __pyx_t_1;
   __pyx_t_1.memview = NULL;
   __pyx_t_1.data = NULL;
   goto __pyx_L0;
 
-  /* "binstats.pyx":59
+  /* "binstats.pyx":70
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cpdef double[::1] demeaned(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights):             # <<<<<<<<<<<<<<
@@ -4120,8 +4315,8 @@ static __Pyx_memviewslice __pyx_f_8binstats_demeaned(PyArrayObject *__pyx_v_valu
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8binstats_11demeaned(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_8binstats_11demeaned(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8binstats_13demeaned(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_13demeaned(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_values = 0;
   PyArrayObject *__pyx_v_weights = 0;
   int __pyx_lineno = 0;
@@ -4153,11 +4348,11 @@ static PyObject *__pyx_pw_8binstats_11demeaned(PyObject *__pyx_self, PyObject *_
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_weights)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("demeaned", 1, 2, 2, 1); __PYX_ERR(0, 59, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("demeaned", 1, 2, 2, 1); __PYX_ERR(0, 70, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "demeaned") < 0)) __PYX_ERR(0, 59, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "demeaned") < 0)) __PYX_ERR(0, 70, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -4170,15 +4365,15 @@ static PyObject *__pyx_pw_8binstats_11demeaned(PyObject *__pyx_self, PyObject *_
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("demeaned", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 59, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("demeaned", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 70, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("binstats.demeaned", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 59, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 59, __pyx_L1_error)
-  __pyx_r = __pyx_pf_8binstats_10demeaned(__pyx_self, __pyx_v_values, __pyx_v_weights);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 70, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_r = __pyx_pf_8binstats_12demeaned(__pyx_self, __pyx_v_values, __pyx_v_weights);
 
   /* function exit code */
   goto __pyx_L0;
@@ -4189,7 +4384,7 @@ static PyObject *__pyx_pw_8binstats_11demeaned(PyObject *__pyx_self, PyObject *_
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8binstats_10demeaned(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights) {
+static PyObject *__pyx_pf_8binstats_12demeaned(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_values;
   __Pyx_Buffer __pyx_pybuffer_values;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_weights;
@@ -4212,17 +4407,17 @@ static PyObject *__pyx_pf_8binstats_10demeaned(CYTHON_UNUSED PyObject *__pyx_sel
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 59, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 70, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 59, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 70, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8binstats_demeaned(__pyx_v_values, __pyx_v_weights, 0); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 59, __pyx_L1_error)
-  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_1, 1, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8binstats_demeaned(__pyx_v_values, __pyx_v_weights, 0); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_1, 1, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __PYX_XDEC_MEMVIEW(&__pyx_t_1, 1);
   __pyx_t_1.memview = NULL;
@@ -4254,15 +4449,15 @@ static PyObject *__pyx_pf_8binstats_10demeaned(CYTHON_UNUSED PyObject *__pyx_sel
   return __pyx_r;
 }
 
-/* "binstats.pyx":69
+/* "binstats.pyx":80
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
- * cpdef float[::1] demeaned_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights):             # <<<<<<<<<<<<<<
+ * cpdef float[::1] demeaned_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights):             # <<<<<<<<<<<<<<
  *     cdef double w_mean = weighted_mean_sp(values, weights)
  *     cdef Py_ssize_t N = weights.shape[0]
  */
 
-static PyObject *__pyx_pw_8binstats_13demeaned_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_15demeaned_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static __Pyx_memviewslice __pyx_f_8binstats_demeaned_sp(PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, CYTHON_UNUSED int __pyx_skip_dispatch) {
   double __pyx_v_w_mean;
   Py_ssize_t __pyx_v_N;
@@ -4294,26 +4489,26 @@ static __Pyx_memviewslice __pyx_f_8binstats_demeaned_sp(PyArrayObject *__pyx_v_v
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 69, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 80, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 69, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 80, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
 
-  /* "binstats.pyx":70
+  /* "binstats.pyx":81
  * @cython.wraparound(False)
- * cpdef float[::1] demeaned_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights):
+ * cpdef float[::1] demeaned_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights):
  *     cdef double w_mean = weighted_mean_sp(values, weights)             # <<<<<<<<<<<<<<
  *     cdef Py_ssize_t N = weights.shape[0]
  *     cdef float[::1] view_v = values
  */
   __pyx_v_w_mean = __pyx_f_8binstats_weighted_mean_sp(((PyArrayObject *)__pyx_v_values), ((PyArrayObject *)__pyx_v_weights), 0);
 
-  /* "binstats.pyx":71
- * cpdef float[::1] demeaned_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights):
+  /* "binstats.pyx":82
+ * cpdef float[::1] demeaned_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights):
  *     cdef double w_mean = weighted_mean_sp(values, weights)
  *     cdef Py_ssize_t N = weights.shape[0]             # <<<<<<<<<<<<<<
  *     cdef float[::1] view_v = values
@@ -4321,19 +4516,19 @@ static __Pyx_memviewslice __pyx_f_8binstats_demeaned_sp(PyArrayObject *__pyx_v_v
  */
   __pyx_v_N = (__pyx_v_weights->dimensions[0]);
 
-  /* "binstats.pyx":72
+  /* "binstats.pyx":83
  *     cdef double w_mean = weighted_mean_sp(values, weights)
  *     cdef Py_ssize_t N = weights.shape[0]
  *     cdef float[::1] view_v = values             # <<<<<<<<<<<<<<
  *     for i in range(N):
  *         view_v[i] =  view_v[i] - w_mean
  */
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_float(((PyObject *)__pyx_v_values), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_float(((PyObject *)__pyx_v_values), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 83, __pyx_L1_error)
   __pyx_v_view_v = __pyx_t_1;
   __pyx_t_1.memview = NULL;
   __pyx_t_1.data = NULL;
 
-  /* "binstats.pyx":73
+  /* "binstats.pyx":84
  *     cdef Py_ssize_t N = weights.shape[0]
  *     cdef float[::1] view_v = values
  *     for i in range(N):             # <<<<<<<<<<<<<<
@@ -4345,7 +4540,7 @@ static __Pyx_memviewslice __pyx_f_8binstats_demeaned_sp(PyArrayObject *__pyx_v_v
   for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
     __pyx_v_i = __pyx_t_4;
 
-    /* "binstats.pyx":74
+    /* "binstats.pyx":85
  *     cdef float[::1] view_v = values
  *     for i in range(N):
  *         view_v[i] =  view_v[i] - w_mean             # <<<<<<<<<<<<<<
@@ -4357,23 +4552,23 @@ static __Pyx_memviewslice __pyx_f_8binstats_demeaned_sp(PyArrayObject *__pyx_v_v
     *((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_v.data) + __pyx_t_6)) )) = ((*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_v.data) + __pyx_t_5)) ))) - __pyx_v_w_mean);
   }
 
-  /* "binstats.pyx":75
+  /* "binstats.pyx":86
  *     for i in range(N):
  *         view_v[i] =  view_v[i] - w_mean
  *     return values             # <<<<<<<<<<<<<<
  * 
  * @cython.boundscheck(False)
  */
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_float(((PyObject *)__pyx_v_values), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 75, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_float(((PyObject *)__pyx_v_values), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 86, __pyx_L1_error)
   __pyx_r = __pyx_t_1;
   __pyx_t_1.memview = NULL;
   __pyx_t_1.data = NULL;
   goto __pyx_L0;
 
-  /* "binstats.pyx":69
+  /* "binstats.pyx":80
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
- * cpdef float[::1] demeaned_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights):             # <<<<<<<<<<<<<<
+ * cpdef float[::1] demeaned_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights):             # <<<<<<<<<<<<<<
  *     cdef double w_mean = weighted_mean_sp(values, weights)
  *     cdef Py_ssize_t N = weights.shape[0]
  */
@@ -4405,8 +4600,8 @@ static __Pyx_memviewslice __pyx_f_8binstats_demeaned_sp(PyArrayObject *__pyx_v_v
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8binstats_13demeaned_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_8binstats_13demeaned_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8binstats_15demeaned_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_15demeaned_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_values = 0;
   PyArrayObject *__pyx_v_weights = 0;
   int __pyx_lineno = 0;
@@ -4438,11 +4633,11 @@ static PyObject *__pyx_pw_8binstats_13demeaned_sp(PyObject *__pyx_self, PyObject
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_weights)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("demeaned_sp", 1, 2, 2, 1); __PYX_ERR(0, 69, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("demeaned_sp", 1, 2, 2, 1); __PYX_ERR(0, 80, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "demeaned_sp") < 0)) __PYX_ERR(0, 69, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "demeaned_sp") < 0)) __PYX_ERR(0, 80, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -4455,15 +4650,15 @@ static PyObject *__pyx_pw_8binstats_13demeaned_sp(PyObject *__pyx_self, PyObject
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("demeaned_sp", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 69, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("demeaned_sp", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 80, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("binstats.demeaned_sp", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 69, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 69, __pyx_L1_error)
-  __pyx_r = __pyx_pf_8binstats_12demeaned_sp(__pyx_self, __pyx_v_values, __pyx_v_weights);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 80, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_r = __pyx_pf_8binstats_14demeaned_sp(__pyx_self, __pyx_v_values, __pyx_v_weights);
 
   /* function exit code */
   goto __pyx_L0;
@@ -4474,7 +4669,7 @@ static PyObject *__pyx_pw_8binstats_13demeaned_sp(PyObject *__pyx_self, PyObject
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8binstats_12demeaned_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights) {
+static PyObject *__pyx_pf_8binstats_14demeaned_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_values;
   __Pyx_Buffer __pyx_pybuffer_values;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_weights;
@@ -4497,17 +4692,17 @@ static PyObject *__pyx_pf_8binstats_12demeaned_sp(CYTHON_UNUSED PyObject *__pyx_
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 69, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 80, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 69, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 80, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8binstats_demeaned_sp(__pyx_v_values, __pyx_v_weights, 0); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 69, __pyx_L1_error)
-  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_1, 1, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8binstats_demeaned_sp(__pyx_v_values, __pyx_v_weights, 0); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_1, 1, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 80, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __PYX_XDEC_MEMVIEW(&__pyx_t_1, 1);
   __pyx_t_1.memview = NULL;
@@ -4539,7 +4734,7 @@ static PyObject *__pyx_pf_8binstats_12demeaned_sp(CYTHON_UNUSED PyObject *__pyx_
   return __pyx_r;
 }
 
-/* "binstats.pyx":79
+/* "binstats.pyx":90
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cpdef double sumsquares(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights):             # <<<<<<<<<<<<<<
@@ -4547,7 +4742,7 @@ static PyObject *__pyx_pf_8binstats_12demeaned_sp(CYTHON_UNUSED PyObject *__pyx_
  *     cdef double[::1] view_w = weights
  */
 
-static PyObject *__pyx_pw_8binstats_15sumsquares(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_17sumsquares(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static double __pyx_f_8binstats_sumsquares(PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, CYTHON_UNUSED int __pyx_skip_dispatch) {
   __Pyx_memviewslice __pyx_v_view_demeaned = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_view_w = { 0, 0, { 0 }, { 0 }, { 0 } };
@@ -4581,40 +4776,40 @@ static double __pyx_f_8binstats_sumsquares(PyArrayObject *__pyx_v_values, PyArra
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 79, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 90, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 79, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 90, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
 
-  /* "binstats.pyx":80
+  /* "binstats.pyx":91
  * @cython.wraparound(False)
  * cpdef double sumsquares(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights):
  *     cdef double[::1] view_demeaned = demeaned(values, weights)             # <<<<<<<<<<<<<<
  *     cdef double[::1] view_w = weights
  *     cdef double sum = 0
  */
-  __pyx_t_1 = __pyx_f_8binstats_demeaned(((PyArrayObject *)__pyx_v_values), ((PyArrayObject *)__pyx_v_weights), 0); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8binstats_demeaned(((PyArrayObject *)__pyx_v_values), ((PyArrayObject *)__pyx_v_weights), 0); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 91, __pyx_L1_error)
   __pyx_v_view_demeaned = __pyx_t_1;
   __pyx_t_1.memview = NULL;
   __pyx_t_1.data = NULL;
 
-  /* "binstats.pyx":81
+  /* "binstats.pyx":92
  * cpdef double sumsquares(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights):
  *     cdef double[::1] view_demeaned = demeaned(values, weights)
  *     cdef double[::1] view_w = weights             # <<<<<<<<<<<<<<
  *     cdef double sum = 0
  *     cdef Py_ssize_t i
  */
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(((PyObject *)__pyx_v_weights), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(((PyObject *)__pyx_v_weights), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 92, __pyx_L1_error)
   __pyx_v_view_w = __pyx_t_1;
   __pyx_t_1.memview = NULL;
   __pyx_t_1.data = NULL;
 
-  /* "binstats.pyx":82
+  /* "binstats.pyx":93
  *     cdef double[::1] view_demeaned = demeaned(values, weights)
  *     cdef double[::1] view_w = weights
  *     cdef double sum = 0             # <<<<<<<<<<<<<<
@@ -4623,7 +4818,7 @@ static double __pyx_f_8binstats_sumsquares(PyArrayObject *__pyx_v_values, PyArra
  */
   __pyx_v_sum = 0.0;
 
-  /* "binstats.pyx":84
+  /* "binstats.pyx":95
  *     cdef double sum = 0
  *     cdef Py_ssize_t i
  *     cdef Py_ssize_t N = weights.shape[0]             # <<<<<<<<<<<<<<
@@ -4632,7 +4827,7 @@ static double __pyx_f_8binstats_sumsquares(PyArrayObject *__pyx_v_values, PyArra
  */
   __pyx_v_N = (__pyx_v_weights->dimensions[0]);
 
-  /* "binstats.pyx":85
+  /* "binstats.pyx":96
  *     cdef Py_ssize_t i
  *     cdef Py_ssize_t N = weights.shape[0]
  *     for i in range(N):             # <<<<<<<<<<<<<<
@@ -4644,7 +4839,7 @@ static double __pyx_f_8binstats_sumsquares(PyArrayObject *__pyx_v_values, PyArra
   for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
     __pyx_v_i = __pyx_t_4;
 
-    /* "binstats.pyx":86
+    /* "binstats.pyx":97
  *     cdef Py_ssize_t N = weights.shape[0]
  *     for i in range(N):
  *         sum+=  view_demeaned[i]* view_demeaned[i]* view_w[i]             # <<<<<<<<<<<<<<
@@ -4657,7 +4852,7 @@ static double __pyx_f_8binstats_sumsquares(PyArrayObject *__pyx_v_values, PyArra
     __pyx_v_sum = (__pyx_v_sum + (((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_demeaned.data) + __pyx_t_5)) ))) * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_demeaned.data) + __pyx_t_6)) )))) * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_7)) )))));
   }
 
-  /* "binstats.pyx":87
+  /* "binstats.pyx":98
  *     for i in range(N):
  *         sum+=  view_demeaned[i]* view_demeaned[i]* view_w[i]
  *     return sum             # <<<<<<<<<<<<<<
@@ -4667,7 +4862,7 @@ static double __pyx_f_8binstats_sumsquares(PyArrayObject *__pyx_v_values, PyArra
   __pyx_r = __pyx_v_sum;
   goto __pyx_L0;
 
-  /* "binstats.pyx":79
+  /* "binstats.pyx":90
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cpdef double sumsquares(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights):             # <<<<<<<<<<<<<<
@@ -4699,8 +4894,8 @@ static double __pyx_f_8binstats_sumsquares(PyArrayObject *__pyx_v_values, PyArra
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8binstats_15sumsquares(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_8binstats_15sumsquares(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8binstats_17sumsquares(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_17sumsquares(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_values = 0;
   PyArrayObject *__pyx_v_weights = 0;
   int __pyx_lineno = 0;
@@ -4732,11 +4927,11 @@ static PyObject *__pyx_pw_8binstats_15sumsquares(PyObject *__pyx_self, PyObject 
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_weights)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("sumsquares", 1, 2, 2, 1); __PYX_ERR(0, 79, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("sumsquares", 1, 2, 2, 1); __PYX_ERR(0, 90, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "sumsquares") < 0)) __PYX_ERR(0, 79, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "sumsquares") < 0)) __PYX_ERR(0, 90, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -4749,15 +4944,15 @@ static PyObject *__pyx_pw_8binstats_15sumsquares(PyObject *__pyx_self, PyObject 
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("sumsquares", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 79, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("sumsquares", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 90, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("binstats.sumsquares", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 79, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 79, __pyx_L1_error)
-  __pyx_r = __pyx_pf_8binstats_14sumsquares(__pyx_self, __pyx_v_values, __pyx_v_weights);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 90, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 90, __pyx_L1_error)
+  __pyx_r = __pyx_pf_8binstats_16sumsquares(__pyx_self, __pyx_v_values, __pyx_v_weights);
 
   /* function exit code */
   goto __pyx_L0;
@@ -4768,7 +4963,7 @@ static PyObject *__pyx_pw_8binstats_15sumsquares(PyObject *__pyx_self, PyObject 
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8binstats_14sumsquares(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights) {
+static PyObject *__pyx_pf_8binstats_16sumsquares(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_values;
   __Pyx_Buffer __pyx_pybuffer_values;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_weights;
@@ -4790,16 +4985,16 @@ static PyObject *__pyx_pf_8binstats_14sumsquares(CYTHON_UNUSED PyObject *__pyx_s
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 79, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 90, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 79, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 90, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_8binstats_sumsquares(__pyx_v_values, __pyx_v_weights, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 79, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_8binstats_sumsquares(__pyx_v_values, __pyx_v_weights, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4827,15 +5022,15 @@ static PyObject *__pyx_pf_8binstats_14sumsquares(CYTHON_UNUSED PyObject *__pyx_s
   return __pyx_r;
 }
 
-/* "binstats.pyx":91
+/* "binstats.pyx":102
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
- * cpdef double sumsquares_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights):             # <<<<<<<<<<<<<<
+ * cpdef double sumsquares_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights):             # <<<<<<<<<<<<<<
  *     cdef float[::1] view_demeaned = demeaned_sp(values, weights)
- *     cdef double[::1] view_w = weights
+ *     cdef float[::1] view_w = weights
  */
 
-static PyObject *__pyx_pw_8binstats_17sumsquares_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_19sumsquares_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static double __pyx_f_8binstats_sumsquares_sp(PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, CYTHON_UNUSED int __pyx_skip_dispatch) {
   __Pyx_memviewslice __pyx_v_view_demeaned = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_view_w = { 0, 0, { 0 }, { 0 }, { 0 } };
@@ -4849,13 +5044,12 @@ static double __pyx_f_8binstats_sumsquares_sp(PyArrayObject *__pyx_v_values, PyA
   double __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_memviewslice __pyx_t_1 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  __Pyx_memviewslice __pyx_t_2 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  Py_ssize_t __pyx_t_2;
   Py_ssize_t __pyx_t_3;
   Py_ssize_t __pyx_t_4;
   Py_ssize_t __pyx_t_5;
   Py_ssize_t __pyx_t_6;
   Py_ssize_t __pyx_t_7;
-  Py_ssize_t __pyx_t_8;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -4870,49 +5064,49 @@ static double __pyx_f_8binstats_sumsquares_sp(PyArrayObject *__pyx_v_values, PyA
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 91, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 102, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 91, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 102, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
 
-  /* "binstats.pyx":92
+  /* "binstats.pyx":103
  * @cython.wraparound(False)
- * cpdef double sumsquares_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights):
+ * cpdef double sumsquares_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights):
  *     cdef float[::1] view_demeaned = demeaned_sp(values, weights)             # <<<<<<<<<<<<<<
- *     cdef double[::1] view_w = weights
+ *     cdef float[::1] view_w = weights
  *     cdef double sum = 0
  */
-  __pyx_t_1 = __pyx_f_8binstats_demeaned_sp(((PyArrayObject *)__pyx_v_values), ((PyArrayObject *)__pyx_v_weights), 0); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 92, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8binstats_demeaned_sp(((PyArrayObject *)__pyx_v_values), ((PyArrayObject *)__pyx_v_weights), 0); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 103, __pyx_L1_error)
   __pyx_v_view_demeaned = __pyx_t_1;
   __pyx_t_1.memview = NULL;
   __pyx_t_1.data = NULL;
 
-  /* "binstats.pyx":93
- * cpdef double sumsquares_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights):
+  /* "binstats.pyx":104
+ * cpdef double sumsquares_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights):
  *     cdef float[::1] view_demeaned = demeaned_sp(values, weights)
- *     cdef double[::1] view_w = weights             # <<<<<<<<<<<<<<
+ *     cdef float[::1] view_w = weights             # <<<<<<<<<<<<<<
  *     cdef double sum = 0
  *     cdef Py_ssize_t i
  */
-  __pyx_t_2 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(((PyObject *)__pyx_v_weights), PyBUF_WRITABLE); if (unlikely(!__pyx_t_2.memview)) __PYX_ERR(0, 93, __pyx_L1_error)
-  __pyx_v_view_w = __pyx_t_2;
-  __pyx_t_2.memview = NULL;
-  __pyx_t_2.data = NULL;
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_float(((PyObject *)__pyx_v_weights), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 104, __pyx_L1_error)
+  __pyx_v_view_w = __pyx_t_1;
+  __pyx_t_1.memview = NULL;
+  __pyx_t_1.data = NULL;
 
-  /* "binstats.pyx":94
+  /* "binstats.pyx":105
  *     cdef float[::1] view_demeaned = demeaned_sp(values, weights)
- *     cdef double[::1] view_w = weights
+ *     cdef float[::1] view_w = weights
  *     cdef double sum = 0             # <<<<<<<<<<<<<<
  *     cdef Py_ssize_t i
  *     cdef Py_ssize_t N = weights.shape[0]
  */
   __pyx_v_sum = 0.0;
 
-  /* "binstats.pyx":96
+  /* "binstats.pyx":107
  *     cdef double sum = 0
  *     cdef Py_ssize_t i
  *     cdef Py_ssize_t N = weights.shape[0]             # <<<<<<<<<<<<<<
@@ -4921,32 +5115,32 @@ static double __pyx_f_8binstats_sumsquares_sp(PyArrayObject *__pyx_v_values, PyA
  */
   __pyx_v_N = (__pyx_v_weights->dimensions[0]);
 
-  /* "binstats.pyx":97
+  /* "binstats.pyx":108
  *     cdef Py_ssize_t i
  *     cdef Py_ssize_t N = weights.shape[0]
  *     for i in range(N):             # <<<<<<<<<<<<<<
  *         sum+=  view_demeaned[i]* view_demeaned[i]* view_w[i]
  *     return sum
  */
-  __pyx_t_3 = __pyx_v_N;
-  __pyx_t_4 = __pyx_t_3;
-  for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
-    __pyx_v_i = __pyx_t_5;
+  __pyx_t_2 = __pyx_v_N;
+  __pyx_t_3 = __pyx_t_2;
+  for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
+    __pyx_v_i = __pyx_t_4;
 
-    /* "binstats.pyx":98
+    /* "binstats.pyx":109
  *     cdef Py_ssize_t N = weights.shape[0]
  *     for i in range(N):
  *         sum+=  view_demeaned[i]* view_demeaned[i]* view_w[i]             # <<<<<<<<<<<<<<
  *     return sum
  * 
  */
+    __pyx_t_5 = __pyx_v_i;
     __pyx_t_6 = __pyx_v_i;
     __pyx_t_7 = __pyx_v_i;
-    __pyx_t_8 = __pyx_v_i;
-    __pyx_v_sum = (__pyx_v_sum + (((*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_demeaned.data) + __pyx_t_6)) ))) * (*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_demeaned.data) + __pyx_t_7)) )))) * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_8)) )))));
+    __pyx_v_sum = (__pyx_v_sum + (((*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_demeaned.data) + __pyx_t_5)) ))) * (*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_demeaned.data) + __pyx_t_6)) )))) * (*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_w.data) + __pyx_t_7)) )))));
   }
 
-  /* "binstats.pyx":99
+  /* "binstats.pyx":110
  *     for i in range(N):
  *         sum+=  view_demeaned[i]* view_demeaned[i]* view_w[i]
  *     return sum             # <<<<<<<<<<<<<<
@@ -4956,18 +5150,17 @@ static double __pyx_f_8binstats_sumsquares_sp(PyArrayObject *__pyx_v_values, PyA
   __pyx_r = __pyx_v_sum;
   goto __pyx_L0;
 
-  /* "binstats.pyx":91
+  /* "binstats.pyx":102
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
- * cpdef double sumsquares_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights):             # <<<<<<<<<<<<<<
+ * cpdef double sumsquares_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights):             # <<<<<<<<<<<<<<
  *     cdef float[::1] view_demeaned = demeaned_sp(values, weights)
- *     cdef double[::1] view_w = weights
+ *     cdef float[::1] view_w = weights
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __PYX_XDEC_MEMVIEW(&__pyx_t_1, 1);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_2, 1);
   { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
     __Pyx_PyThreadState_declare
     __Pyx_PyThreadState_assign
@@ -4989,8 +5182,8 @@ static double __pyx_f_8binstats_sumsquares_sp(PyArrayObject *__pyx_v_values, PyA
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8binstats_17sumsquares_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_8binstats_17sumsquares_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8binstats_19sumsquares_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_19sumsquares_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_values = 0;
   PyArrayObject *__pyx_v_weights = 0;
   int __pyx_lineno = 0;
@@ -5022,11 +5215,11 @@ static PyObject *__pyx_pw_8binstats_17sumsquares_sp(PyObject *__pyx_self, PyObje
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_weights)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("sumsquares_sp", 1, 2, 2, 1); __PYX_ERR(0, 91, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("sumsquares_sp", 1, 2, 2, 1); __PYX_ERR(0, 102, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "sumsquares_sp") < 0)) __PYX_ERR(0, 91, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "sumsquares_sp") < 0)) __PYX_ERR(0, 102, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -5039,15 +5232,15 @@ static PyObject *__pyx_pw_8binstats_17sumsquares_sp(PyObject *__pyx_self, PyObje
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("sumsquares_sp", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 91, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("sumsquares_sp", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 102, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("binstats.sumsquares_sp", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 91, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 91, __pyx_L1_error)
-  __pyx_r = __pyx_pf_8binstats_16sumsquares_sp(__pyx_self, __pyx_v_values, __pyx_v_weights);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 102, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 102, __pyx_L1_error)
+  __pyx_r = __pyx_pf_8binstats_18sumsquares_sp(__pyx_self, __pyx_v_values, __pyx_v_weights);
 
   /* function exit code */
   goto __pyx_L0;
@@ -5058,7 +5251,7 @@ static PyObject *__pyx_pw_8binstats_17sumsquares_sp(PyObject *__pyx_self, PyObje
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8binstats_16sumsquares_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights) {
+static PyObject *__pyx_pf_8binstats_18sumsquares_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_values;
   __Pyx_Buffer __pyx_pybuffer_values;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_weights;
@@ -5080,16 +5273,16 @@ static PyObject *__pyx_pf_8binstats_16sumsquares_sp(CYTHON_UNUSED PyObject *__py
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 91, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 102, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 91, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 102, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_8binstats_sumsquares_sp(__pyx_v_values, __pyx_v_weights, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_8binstats_sumsquares_sp(__pyx_v_values, __pyx_v_weights, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -5117,7 +5310,7 @@ static PyObject *__pyx_pf_8binstats_16sumsquares_sp(CYTHON_UNUSED PyObject *__py
   return __pyx_r;
 }
 
-/* "binstats.pyx":103
+/* "binstats.pyx":114
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cpdef double sigma(np.ndarray[double, ndim=1] sigma_values, np.ndarray[double, ndim=1] weights):             # <<<<<<<<<<<<<<
@@ -5125,7 +5318,7 @@ static PyObject *__pyx_pf_8binstats_16sumsquares_sp(CYTHON_UNUSED PyObject *__py
  *     cdef double[::1] view_w = weights
  */
 
-static PyObject *__pyx_pw_8binstats_19sigma(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_21sigma(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static double __pyx_f_8binstats_sigma(PyArrayObject *__pyx_v_sigma_values, PyArrayObject *__pyx_v_weights, CYTHON_UNUSED int __pyx_skip_dispatch) {
   __Pyx_memviewslice __pyx_v_view_sigma = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_view_w = { 0, 0, { 0 }, { 0 }, { 0 } };
@@ -5162,40 +5355,40 @@ static double __pyx_f_8binstats_sigma(PyArrayObject *__pyx_v_sigma_values, PyArr
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sigma_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_sigma_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 103, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sigma_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_sigma_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 114, __pyx_L1_error)
   }
   __pyx_pybuffernd_sigma_values.diminfo[0].strides = __pyx_pybuffernd_sigma_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_sigma_values.diminfo[0].shape = __pyx_pybuffernd_sigma_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 103, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 114, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
 
-  /* "binstats.pyx":104
+  /* "binstats.pyx":115
  * @cython.wraparound(False)
  * cpdef double sigma(np.ndarray[double, ndim=1] sigma_values, np.ndarray[double, ndim=1] weights):
  *     cdef double[::1] view_sigma = sigma_values             # <<<<<<<<<<<<<<
  *     cdef double[::1] view_w = weights
  *     cdef double sum = 0
  */
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(((PyObject *)__pyx_v_sigma_values), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 104, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(((PyObject *)__pyx_v_sigma_values), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 115, __pyx_L1_error)
   __pyx_v_view_sigma = __pyx_t_1;
   __pyx_t_1.memview = NULL;
   __pyx_t_1.data = NULL;
 
-  /* "binstats.pyx":105
+  /* "binstats.pyx":116
  * cpdef double sigma(np.ndarray[double, ndim=1] sigma_values, np.ndarray[double, ndim=1] weights):
  *     cdef double[::1] view_sigma = sigma_values
  *     cdef double[::1] view_w = weights             # <<<<<<<<<<<<<<
  *     cdef double sum = 0
  *     cdef Py_ssize_t i
  */
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(((PyObject *)__pyx_v_weights), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(((PyObject *)__pyx_v_weights), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 116, __pyx_L1_error)
   __pyx_v_view_w = __pyx_t_1;
   __pyx_t_1.memview = NULL;
   __pyx_t_1.data = NULL;
 
-  /* "binstats.pyx":106
+  /* "binstats.pyx":117
  *     cdef double[::1] view_sigma = sigma_values
  *     cdef double[::1] view_w = weights
  *     cdef double sum = 0             # <<<<<<<<<<<<<<
@@ -5204,7 +5397,7 @@ static double __pyx_f_8binstats_sigma(PyArrayObject *__pyx_v_sigma_values, PyArr
  */
   __pyx_v_sum = 0.0;
 
-  /* "binstats.pyx":108
+  /* "binstats.pyx":119
  *     cdef double sum = 0
  *     cdef Py_ssize_t i
  *     cdef Py_ssize_t N = weights.shape[0]             # <<<<<<<<<<<<<<
@@ -5213,7 +5406,7 @@ static double __pyx_f_8binstats_sigma(PyArrayObject *__pyx_v_sigma_values, PyArr
  */
   __pyx_v_N = (__pyx_v_weights->dimensions[0]);
 
-  /* "binstats.pyx":109
+  /* "binstats.pyx":120
  *     cdef Py_ssize_t i
  *     cdef Py_ssize_t N = weights.shape[0]
  *     for i in range(N):             # <<<<<<<<<<<<<<
@@ -5225,7 +5418,7 @@ static double __pyx_f_8binstats_sigma(PyArrayObject *__pyx_v_sigma_values, PyArr
   for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
     __pyx_v_i = __pyx_t_4;
 
-    /* "binstats.pyx":110
+    /* "binstats.pyx":121
  *     cdef Py_ssize_t N = weights.shape[0]
  *     for i in range(N):
  *         sum+=  view_sigma[i]* view_sigma[i]* view_w[i]* view_w[i]             # <<<<<<<<<<<<<<
@@ -5239,7 +5432,7 @@ static double __pyx_f_8binstats_sigma(PyArrayObject *__pyx_v_sigma_values, PyArr
     __pyx_v_sum = (__pyx_v_sum + ((((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_sigma.data) + __pyx_t_5)) ))) * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_sigma.data) + __pyx_t_6)) )))) * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_7)) )))) * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_8)) )))));
   }
 
-  /* "binstats.pyx":111
+  /* "binstats.pyx":122
  *     for i in range(N):
  *         sum+=  view_sigma[i]* view_sigma[i]* view_w[i]* view_w[i]
  *     return sqrt(sum)/sum_weights(weights)             # <<<<<<<<<<<<<<
@@ -5250,12 +5443,12 @@ static double __pyx_f_8binstats_sigma(PyArrayObject *__pyx_v_sigma_values, PyArr
   __pyx_t_10 = __pyx_f_8binstats_sum_weights(((PyArrayObject *)__pyx_v_weights), 0);
   if (unlikely(__pyx_t_10 == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-    __PYX_ERR(0, 111, __pyx_L1_error)
+    __PYX_ERR(0, 122, __pyx_L1_error)
   }
   __pyx_r = (__pyx_t_9 / __pyx_t_10);
   goto __pyx_L0;
 
-  /* "binstats.pyx":103
+  /* "binstats.pyx":114
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cpdef double sigma(np.ndarray[double, ndim=1] sigma_values, np.ndarray[double, ndim=1] weights):             # <<<<<<<<<<<<<<
@@ -5287,8 +5480,8 @@ static double __pyx_f_8binstats_sigma(PyArrayObject *__pyx_v_sigma_values, PyArr
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8binstats_19sigma(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_8binstats_19sigma(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8binstats_21sigma(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_21sigma(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_sigma_values = 0;
   PyArrayObject *__pyx_v_weights = 0;
   int __pyx_lineno = 0;
@@ -5320,11 +5513,11 @@ static PyObject *__pyx_pw_8binstats_19sigma(PyObject *__pyx_self, PyObject *__py
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_weights)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("sigma", 1, 2, 2, 1); __PYX_ERR(0, 103, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("sigma", 1, 2, 2, 1); __PYX_ERR(0, 114, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "sigma") < 0)) __PYX_ERR(0, 103, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "sigma") < 0)) __PYX_ERR(0, 114, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -5337,15 +5530,15 @@ static PyObject *__pyx_pw_8binstats_19sigma(PyObject *__pyx_self, PyObject *__py
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("sigma", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 103, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("sigma", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 114, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("binstats.sigma", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_sigma_values), __pyx_ptype_5numpy_ndarray, 1, "sigma_values", 0))) __PYX_ERR(0, 103, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 103, __pyx_L1_error)
-  __pyx_r = __pyx_pf_8binstats_18sigma(__pyx_self, __pyx_v_sigma_values, __pyx_v_weights);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_sigma_values), __pyx_ptype_5numpy_ndarray, 1, "sigma_values", 0))) __PYX_ERR(0, 114, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_r = __pyx_pf_8binstats_20sigma(__pyx_self, __pyx_v_sigma_values, __pyx_v_weights);
 
   /* function exit code */
   goto __pyx_L0;
@@ -5356,7 +5549,7 @@ static PyObject *__pyx_pw_8binstats_19sigma(PyObject *__pyx_self, PyObject *__py
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8binstats_18sigma(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_sigma_values, PyArrayObject *__pyx_v_weights) {
+static PyObject *__pyx_pf_8binstats_20sigma(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_sigma_values, PyArrayObject *__pyx_v_weights) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_sigma_values;
   __Pyx_Buffer __pyx_pybuffer_sigma_values;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_weights;
@@ -5378,16 +5571,16 @@ static PyObject *__pyx_pf_8binstats_18sigma(CYTHON_UNUSED PyObject *__pyx_self, 
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sigma_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_sigma_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 103, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sigma_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_sigma_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 114, __pyx_L1_error)
   }
   __pyx_pybuffernd_sigma_values.diminfo[0].strides = __pyx_pybuffernd_sigma_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_sigma_values.diminfo[0].shape = __pyx_pybuffernd_sigma_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 103, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 114, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_8binstats_sigma(__pyx_v_sigma_values, __pyx_v_weights, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_8binstats_sigma(__pyx_v_sigma_values, __pyx_v_weights, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 114, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -5415,15 +5608,15 @@ static PyObject *__pyx_pf_8binstats_18sigma(CYTHON_UNUSED PyObject *__pyx_self, 
   return __pyx_r;
 }
 
-/* "binstats.pyx":116
+/* "binstats.pyx":127
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
- * cpdef double sigma_sp(np.ndarray[float, ndim=1] sigma_values, np.ndarray[double, ndim=1] weights):             # <<<<<<<<<<<<<<
+ * cpdef double sigma_sp(np.ndarray[float, ndim=1] sigma_values, np.ndarray[float, ndim=1] weights):             # <<<<<<<<<<<<<<
  *     cdef float[::1] view_sigma = sigma_values
- *     cdef double[::1] view_w = weights
+ *     cdef float[::1] view_w = weights
  */
 
-static PyObject *__pyx_pw_8binstats_21sigma_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_23sigma_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static double __pyx_f_8binstats_sigma_sp(PyArrayObject *__pyx_v_sigma_values, PyArrayObject *__pyx_v_weights, CYTHON_UNUSED int __pyx_skip_dispatch) {
   __Pyx_memviewslice __pyx_v_view_sigma = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_view_w = { 0, 0, { 0 }, { 0 }, { 0 } };
@@ -5437,16 +5630,15 @@ static double __pyx_f_8binstats_sigma_sp(PyArrayObject *__pyx_v_sigma_values, Py
   double __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_memviewslice __pyx_t_1 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  __Pyx_memviewslice __pyx_t_2 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  Py_ssize_t __pyx_t_2;
   Py_ssize_t __pyx_t_3;
   Py_ssize_t __pyx_t_4;
   Py_ssize_t __pyx_t_5;
   Py_ssize_t __pyx_t_6;
   Py_ssize_t __pyx_t_7;
   Py_ssize_t __pyx_t_8;
-  Py_ssize_t __pyx_t_9;
+  double __pyx_t_9;
   double __pyx_t_10;
-  double __pyx_t_11;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -5461,49 +5653,49 @@ static double __pyx_f_8binstats_sigma_sp(PyArrayObject *__pyx_v_sigma_values, Py
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sigma_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_sigma_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 116, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sigma_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_sigma_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 127, __pyx_L1_error)
   }
   __pyx_pybuffernd_sigma_values.diminfo[0].strides = __pyx_pybuffernd_sigma_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_sigma_values.diminfo[0].shape = __pyx_pybuffernd_sigma_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 116, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 127, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
 
-  /* "binstats.pyx":117
+  /* "binstats.pyx":128
  * @cython.wraparound(False)
- * cpdef double sigma_sp(np.ndarray[float, ndim=1] sigma_values, np.ndarray[double, ndim=1] weights):
+ * cpdef double sigma_sp(np.ndarray[float, ndim=1] sigma_values, np.ndarray[float, ndim=1] weights):
  *     cdef float[::1] view_sigma = sigma_values             # <<<<<<<<<<<<<<
- *     cdef double[::1] view_w = weights
+ *     cdef float[::1] view_w = weights
  *     cdef double sum = 0
  */
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_float(((PyObject *)__pyx_v_sigma_values), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_float(((PyObject *)__pyx_v_sigma_values), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 128, __pyx_L1_error)
   __pyx_v_view_sigma = __pyx_t_1;
   __pyx_t_1.memview = NULL;
   __pyx_t_1.data = NULL;
 
-  /* "binstats.pyx":118
- * cpdef double sigma_sp(np.ndarray[float, ndim=1] sigma_values, np.ndarray[double, ndim=1] weights):
+  /* "binstats.pyx":129
+ * cpdef double sigma_sp(np.ndarray[float, ndim=1] sigma_values, np.ndarray[float, ndim=1] weights):
  *     cdef float[::1] view_sigma = sigma_values
- *     cdef double[::1] view_w = weights             # <<<<<<<<<<<<<<
+ *     cdef float[::1] view_w = weights             # <<<<<<<<<<<<<<
  *     cdef double sum = 0
  *     cdef Py_ssize_t i
  */
-  __pyx_t_2 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(((PyObject *)__pyx_v_weights), PyBUF_WRITABLE); if (unlikely(!__pyx_t_2.memview)) __PYX_ERR(0, 118, __pyx_L1_error)
-  __pyx_v_view_w = __pyx_t_2;
-  __pyx_t_2.memview = NULL;
-  __pyx_t_2.data = NULL;
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_float(((PyObject *)__pyx_v_weights), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 129, __pyx_L1_error)
+  __pyx_v_view_w = __pyx_t_1;
+  __pyx_t_1.memview = NULL;
+  __pyx_t_1.data = NULL;
 
-  /* "binstats.pyx":119
+  /* "binstats.pyx":130
  *     cdef float[::1] view_sigma = sigma_values
- *     cdef double[::1] view_w = weights
+ *     cdef float[::1] view_w = weights
  *     cdef double sum = 0             # <<<<<<<<<<<<<<
  *     cdef Py_ssize_t i
  *     cdef Py_ssize_t N = weights.shape[0]
  */
   __pyx_v_sum = 0.0;
 
-  /* "binstats.pyx":121
+  /* "binstats.pyx":132
  *     cdef double sum = 0
  *     cdef Py_ssize_t i
  *     cdef Py_ssize_t N = weights.shape[0]             # <<<<<<<<<<<<<<
@@ -5512,60 +5704,59 @@ static double __pyx_f_8binstats_sigma_sp(PyArrayObject *__pyx_v_sigma_values, Py
  */
   __pyx_v_N = (__pyx_v_weights->dimensions[0]);
 
-  /* "binstats.pyx":122
+  /* "binstats.pyx":133
  *     cdef Py_ssize_t i
  *     cdef Py_ssize_t N = weights.shape[0]
  *     for i in range(N):             # <<<<<<<<<<<<<<
  *         sum+=  view_sigma[i]* view_sigma[i]* view_w[i]* view_w[i]
- *     return sqrt(sum)/sum_weights(weights)
+ *     return sqrt(sum)/sum_weights_sp(weights)
  */
-  __pyx_t_3 = __pyx_v_N;
-  __pyx_t_4 = __pyx_t_3;
-  for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
-    __pyx_v_i = __pyx_t_5;
+  __pyx_t_2 = __pyx_v_N;
+  __pyx_t_3 = __pyx_t_2;
+  for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
+    __pyx_v_i = __pyx_t_4;
 
-    /* "binstats.pyx":123
+    /* "binstats.pyx":134
  *     cdef Py_ssize_t N = weights.shape[0]
  *     for i in range(N):
  *         sum+=  view_sigma[i]* view_sigma[i]* view_w[i]* view_w[i]             # <<<<<<<<<<<<<<
- *     return sqrt(sum)/sum_weights(weights)
+ *     return sqrt(sum)/sum_weights_sp(weights)
  * 
  */
+    __pyx_t_5 = __pyx_v_i;
     __pyx_t_6 = __pyx_v_i;
     __pyx_t_7 = __pyx_v_i;
     __pyx_t_8 = __pyx_v_i;
-    __pyx_t_9 = __pyx_v_i;
-    __pyx_v_sum = (__pyx_v_sum + ((((*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_sigma.data) + __pyx_t_6)) ))) * (*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_sigma.data) + __pyx_t_7)) )))) * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_8)) )))) * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_9)) )))));
+    __pyx_v_sum = (__pyx_v_sum + ((((*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_sigma.data) + __pyx_t_5)) ))) * (*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_sigma.data) + __pyx_t_6)) )))) * (*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_w.data) + __pyx_t_7)) )))) * (*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_w.data) + __pyx_t_8)) )))));
   }
 
-  /* "binstats.pyx":124
+  /* "binstats.pyx":135
  *     for i in range(N):
  *         sum+=  view_sigma[i]* view_sigma[i]* view_w[i]* view_w[i]
- *     return sqrt(sum)/sum_weights(weights)             # <<<<<<<<<<<<<<
+ *     return sqrt(sum)/sum_weights_sp(weights)             # <<<<<<<<<<<<<<
  * 
  * @cython.boundscheck(False)
  */
-  __pyx_t_10 = sqrt(__pyx_v_sum);
-  __pyx_t_11 = __pyx_f_8binstats_sum_weights(((PyArrayObject *)__pyx_v_weights), 0);
-  if (unlikely(__pyx_t_11 == 0)) {
+  __pyx_t_9 = sqrt(__pyx_v_sum);
+  __pyx_t_10 = __pyx_f_8binstats_sum_weights_sp(((PyArrayObject *)__pyx_v_weights), 0);
+  if (unlikely(__pyx_t_10 == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-    __PYX_ERR(0, 124, __pyx_L1_error)
+    __PYX_ERR(0, 135, __pyx_L1_error)
   }
-  __pyx_r = (__pyx_t_10 / __pyx_t_11);
+  __pyx_r = (__pyx_t_9 / __pyx_t_10);
   goto __pyx_L0;
 
-  /* "binstats.pyx":116
+  /* "binstats.pyx":127
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
- * cpdef double sigma_sp(np.ndarray[float, ndim=1] sigma_values, np.ndarray[double, ndim=1] weights):             # <<<<<<<<<<<<<<
+ * cpdef double sigma_sp(np.ndarray[float, ndim=1] sigma_values, np.ndarray[float, ndim=1] weights):             # <<<<<<<<<<<<<<
  *     cdef float[::1] view_sigma = sigma_values
- *     cdef double[::1] view_w = weights
+ *     cdef float[::1] view_w = weights
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __PYX_XDEC_MEMVIEW(&__pyx_t_1, 1);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_2, 1);
   { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
     __Pyx_PyThreadState_declare
     __Pyx_PyThreadState_assign
@@ -5587,8 +5778,8 @@ static double __pyx_f_8binstats_sigma_sp(PyArrayObject *__pyx_v_sigma_values, Py
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8binstats_21sigma_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_8binstats_21sigma_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8binstats_23sigma_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_23sigma_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_sigma_values = 0;
   PyArrayObject *__pyx_v_weights = 0;
   int __pyx_lineno = 0;
@@ -5620,11 +5811,11 @@ static PyObject *__pyx_pw_8binstats_21sigma_sp(PyObject *__pyx_self, PyObject *_
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_weights)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("sigma_sp", 1, 2, 2, 1); __PYX_ERR(0, 116, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("sigma_sp", 1, 2, 2, 1); __PYX_ERR(0, 127, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "sigma_sp") < 0)) __PYX_ERR(0, 116, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "sigma_sp") < 0)) __PYX_ERR(0, 127, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -5637,15 +5828,15 @@ static PyObject *__pyx_pw_8binstats_21sigma_sp(PyObject *__pyx_self, PyObject *_
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("sigma_sp", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 116, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("sigma_sp", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 127, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("binstats.sigma_sp", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_sigma_values), __pyx_ptype_5numpy_ndarray, 1, "sigma_values", 0))) __PYX_ERR(0, 116, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 116, __pyx_L1_error)
-  __pyx_r = __pyx_pf_8binstats_20sigma_sp(__pyx_self, __pyx_v_sigma_values, __pyx_v_weights);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_sigma_values), __pyx_ptype_5numpy_ndarray, 1, "sigma_values", 0))) __PYX_ERR(0, 127, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 127, __pyx_L1_error)
+  __pyx_r = __pyx_pf_8binstats_22sigma_sp(__pyx_self, __pyx_v_sigma_values, __pyx_v_weights);
 
   /* function exit code */
   goto __pyx_L0;
@@ -5656,7 +5847,7 @@ static PyObject *__pyx_pw_8binstats_21sigma_sp(PyObject *__pyx_self, PyObject *_
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8binstats_20sigma_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_sigma_values, PyArrayObject *__pyx_v_weights) {
+static PyObject *__pyx_pf_8binstats_22sigma_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_sigma_values, PyArrayObject *__pyx_v_weights) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_sigma_values;
   __Pyx_Buffer __pyx_pybuffer_sigma_values;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_weights;
@@ -5678,16 +5869,16 @@ static PyObject *__pyx_pf_8binstats_20sigma_sp(CYTHON_UNUSED PyObject *__pyx_sel
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sigma_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_sigma_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 116, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sigma_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_sigma_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 127, __pyx_L1_error)
   }
   __pyx_pybuffernd_sigma_values.diminfo[0].strides = __pyx_pybuffernd_sigma_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_sigma_values.diminfo[0].shape = __pyx_pybuffernd_sigma_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 116, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 127, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_8binstats_sigma_sp(__pyx_v_sigma_values, __pyx_v_weights, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_8binstats_sigma_sp(__pyx_v_sigma_values, __pyx_v_weights, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 127, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -5715,7 +5906,7 @@ static PyObject *__pyx_pf_8binstats_20sigma_sp(CYTHON_UNUSED PyObject *__pyx_sel
   return __pyx_r;
 }
 
-/* "binstats.pyx":128
+/* "binstats.pyx":139
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cpdef double var_ddof(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof =0):             # <<<<<<<<<<<<<<
@@ -5723,7 +5914,7 @@ static PyObject *__pyx_pf_8binstats_20sigma_sp(CYTHON_UNUSED PyObject *__pyx_sel
  * 
  */
 
-static PyObject *__pyx_pw_8binstats_23var_ddof(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_25var_ddof(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static double __pyx_f_8binstats_var_ddof(PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_8binstats_var_ddof *__pyx_optional_args) {
   int __pyx_v_ddof = ((int)0);
   __Pyx_LocalBuf_ND __pyx_pybuffernd_values;
@@ -5753,16 +5944,16 @@ static double __pyx_f_8binstats_var_ddof(PyArrayObject *__pyx_v_values, PyArrayO
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 128, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 139, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 128, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 139, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
 
-  /* "binstats.pyx":129
+  /* "binstats.pyx":140
  * @cython.wraparound(False)
  * cpdef double var_ddof(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof =0):
  *     return sumsquares(values, weights)/(sum_weights(weights) - ddof)             # <<<<<<<<<<<<<<
@@ -5773,12 +5964,12 @@ static double __pyx_f_8binstats_var_ddof(PyArrayObject *__pyx_v_values, PyArrayO
   __pyx_t_2 = (__pyx_f_8binstats_sum_weights(((PyArrayObject *)__pyx_v_weights), 0) - __pyx_v_ddof);
   if (unlikely(__pyx_t_2 == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-    __PYX_ERR(0, 129, __pyx_L1_error)
+    __PYX_ERR(0, 140, __pyx_L1_error)
   }
   __pyx_r = (__pyx_t_1 / __pyx_t_2);
   goto __pyx_L0;
 
-  /* "binstats.pyx":128
+  /* "binstats.pyx":139
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cpdef double var_ddof(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof =0):             # <<<<<<<<<<<<<<
@@ -5807,8 +5998,8 @@ static double __pyx_f_8binstats_var_ddof(PyArrayObject *__pyx_v_values, PyArrayO
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8binstats_23var_ddof(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_8binstats_23var_ddof(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8binstats_25var_ddof(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_25var_ddof(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_values = 0;
   PyArrayObject *__pyx_v_weights = 0;
   int __pyx_v_ddof;
@@ -5843,7 +6034,7 @@ static PyObject *__pyx_pw_8binstats_23var_ddof(PyObject *__pyx_self, PyObject *_
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_weights)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("var_ddof", 0, 2, 3, 1); __PYX_ERR(0, 128, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("var_ddof", 0, 2, 3, 1); __PYX_ERR(0, 139, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -5853,7 +6044,7 @@ static PyObject *__pyx_pw_8binstats_23var_ddof(PyObject *__pyx_self, PyObject *_
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "var_ddof") < 0)) __PYX_ERR(0, 128, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "var_ddof") < 0)) __PYX_ERR(0, 139, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -5868,22 +6059,22 @@ static PyObject *__pyx_pw_8binstats_23var_ddof(PyObject *__pyx_self, PyObject *_
     __pyx_v_values = ((PyArrayObject *)values[0]);
     __pyx_v_weights = ((PyArrayObject *)values[1]);
     if (values[2]) {
-      __pyx_v_ddof = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_ddof == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 128, __pyx_L3_error)
+      __pyx_v_ddof = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_ddof == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 139, __pyx_L3_error)
     } else {
       __pyx_v_ddof = ((int)0);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("var_ddof", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 128, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("var_ddof", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 139, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("binstats.var_ddof", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 128, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 128, __pyx_L1_error)
-  __pyx_r = __pyx_pf_8binstats_22var_ddof(__pyx_self, __pyx_v_values, __pyx_v_weights, __pyx_v_ddof);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 139, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 139, __pyx_L1_error)
+  __pyx_r = __pyx_pf_8binstats_24var_ddof(__pyx_self, __pyx_v_values, __pyx_v_weights, __pyx_v_ddof);
 
   /* function exit code */
   goto __pyx_L0;
@@ -5894,7 +6085,7 @@ static PyObject *__pyx_pw_8binstats_23var_ddof(PyObject *__pyx_self, PyObject *_
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8binstats_22var_ddof(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, int __pyx_v_ddof) {
+static PyObject *__pyx_pf_8binstats_24var_ddof(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, int __pyx_v_ddof) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_values;
   __Pyx_Buffer __pyx_pybuffer_values;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_weights;
@@ -5918,19 +6109,19 @@ static PyObject *__pyx_pf_8binstats_22var_ddof(CYTHON_UNUSED PyObject *__pyx_sel
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 128, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 139, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 128, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 139, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.ddof = __pyx_v_ddof;
   __pyx_t_1 = __pyx_f_8binstats_var_ddof(__pyx_v_values, __pyx_v_weights, 0, &__pyx_t_2); 
-  __pyx_t_3 = PyFloat_FromDouble(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_3 = PyFloat_FromDouble(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 139, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
@@ -5958,15 +6149,15 @@ static PyObject *__pyx_pf_8binstats_22var_ddof(CYTHON_UNUSED PyObject *__pyx_sel
   return __pyx_r;
 }
 
-/* "binstats.pyx":133
+/* "binstats.pyx":144
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
- * cpdef double var_ddof_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof =0):             # <<<<<<<<<<<<<<
- *     return sumsquares_sp(values, weights)/(sum_weights(weights) - ddof)
+ * cpdef double var_ddof_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights, int ddof =0):             # <<<<<<<<<<<<<<
+ *     return sumsquares_sp(values, weights)/(sum_weights_sp(weights) - ddof)
  * 
  */
 
-static PyObject *__pyx_pw_8binstats_25var_ddof_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_27var_ddof_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static double __pyx_f_8binstats_var_ddof_sp(PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_8binstats_var_ddof_sp *__pyx_optional_args) {
   int __pyx_v_ddof = ((int)0);
   __Pyx_LocalBuf_ND __pyx_pybuffernd_values;
@@ -5996,36 +6187,36 @@ static double __pyx_f_8binstats_var_ddof_sp(PyArrayObject *__pyx_v_values, PyArr
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 133, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 144, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 133, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 144, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
 
-  /* "binstats.pyx":134
+  /* "binstats.pyx":145
  * @cython.wraparound(False)
- * cpdef double var_ddof_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof =0):
- *     return sumsquares_sp(values, weights)/(sum_weights(weights) - ddof)             # <<<<<<<<<<<<<<
+ * cpdef double var_ddof_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights, int ddof =0):
+ *     return sumsquares_sp(values, weights)/(sum_weights_sp(weights) - ddof)             # <<<<<<<<<<<<<<
  * 
  * @cython.boundscheck(False)
  */
   __pyx_t_1 = __pyx_f_8binstats_sumsquares_sp(((PyArrayObject *)__pyx_v_values), ((PyArrayObject *)__pyx_v_weights), 0);
-  __pyx_t_2 = (__pyx_f_8binstats_sum_weights(((PyArrayObject *)__pyx_v_weights), 0) - __pyx_v_ddof);
+  __pyx_t_2 = (__pyx_f_8binstats_sum_weights_sp(((PyArrayObject *)__pyx_v_weights), 0) - __pyx_v_ddof);
   if (unlikely(__pyx_t_2 == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-    __PYX_ERR(0, 134, __pyx_L1_error)
+    __PYX_ERR(0, 145, __pyx_L1_error)
   }
   __pyx_r = (__pyx_t_1 / __pyx_t_2);
   goto __pyx_L0;
 
-  /* "binstats.pyx":133
+  /* "binstats.pyx":144
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
- * cpdef double var_ddof_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof =0):             # <<<<<<<<<<<<<<
- *     return sumsquares_sp(values, weights)/(sum_weights(weights) - ddof)
+ * cpdef double var_ddof_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights, int ddof =0):             # <<<<<<<<<<<<<<
+ *     return sumsquares_sp(values, weights)/(sum_weights_sp(weights) - ddof)
  * 
  */
 
@@ -6050,8 +6241,8 @@ static double __pyx_f_8binstats_var_ddof_sp(PyArrayObject *__pyx_v_values, PyArr
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8binstats_25var_ddof_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_8binstats_25var_ddof_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8binstats_27var_ddof_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_27var_ddof_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_values = 0;
   PyArrayObject *__pyx_v_weights = 0;
   int __pyx_v_ddof;
@@ -6086,7 +6277,7 @@ static PyObject *__pyx_pw_8binstats_25var_ddof_sp(PyObject *__pyx_self, PyObject
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_weights)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("var_ddof_sp", 0, 2, 3, 1); __PYX_ERR(0, 133, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("var_ddof_sp", 0, 2, 3, 1); __PYX_ERR(0, 144, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -6096,7 +6287,7 @@ static PyObject *__pyx_pw_8binstats_25var_ddof_sp(PyObject *__pyx_self, PyObject
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "var_ddof_sp") < 0)) __PYX_ERR(0, 133, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "var_ddof_sp") < 0)) __PYX_ERR(0, 144, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -6111,22 +6302,22 @@ static PyObject *__pyx_pw_8binstats_25var_ddof_sp(PyObject *__pyx_self, PyObject
     __pyx_v_values = ((PyArrayObject *)values[0]);
     __pyx_v_weights = ((PyArrayObject *)values[1]);
     if (values[2]) {
-      __pyx_v_ddof = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_ddof == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 133, __pyx_L3_error)
+      __pyx_v_ddof = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_ddof == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 144, __pyx_L3_error)
     } else {
       __pyx_v_ddof = ((int)0);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("var_ddof_sp", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 133, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("var_ddof_sp", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 144, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("binstats.var_ddof_sp", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 133, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 133, __pyx_L1_error)
-  __pyx_r = __pyx_pf_8binstats_24var_ddof_sp(__pyx_self, __pyx_v_values, __pyx_v_weights, __pyx_v_ddof);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 144, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_r = __pyx_pf_8binstats_26var_ddof_sp(__pyx_self, __pyx_v_values, __pyx_v_weights, __pyx_v_ddof);
 
   /* function exit code */
   goto __pyx_L0;
@@ -6137,7 +6328,7 @@ static PyObject *__pyx_pw_8binstats_25var_ddof_sp(PyObject *__pyx_self, PyObject
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8binstats_24var_ddof_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, int __pyx_v_ddof) {
+static PyObject *__pyx_pf_8binstats_26var_ddof_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, int __pyx_v_ddof) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_values;
   __Pyx_Buffer __pyx_pybuffer_values;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_weights;
@@ -6161,19 +6352,19 @@ static PyObject *__pyx_pf_8binstats_24var_ddof_sp(CYTHON_UNUSED PyObject *__pyx_
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 133, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 144, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 133, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 144, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.ddof = __pyx_v_ddof;
   __pyx_t_1 = __pyx_f_8binstats_var_ddof_sp(__pyx_v_values, __pyx_v_weights, 0, &__pyx_t_2); 
-  __pyx_t_3 = PyFloat_FromDouble(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_t_3 = PyFloat_FromDouble(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 144, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
@@ -6201,7 +6392,7 @@ static PyObject *__pyx_pf_8binstats_24var_ddof_sp(CYTHON_UNUSED PyObject *__pyx_
   return __pyx_r;
 }
 
-/* "binstats.pyx":138
+/* "binstats.pyx":149
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cpdef double std_ddof(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof =0):             # <<<<<<<<<<<<<<
@@ -6209,7 +6400,7 @@ static PyObject *__pyx_pf_8binstats_24var_ddof_sp(CYTHON_UNUSED PyObject *__pyx_
  * 
  */
 
-static PyObject *__pyx_pw_8binstats_27std_ddof(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_29std_ddof(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static double __pyx_f_8binstats_std_ddof(PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_8binstats_std_ddof *__pyx_optional_args) {
   int __pyx_v_ddof = ((int)0);
   __Pyx_LocalBuf_ND __pyx_pybuffernd_values;
@@ -6239,16 +6430,16 @@ static double __pyx_f_8binstats_std_ddof(PyArrayObject *__pyx_v_values, PyArrayO
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 138, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 149, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 138, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 149, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
 
-  /* "binstats.pyx":139
+  /* "binstats.pyx":150
  * @cython.wraparound(False)
  * cpdef double std_ddof(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof =0):
  *     return sqrt(var_ddof(values, weights, ddof))             # <<<<<<<<<<<<<<
@@ -6261,7 +6452,7 @@ static double __pyx_f_8binstats_std_ddof(PyArrayObject *__pyx_v_values, PyArrayO
   __pyx_r = sqrt(__pyx_t_1);
   goto __pyx_L0;
 
-  /* "binstats.pyx":138
+  /* "binstats.pyx":149
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cpdef double std_ddof(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof =0):             # <<<<<<<<<<<<<<
@@ -6290,8 +6481,8 @@ static double __pyx_f_8binstats_std_ddof(PyArrayObject *__pyx_v_values, PyArrayO
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8binstats_27std_ddof(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_8binstats_27std_ddof(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8binstats_29std_ddof(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_29std_ddof(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_values = 0;
   PyArrayObject *__pyx_v_weights = 0;
   int __pyx_v_ddof;
@@ -6326,7 +6517,7 @@ static PyObject *__pyx_pw_8binstats_27std_ddof(PyObject *__pyx_self, PyObject *_
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_weights)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("std_ddof", 0, 2, 3, 1); __PYX_ERR(0, 138, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("std_ddof", 0, 2, 3, 1); __PYX_ERR(0, 149, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -6336,7 +6527,7 @@ static PyObject *__pyx_pw_8binstats_27std_ddof(PyObject *__pyx_self, PyObject *_
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "std_ddof") < 0)) __PYX_ERR(0, 138, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "std_ddof") < 0)) __PYX_ERR(0, 149, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -6351,22 +6542,22 @@ static PyObject *__pyx_pw_8binstats_27std_ddof(PyObject *__pyx_self, PyObject *_
     __pyx_v_values = ((PyArrayObject *)values[0]);
     __pyx_v_weights = ((PyArrayObject *)values[1]);
     if (values[2]) {
-      __pyx_v_ddof = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_ddof == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 138, __pyx_L3_error)
+      __pyx_v_ddof = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_ddof == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 149, __pyx_L3_error)
     } else {
       __pyx_v_ddof = ((int)0);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("std_ddof", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 138, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("std_ddof", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 149, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("binstats.std_ddof", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 138, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 138, __pyx_L1_error)
-  __pyx_r = __pyx_pf_8binstats_26std_ddof(__pyx_self, __pyx_v_values, __pyx_v_weights, __pyx_v_ddof);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 149, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 149, __pyx_L1_error)
+  __pyx_r = __pyx_pf_8binstats_28std_ddof(__pyx_self, __pyx_v_values, __pyx_v_weights, __pyx_v_ddof);
 
   /* function exit code */
   goto __pyx_L0;
@@ -6377,7 +6568,7 @@ static PyObject *__pyx_pw_8binstats_27std_ddof(PyObject *__pyx_self, PyObject *_
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8binstats_26std_ddof(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, int __pyx_v_ddof) {
+static PyObject *__pyx_pf_8binstats_28std_ddof(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, int __pyx_v_ddof) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_values;
   __Pyx_Buffer __pyx_pybuffer_values;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_weights;
@@ -6401,19 +6592,19 @@ static PyObject *__pyx_pf_8binstats_26std_ddof(CYTHON_UNUSED PyObject *__pyx_sel
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 138, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 149, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 138, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 149, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.ddof = __pyx_v_ddof;
   __pyx_t_1 = __pyx_f_8binstats_std_ddof(__pyx_v_values, __pyx_v_weights, 0, &__pyx_t_2); 
-  __pyx_t_3 = PyFloat_FromDouble(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 138, __pyx_L1_error)
+  __pyx_t_3 = PyFloat_FromDouble(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 149, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
@@ -6441,15 +6632,15 @@ static PyObject *__pyx_pf_8binstats_26std_ddof(CYTHON_UNUSED PyObject *__pyx_sel
   return __pyx_r;
 }
 
-/* "binstats.pyx":143
+/* "binstats.pyx":154
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
- * cpdef double std_ddof_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof =0):             # <<<<<<<<<<<<<<
+ * cpdef double std_ddof_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights, int ddof =0):             # <<<<<<<<<<<<<<
  *     return sqrt(var_ddof_sp(values, weights, ddof))
  * 
  */
 
-static PyObject *__pyx_pw_8binstats_29std_ddof_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_31std_ddof_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static double __pyx_f_8binstats_std_ddof_sp(PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_8binstats_std_ddof_sp *__pyx_optional_args) {
   int __pyx_v_ddof = ((int)0);
   __Pyx_LocalBuf_ND __pyx_pybuffernd_values;
@@ -6479,18 +6670,18 @@ static double __pyx_f_8binstats_std_ddof_sp(PyArrayObject *__pyx_v_values, PyArr
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 143, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 154, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 143, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 154, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
 
-  /* "binstats.pyx":144
+  /* "binstats.pyx":155
  * @cython.wraparound(False)
- * cpdef double std_ddof_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof =0):
+ * cpdef double std_ddof_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights, int ddof =0):
  *     return sqrt(var_ddof_sp(values, weights, ddof))             # <<<<<<<<<<<<<<
  * 
  * @cython.boundscheck(False)
@@ -6501,10 +6692,10 @@ static double __pyx_f_8binstats_std_ddof_sp(PyArrayObject *__pyx_v_values, PyArr
   __pyx_r = sqrt(__pyx_t_1);
   goto __pyx_L0;
 
-  /* "binstats.pyx":143
+  /* "binstats.pyx":154
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
- * cpdef double std_ddof_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof =0):             # <<<<<<<<<<<<<<
+ * cpdef double std_ddof_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights, int ddof =0):             # <<<<<<<<<<<<<<
  *     return sqrt(var_ddof_sp(values, weights, ddof))
  * 
  */
@@ -6530,8 +6721,8 @@ static double __pyx_f_8binstats_std_ddof_sp(PyArrayObject *__pyx_v_values, PyArr
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8binstats_29std_ddof_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_8binstats_29std_ddof_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8binstats_31std_ddof_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_31std_ddof_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_values = 0;
   PyArrayObject *__pyx_v_weights = 0;
   int __pyx_v_ddof;
@@ -6566,7 +6757,7 @@ static PyObject *__pyx_pw_8binstats_29std_ddof_sp(PyObject *__pyx_self, PyObject
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_weights)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("std_ddof_sp", 0, 2, 3, 1); __PYX_ERR(0, 143, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("std_ddof_sp", 0, 2, 3, 1); __PYX_ERR(0, 154, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -6576,7 +6767,7 @@ static PyObject *__pyx_pw_8binstats_29std_ddof_sp(PyObject *__pyx_self, PyObject
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "std_ddof_sp") < 0)) __PYX_ERR(0, 143, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "std_ddof_sp") < 0)) __PYX_ERR(0, 154, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -6591,22 +6782,22 @@ static PyObject *__pyx_pw_8binstats_29std_ddof_sp(PyObject *__pyx_self, PyObject
     __pyx_v_values = ((PyArrayObject *)values[0]);
     __pyx_v_weights = ((PyArrayObject *)values[1]);
     if (values[2]) {
-      __pyx_v_ddof = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_ddof == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 143, __pyx_L3_error)
+      __pyx_v_ddof = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_ddof == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 154, __pyx_L3_error)
     } else {
       __pyx_v_ddof = ((int)0);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("std_ddof_sp", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 143, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("std_ddof_sp", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 154, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("binstats.std_ddof_sp", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 143, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 143, __pyx_L1_error)
-  __pyx_r = __pyx_pf_8binstats_28std_ddof_sp(__pyx_self, __pyx_v_values, __pyx_v_weights, __pyx_v_ddof);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 154, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 154, __pyx_L1_error)
+  __pyx_r = __pyx_pf_8binstats_30std_ddof_sp(__pyx_self, __pyx_v_values, __pyx_v_weights, __pyx_v_ddof);
 
   /* function exit code */
   goto __pyx_L0;
@@ -6617,7 +6808,7 @@ static PyObject *__pyx_pw_8binstats_29std_ddof_sp(PyObject *__pyx_self, PyObject
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8binstats_28std_ddof_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, int __pyx_v_ddof) {
+static PyObject *__pyx_pf_8binstats_30std_ddof_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, int __pyx_v_ddof) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_values;
   __Pyx_Buffer __pyx_pybuffer_values;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_weights;
@@ -6641,19 +6832,19 @@ static PyObject *__pyx_pf_8binstats_28std_ddof_sp(CYTHON_UNUSED PyObject *__pyx_
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 143, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 154, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 143, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 154, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.ddof = __pyx_v_ddof;
   __pyx_t_1 = __pyx_f_8binstats_std_ddof_sp(__pyx_v_values, __pyx_v_weights, 0, &__pyx_t_2); 
-  __pyx_t_3 = PyFloat_FromDouble(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 143, __pyx_L1_error)
+  __pyx_t_3 = PyFloat_FromDouble(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 154, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
@@ -6681,7 +6872,7 @@ static PyObject *__pyx_pf_8binstats_28std_ddof_sp(CYTHON_UNUSED PyObject *__pyx_
   return __pyx_r;
 }
 
-/* "binstats.pyx":148
+/* "binstats.pyx":159
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cpdef double sem(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof = 0):             # <<<<<<<<<<<<<<
@@ -6689,7 +6880,7 @@ static PyObject *__pyx_pf_8binstats_28std_ddof_sp(CYTHON_UNUSED PyObject *__pyx_
  *     cdef double sum_squared_weights = 0
  */
 
-static PyObject *__pyx_pw_8binstats_31sem(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_33sem(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static double __pyx_f_8binstats_sem(PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_8binstats_sem *__pyx_optional_args) {
   int __pyx_v_ddof = ((int)0);
   double __pyx_v_weights_sum;
@@ -6731,16 +6922,16 @@ static double __pyx_f_8binstats_sem(PyArrayObject *__pyx_v_values, PyArrayObject
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 148, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 159, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 148, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 159, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
 
-  /* "binstats.pyx":149
+  /* "binstats.pyx":160
  * @cython.wraparound(False)
  * cpdef double sem(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof = 0):
  *     cdef double weights_sum = sum_weights(weights)             # <<<<<<<<<<<<<<
@@ -6749,7 +6940,7 @@ static double __pyx_f_8binstats_sem(PyArrayObject *__pyx_v_values, PyArrayObject
  */
   __pyx_v_weights_sum = __pyx_f_8binstats_sum_weights(((PyArrayObject *)__pyx_v_weights), 0);
 
-  /* "binstats.pyx":150
+  /* "binstats.pyx":161
  * cpdef double sem(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof = 0):
  *     cdef double weights_sum = sum_weights(weights)
  *     cdef double sum_squared_weights = 0             # <<<<<<<<<<<<<<
@@ -6758,7 +6949,7 @@ static double __pyx_f_8binstats_sem(PyArrayObject *__pyx_v_values, PyArrayObject
  */
   __pyx_v_sum_squared_weights = 0.0;
 
-  /* "binstats.pyx":152
+  /* "binstats.pyx":163
  *     cdef double sum_squared_weights = 0
  *     cdef Py_ssize_t i
  *     cdef Py_ssize_t N = weights.shape[0]             # <<<<<<<<<<<<<<
@@ -6767,19 +6958,19 @@ static double __pyx_f_8binstats_sem(PyArrayObject *__pyx_v_values, PyArrayObject
  */
   __pyx_v_N = (__pyx_v_weights->dimensions[0]);
 
-  /* "binstats.pyx":153
+  /* "binstats.pyx":164
  *     cdef Py_ssize_t i
  *     cdef Py_ssize_t N = weights.shape[0]
  *     cdef double[::1] view_w = weights             # <<<<<<<<<<<<<<
  *     for i in range(N):
  *         sum_squared_weights += view_w[i] * view_w[i]
  */
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(((PyObject *)__pyx_v_weights), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 153, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(((PyObject *)__pyx_v_weights), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 164, __pyx_L1_error)
   __pyx_v_view_w = __pyx_t_1;
   __pyx_t_1.memview = NULL;
   __pyx_t_1.data = NULL;
 
-  /* "binstats.pyx":154
+  /* "binstats.pyx":165
  *     cdef Py_ssize_t N = weights.shape[0]
  *     cdef double[::1] view_w = weights
  *     for i in range(N):             # <<<<<<<<<<<<<<
@@ -6791,7 +6982,7 @@ static double __pyx_f_8binstats_sem(PyArrayObject *__pyx_v_values, PyArrayObject
   for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
     __pyx_v_i = __pyx_t_4;
 
-    /* "binstats.pyx":155
+    /* "binstats.pyx":166
  *     cdef double[::1] view_w = weights
  *     for i in range(N):
  *         sum_squared_weights += view_w[i] * view_w[i]             # <<<<<<<<<<<<<<
@@ -6803,7 +6994,7 @@ static double __pyx_f_8binstats_sem(PyArrayObject *__pyx_v_values, PyArrayObject
     __pyx_v_sum_squared_weights = (__pyx_v_sum_squared_weights + ((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_5)) ))) * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_6)) )))));
   }
 
-  /* "binstats.pyx":156
+  /* "binstats.pyx":167
  *     for i in range(N):
  *         sum_squared_weights += view_w[i] * view_w[i]
  *     return std_ddof(values, weights, ddof) * sqrt(sum_squared_weights / (weights_sum*weights_sum))             # <<<<<<<<<<<<<<
@@ -6816,12 +7007,12 @@ static double __pyx_f_8binstats_sem(PyArrayObject *__pyx_v_values, PyArrayObject
   __pyx_t_9 = (__pyx_v_weights_sum * __pyx_v_weights_sum);
   if (unlikely(__pyx_t_9 == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-    __PYX_ERR(0, 156, __pyx_L1_error)
+    __PYX_ERR(0, 167, __pyx_L1_error)
   }
   __pyx_r = (__pyx_t_7 * sqrt((__pyx_v_sum_squared_weights / __pyx_t_9)));
   goto __pyx_L0;
 
-  /* "binstats.pyx":148
+  /* "binstats.pyx":159
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cpdef double sem(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof = 0):             # <<<<<<<<<<<<<<
@@ -6852,8 +7043,8 @@ static double __pyx_f_8binstats_sem(PyArrayObject *__pyx_v_values, PyArrayObject
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8binstats_31sem(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_8binstats_31sem(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8binstats_33sem(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_33sem(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_values = 0;
   PyArrayObject *__pyx_v_weights = 0;
   int __pyx_v_ddof;
@@ -6888,7 +7079,7 @@ static PyObject *__pyx_pw_8binstats_31sem(PyObject *__pyx_self, PyObject *__pyx_
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_weights)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("sem", 0, 2, 3, 1); __PYX_ERR(0, 148, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("sem", 0, 2, 3, 1); __PYX_ERR(0, 159, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -6898,7 +7089,7 @@ static PyObject *__pyx_pw_8binstats_31sem(PyObject *__pyx_self, PyObject *__pyx_
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "sem") < 0)) __PYX_ERR(0, 148, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "sem") < 0)) __PYX_ERR(0, 159, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -6913,22 +7104,22 @@ static PyObject *__pyx_pw_8binstats_31sem(PyObject *__pyx_self, PyObject *__pyx_
     __pyx_v_values = ((PyArrayObject *)values[0]);
     __pyx_v_weights = ((PyArrayObject *)values[1]);
     if (values[2]) {
-      __pyx_v_ddof = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_ddof == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 148, __pyx_L3_error)
+      __pyx_v_ddof = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_ddof == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 159, __pyx_L3_error)
     } else {
       __pyx_v_ddof = ((int)0);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("sem", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 148, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("sem", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 159, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("binstats.sem", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 148, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 148, __pyx_L1_error)
-  __pyx_r = __pyx_pf_8binstats_30sem(__pyx_self, __pyx_v_values, __pyx_v_weights, __pyx_v_ddof);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 159, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_r = __pyx_pf_8binstats_32sem(__pyx_self, __pyx_v_values, __pyx_v_weights, __pyx_v_ddof);
 
   /* function exit code */
   goto __pyx_L0;
@@ -6939,7 +7130,7 @@ static PyObject *__pyx_pw_8binstats_31sem(PyObject *__pyx_self, PyObject *__pyx_
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8binstats_30sem(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, int __pyx_v_ddof) {
+static PyObject *__pyx_pf_8binstats_32sem(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, int __pyx_v_ddof) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_values;
   __Pyx_Buffer __pyx_pybuffer_values;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_weights;
@@ -6963,19 +7154,19 @@ static PyObject *__pyx_pf_8binstats_30sem(CYTHON_UNUSED PyObject *__pyx_self, Py
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 148, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 159, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 148, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 159, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.ddof = __pyx_v_ddof;
   __pyx_t_1 = __pyx_f_8binstats_sem(__pyx_v_values, __pyx_v_weights, 0, &__pyx_t_2); 
-  __pyx_t_3 = PyFloat_FromDouble(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_t_3 = PyFloat_FromDouble(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 159, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
@@ -7003,15 +7194,15 @@ static PyObject *__pyx_pf_8binstats_30sem(CYTHON_UNUSED PyObject *__pyx_self, Py
   return __pyx_r;
 }
 
-/* "binstats.pyx":160
+/* "binstats.pyx":171
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
- * cpdef double sem_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof = 0):             # <<<<<<<<<<<<<<
- *     cdef double weights_sum = sum_weights(weights)
+ * cpdef double sem_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights, int ddof = 0):             # <<<<<<<<<<<<<<
+ *     cdef double weights_sum = sum_weights_sp(weights)
  *     cdef double sum_squared_weights = 0
  */
 
-static PyObject *__pyx_pw_8binstats_33sem_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_35sem_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static double __pyx_f_8binstats_sem_sp(PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_8binstats_sem_sp *__pyx_optional_args) {
   int __pyx_v_ddof = ((int)0);
   double __pyx_v_weights_sum;
@@ -7053,57 +7244,57 @@ static double __pyx_f_8binstats_sem_sp(PyArrayObject *__pyx_v_values, PyArrayObj
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 160, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 171, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 160, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 171, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
 
-  /* "binstats.pyx":161
+  /* "binstats.pyx":172
  * @cython.wraparound(False)
- * cpdef double sem_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof = 0):
- *     cdef double weights_sum = sum_weights(weights)             # <<<<<<<<<<<<<<
+ * cpdef double sem_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights, int ddof = 0):
+ *     cdef double weights_sum = sum_weights_sp(weights)             # <<<<<<<<<<<<<<
  *     cdef double sum_squared_weights = 0
  *     cdef Py_ssize_t i
  */
-  __pyx_v_weights_sum = __pyx_f_8binstats_sum_weights(((PyArrayObject *)__pyx_v_weights), 0);
+  __pyx_v_weights_sum = __pyx_f_8binstats_sum_weights_sp(((PyArrayObject *)__pyx_v_weights), 0);
 
-  /* "binstats.pyx":162
- * cpdef double sem_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof = 0):
- *     cdef double weights_sum = sum_weights(weights)
+  /* "binstats.pyx":173
+ * cpdef double sem_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights, int ddof = 0):
+ *     cdef double weights_sum = sum_weights_sp(weights)
  *     cdef double sum_squared_weights = 0             # <<<<<<<<<<<<<<
  *     cdef Py_ssize_t i
  *     cdef Py_ssize_t N = weights.shape[0]
  */
   __pyx_v_sum_squared_weights = 0.0;
 
-  /* "binstats.pyx":164
+  /* "binstats.pyx":175
  *     cdef double sum_squared_weights = 0
  *     cdef Py_ssize_t i
  *     cdef Py_ssize_t N = weights.shape[0]             # <<<<<<<<<<<<<<
- *     cdef double[::1] view_w = weights
+ *     cdef float[::1] view_w = weights
  *     for i in range(N):
  */
   __pyx_v_N = (__pyx_v_weights->dimensions[0]);
 
-  /* "binstats.pyx":165
+  /* "binstats.pyx":176
  *     cdef Py_ssize_t i
  *     cdef Py_ssize_t N = weights.shape[0]
- *     cdef double[::1] view_w = weights             # <<<<<<<<<<<<<<
+ *     cdef float[::1] view_w = weights             # <<<<<<<<<<<<<<
  *     for i in range(N):
  *         sum_squared_weights += view_w[i] * view_w[i]
  */
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(((PyObject *)__pyx_v_weights), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_float(((PyObject *)__pyx_v_weights), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 176, __pyx_L1_error)
   __pyx_v_view_w = __pyx_t_1;
   __pyx_t_1.memview = NULL;
   __pyx_t_1.data = NULL;
 
-  /* "binstats.pyx":166
+  /* "binstats.pyx":177
  *     cdef Py_ssize_t N = weights.shape[0]
- *     cdef double[::1] view_w = weights
+ *     cdef float[::1] view_w = weights
  *     for i in range(N):             # <<<<<<<<<<<<<<
  *         sum_squared_weights += view_w[i] * view_w[i]
  *     return std_ddof_sp(values, weights, ddof) * sqrt(sum_squared_weights / (weights_sum*weights_sum))
@@ -7113,8 +7304,8 @@ static double __pyx_f_8binstats_sem_sp(PyArrayObject *__pyx_v_values, PyArrayObj
   for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
     __pyx_v_i = __pyx_t_4;
 
-    /* "binstats.pyx":167
- *     cdef double[::1] view_w = weights
+    /* "binstats.pyx":178
+ *     cdef float[::1] view_w = weights
  *     for i in range(N):
  *         sum_squared_weights += view_w[i] * view_w[i]             # <<<<<<<<<<<<<<
  *     return std_ddof_sp(values, weights, ddof) * sqrt(sum_squared_weights / (weights_sum*weights_sum))
@@ -7122,10 +7313,10 @@ static double __pyx_f_8binstats_sem_sp(PyArrayObject *__pyx_v_values, PyArrayObj
  */
     __pyx_t_5 = __pyx_v_i;
     __pyx_t_6 = __pyx_v_i;
-    __pyx_v_sum_squared_weights = (__pyx_v_sum_squared_weights + ((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_5)) ))) * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_6)) )))));
+    __pyx_v_sum_squared_weights = (__pyx_v_sum_squared_weights + ((*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_w.data) + __pyx_t_5)) ))) * (*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_w.data) + __pyx_t_6)) )))));
   }
 
-  /* "binstats.pyx":168
+  /* "binstats.pyx":179
  *     for i in range(N):
  *         sum_squared_weights += view_w[i] * view_w[i]
  *     return std_ddof_sp(values, weights, ddof) * sqrt(sum_squared_weights / (weights_sum*weights_sum))             # <<<<<<<<<<<<<<
@@ -7138,16 +7329,16 @@ static double __pyx_f_8binstats_sem_sp(PyArrayObject *__pyx_v_values, PyArrayObj
   __pyx_t_9 = (__pyx_v_weights_sum * __pyx_v_weights_sum);
   if (unlikely(__pyx_t_9 == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-    __PYX_ERR(0, 168, __pyx_L1_error)
+    __PYX_ERR(0, 179, __pyx_L1_error)
   }
   __pyx_r = (__pyx_t_7 * sqrt((__pyx_v_sum_squared_weights / __pyx_t_9)));
   goto __pyx_L0;
 
-  /* "binstats.pyx":160
+  /* "binstats.pyx":171
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
- * cpdef double sem_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof = 0):             # <<<<<<<<<<<<<<
- *     cdef double weights_sum = sum_weights(weights)
+ * cpdef double sem_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights, int ddof = 0):             # <<<<<<<<<<<<<<
+ *     cdef double weights_sum = sum_weights_sp(weights)
  *     cdef double sum_squared_weights = 0
  */
 
@@ -7174,8 +7365,8 @@ static double __pyx_f_8binstats_sem_sp(PyArrayObject *__pyx_v_values, PyArrayObj
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8binstats_33sem_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_8binstats_33sem_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8binstats_35sem_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_35sem_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_values = 0;
   PyArrayObject *__pyx_v_weights = 0;
   int __pyx_v_ddof;
@@ -7210,7 +7401,7 @@ static PyObject *__pyx_pw_8binstats_33sem_sp(PyObject *__pyx_self, PyObject *__p
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_weights)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("sem_sp", 0, 2, 3, 1); __PYX_ERR(0, 160, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("sem_sp", 0, 2, 3, 1); __PYX_ERR(0, 171, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -7220,7 +7411,7 @@ static PyObject *__pyx_pw_8binstats_33sem_sp(PyObject *__pyx_self, PyObject *__p
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "sem_sp") < 0)) __PYX_ERR(0, 160, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "sem_sp") < 0)) __PYX_ERR(0, 171, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -7235,22 +7426,22 @@ static PyObject *__pyx_pw_8binstats_33sem_sp(PyObject *__pyx_self, PyObject *__p
     __pyx_v_values = ((PyArrayObject *)values[0]);
     __pyx_v_weights = ((PyArrayObject *)values[1]);
     if (values[2]) {
-      __pyx_v_ddof = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_ddof == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 160, __pyx_L3_error)
+      __pyx_v_ddof = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_ddof == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 171, __pyx_L3_error)
     } else {
       __pyx_v_ddof = ((int)0);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("sem_sp", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 160, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("sem_sp", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 171, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("binstats.sem_sp", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 160, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 160, __pyx_L1_error)
-  __pyx_r = __pyx_pf_8binstats_32sem_sp(__pyx_self, __pyx_v_values, __pyx_v_weights, __pyx_v_ddof);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 171, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 171, __pyx_L1_error)
+  __pyx_r = __pyx_pf_8binstats_34sem_sp(__pyx_self, __pyx_v_values, __pyx_v_weights, __pyx_v_ddof);
 
   /* function exit code */
   goto __pyx_L0;
@@ -7261,7 +7452,7 @@ static PyObject *__pyx_pw_8binstats_33sem_sp(PyObject *__pyx_self, PyObject *__p
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8binstats_32sem_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, int __pyx_v_ddof) {
+static PyObject *__pyx_pf_8binstats_34sem_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, int __pyx_v_ddof) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_values;
   __Pyx_Buffer __pyx_pybuffer_values;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_weights;
@@ -7285,19 +7476,19 @@ static PyObject *__pyx_pf_8binstats_32sem_sp(CYTHON_UNUSED PyObject *__pyx_self,
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 160, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 171, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 160, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 171, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.ddof = __pyx_v_ddof;
   __pyx_t_1 = __pyx_f_8binstats_sem_sp(__pyx_v_values, __pyx_v_weights, 0, &__pyx_t_2); 
-  __pyx_t_3 = PyFloat_FromDouble(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 160, __pyx_L1_error)
+  __pyx_t_3 = PyFloat_FromDouble(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 171, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
@@ -7325,7 +7516,7 @@ static PyObject *__pyx_pf_8binstats_32sem_sp(CYTHON_UNUSED PyObject *__pyx_self,
   return __pyx_r;
 }
 
-/* "binstats.pyx":172
+/* "binstats.pyx":183
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cpdef double propagated_error( double sem_value, double sigma_value, double mean_value, double min_multiplier):             # <<<<<<<<<<<<<<
@@ -7333,7 +7524,7 @@ static PyObject *__pyx_pf_8binstats_32sem_sp(CYTHON_UNUSED PyObject *__pyx_self,
  *         return sem_value
  */
 
-static PyObject *__pyx_pw_8binstats_35propagated_error(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_37propagated_error(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static double __pyx_f_8binstats_propagated_error(double __pyx_v_sem_value, double __pyx_v_sigma_value, double __pyx_v_mean_value, double __pyx_v_min_multiplier, CYTHON_UNUSED int __pyx_skip_dispatch) {
   double __pyx_r;
   __Pyx_RefNannyDeclarations
@@ -7341,7 +7532,7 @@ static double __pyx_f_8binstats_propagated_error(double __pyx_v_sem_value, doubl
   int __pyx_t_2;
   __Pyx_RefNannySetupContext("propagated_error", 0);
 
-  /* "binstats.pyx":173
+  /* "binstats.pyx":184
  * @cython.wraparound(False)
  * cpdef double propagated_error( double sem_value, double sigma_value, double mean_value, double min_multiplier):
  *     if sem_value >= sigma_value and sem_value >= mean_value*min_multiplier:             # <<<<<<<<<<<<<<
@@ -7359,7 +7550,7 @@ static double __pyx_f_8binstats_propagated_error(double __pyx_v_sem_value, doubl
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "binstats.pyx":174
+    /* "binstats.pyx":185
  * cpdef double propagated_error( double sem_value, double sigma_value, double mean_value, double min_multiplier):
  *     if sem_value >= sigma_value and sem_value >= mean_value*min_multiplier:
  *         return sem_value             # <<<<<<<<<<<<<<
@@ -7369,7 +7560,7 @@ static double __pyx_f_8binstats_propagated_error(double __pyx_v_sem_value, doubl
     __pyx_r = __pyx_v_sem_value;
     goto __pyx_L0;
 
-    /* "binstats.pyx":173
+    /* "binstats.pyx":184
  * @cython.wraparound(False)
  * cpdef double propagated_error( double sem_value, double sigma_value, double mean_value, double min_multiplier):
  *     if sem_value >= sigma_value and sem_value >= mean_value*min_multiplier:             # <<<<<<<<<<<<<<
@@ -7378,7 +7569,7 @@ static double __pyx_f_8binstats_propagated_error(double __pyx_v_sem_value, doubl
  */
   }
 
-  /* "binstats.pyx":175
+  /* "binstats.pyx":186
  *     if sem_value >= sigma_value and sem_value >= mean_value*min_multiplier:
  *         return sem_value
  *     elif sigma_value >= sem_value and sigma_value >= mean_value*min_multiplier:             # <<<<<<<<<<<<<<
@@ -7396,7 +7587,7 @@ static double __pyx_f_8binstats_propagated_error(double __pyx_v_sem_value, doubl
   __pyx_L6_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "binstats.pyx":176
+    /* "binstats.pyx":187
  *         return sem_value
  *     elif sigma_value >= sem_value and sigma_value >= mean_value*min_multiplier:
  *         return sigma_value             # <<<<<<<<<<<<<<
@@ -7406,7 +7597,7 @@ static double __pyx_f_8binstats_propagated_error(double __pyx_v_sem_value, doubl
     __pyx_r = __pyx_v_sigma_value;
     goto __pyx_L0;
 
-    /* "binstats.pyx":175
+    /* "binstats.pyx":186
  *     if sem_value >= sigma_value and sem_value >= mean_value*min_multiplier:
  *         return sem_value
  *     elif sigma_value >= sem_value and sigma_value >= mean_value*min_multiplier:             # <<<<<<<<<<<<<<
@@ -7415,7 +7606,7 @@ static double __pyx_f_8binstats_propagated_error(double __pyx_v_sem_value, doubl
  */
   }
 
-  /* "binstats.pyx":178
+  /* "binstats.pyx":189
  *         return sigma_value
  *     else:
  *         return mean_value*min_multiplier             # <<<<<<<<<<<<<<
@@ -7427,7 +7618,7 @@ static double __pyx_f_8binstats_propagated_error(double __pyx_v_sem_value, doubl
     goto __pyx_L0;
   }
 
-  /* "binstats.pyx":172
+  /* "binstats.pyx":183
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cpdef double propagated_error( double sem_value, double sigma_value, double mean_value, double min_multiplier):             # <<<<<<<<<<<<<<
@@ -7442,8 +7633,8 @@ static double __pyx_f_8binstats_propagated_error(double __pyx_v_sem_value, doubl
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8binstats_35propagated_error(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_8binstats_35propagated_error(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8binstats_37propagated_error(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_37propagated_error(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   double __pyx_v_sem_value;
   double __pyx_v_sigma_value;
   double __pyx_v_mean_value;
@@ -7481,23 +7672,23 @@ static PyObject *__pyx_pw_8binstats_35propagated_error(PyObject *__pyx_self, PyO
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_sigma_value)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("propagated_error", 1, 4, 4, 1); __PYX_ERR(0, 172, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("propagated_error", 1, 4, 4, 1); __PYX_ERR(0, 183, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_mean_value)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("propagated_error", 1, 4, 4, 2); __PYX_ERR(0, 172, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("propagated_error", 1, 4, 4, 2); __PYX_ERR(0, 183, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_min_multiplier)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("propagated_error", 1, 4, 4, 3); __PYX_ERR(0, 172, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("propagated_error", 1, 4, 4, 3); __PYX_ERR(0, 183, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "propagated_error") < 0)) __PYX_ERR(0, 172, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "propagated_error") < 0)) __PYX_ERR(0, 183, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
@@ -7507,27 +7698,27 @@ static PyObject *__pyx_pw_8binstats_35propagated_error(PyObject *__pyx_self, PyO
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
       values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
     }
-    __pyx_v_sem_value = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_sem_value == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 172, __pyx_L3_error)
-    __pyx_v_sigma_value = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_sigma_value == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 172, __pyx_L3_error)
-    __pyx_v_mean_value = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_mean_value == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 172, __pyx_L3_error)
-    __pyx_v_min_multiplier = __pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_min_multiplier == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 172, __pyx_L3_error)
+    __pyx_v_sem_value = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_sem_value == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 183, __pyx_L3_error)
+    __pyx_v_sigma_value = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_sigma_value == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 183, __pyx_L3_error)
+    __pyx_v_mean_value = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_mean_value == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 183, __pyx_L3_error)
+    __pyx_v_min_multiplier = __pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_min_multiplier == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 183, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("propagated_error", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 172, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("propagated_error", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 183, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("binstats.propagated_error", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_8binstats_34propagated_error(__pyx_self, __pyx_v_sem_value, __pyx_v_sigma_value, __pyx_v_mean_value, __pyx_v_min_multiplier);
+  __pyx_r = __pyx_pf_8binstats_36propagated_error(__pyx_self, __pyx_v_sem_value, __pyx_v_sigma_value, __pyx_v_mean_value, __pyx_v_min_multiplier);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8binstats_34propagated_error(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_sem_value, double __pyx_v_sigma_value, double __pyx_v_mean_value, double __pyx_v_min_multiplier) {
+static PyObject *__pyx_pf_8binstats_36propagated_error(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_sem_value, double __pyx_v_sigma_value, double __pyx_v_mean_value, double __pyx_v_min_multiplier) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -7536,7 +7727,7 @@ static PyObject *__pyx_pf_8binstats_34propagated_error(CYTHON_UNUSED PyObject *_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("propagated_error", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_8binstats_propagated_error(__pyx_v_sem_value, __pyx_v_sigma_value, __pyx_v_mean_value, __pyx_v_min_multiplier, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 172, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_8binstats_propagated_error(__pyx_v_sem_value, __pyx_v_sigma_value, __pyx_v_mean_value, __pyx_v_min_multiplier, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 183, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -7553,7 +7744,7 @@ static PyObject *__pyx_pf_8binstats_34propagated_error(CYTHON_UNUSED PyObject *_
   return __pyx_r;
 }
 
-/* "binstats.pyx":183
+/* "binstats.pyx":194
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cpdef double sem_weighted(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights):             # <<<<<<<<<<<<<<
@@ -7561,7 +7752,7 @@ static PyObject *__pyx_pf_8binstats_34propagated_error(CYTHON_UNUSED PyObject *_
  *     cdef Py_ssize_t N = weights.shape[0]
  */
 
-static PyObject *__pyx_pw_8binstats_37sem_weighted(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_39sem_weighted(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static double __pyx_f_8binstats_sem_weighted(PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, CYTHON_UNUSED int __pyx_skip_dispatch) {
   double __pyx_v_xW_mean;
   Py_ssize_t __pyx_v_N;
@@ -7605,16 +7796,16 @@ static double __pyx_f_8binstats_sem_weighted(PyArrayObject *__pyx_v_values, PyAr
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 183, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 194, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 183, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 194, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
 
-  /* "binstats.pyx":184
+  /* "binstats.pyx":195
  * @cython.wraparound(False)
  * cpdef double sem_weighted(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights):
  *     cdef double xW_mean = weighted_mean(values, weights)             # <<<<<<<<<<<<<<
@@ -7623,7 +7814,7 @@ static double __pyx_f_8binstats_sem_weighted(PyArrayObject *__pyx_v_values, PyAr
  */
   __pyx_v_xW_mean = __pyx_f_8binstats_weighted_mean(((PyArrayObject *)__pyx_v_values), ((PyArrayObject *)__pyx_v_weights), 0);
 
-  /* "binstats.pyx":185
+  /* "binstats.pyx":196
  * cpdef double sem_weighted(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights):
  *     cdef double xW_mean = weighted_mean(values, weights)
  *     cdef Py_ssize_t N = weights.shape[0]             # <<<<<<<<<<<<<<
@@ -7632,7 +7823,7 @@ static double __pyx_f_8binstats_sem_weighted(PyArrayObject *__pyx_v_values, PyAr
  */
   __pyx_v_N = (__pyx_v_weights->dimensions[0]);
 
-  /* "binstats.pyx":186
+  /* "binstats.pyx":197
  *     cdef double xW_mean = weighted_mean(values, weights)
  *     cdef Py_ssize_t N = weights.shape[0]
  *     cdef double sum_of_weights = sum_weights(weights)             # <<<<<<<<<<<<<<
@@ -7641,7 +7832,7 @@ static double __pyx_f_8binstats_sem_weighted(PyArrayObject *__pyx_v_values, PyAr
  */
   __pyx_v_sum_of_weights = __pyx_f_8binstats_sum_weights(((PyArrayObject *)__pyx_v_weights), 0);
 
-  /* "binstats.pyx":187
+  /* "binstats.pyx":198
  *     cdef Py_ssize_t N = weights.shape[0]
  *     cdef double sum_of_weights = sum_weights(weights)
  *     cdef double w_mean = sum_of_weights/ N             # <<<<<<<<<<<<<<
@@ -7650,35 +7841,35 @@ static double __pyx_f_8binstats_sem_weighted(PyArrayObject *__pyx_v_values, PyAr
  */
   if (unlikely(__pyx_v_N == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-    __PYX_ERR(0, 187, __pyx_L1_error)
+    __PYX_ERR(0, 198, __pyx_L1_error)
   }
   __pyx_v_w_mean = (__pyx_v_sum_of_weights / __pyx_v_N);
 
-  /* "binstats.pyx":188
+  /* "binstats.pyx":199
  *     cdef double sum_of_weights = sum_weights(weights)
  *     cdef double w_mean = sum_of_weights/ N
  *     cdef double[::1] view_v = values             # <<<<<<<<<<<<<<
  *     cdef double[::1] view_w = weights
  *     cdef double sum1 = 0
  */
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(((PyObject *)__pyx_v_values), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 188, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(((PyObject *)__pyx_v_values), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 199, __pyx_L1_error)
   __pyx_v_view_v = __pyx_t_1;
   __pyx_t_1.memview = NULL;
   __pyx_t_1.data = NULL;
 
-  /* "binstats.pyx":189
+  /* "binstats.pyx":200
  *     cdef double w_mean = sum_of_weights/ N
  *     cdef double[::1] view_v = values
  *     cdef double[::1] view_w = weights             # <<<<<<<<<<<<<<
  *     cdef double sum1 = 0
  *     cdef double sum2 = 0
  */
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(((PyObject *)__pyx_v_weights), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 189, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(((PyObject *)__pyx_v_weights), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 200, __pyx_L1_error)
   __pyx_v_view_w = __pyx_t_1;
   __pyx_t_1.memview = NULL;
   __pyx_t_1.data = NULL;
 
-  /* "binstats.pyx":190
+  /* "binstats.pyx":201
  *     cdef double[::1] view_v = values
  *     cdef double[::1] view_w = weights
  *     cdef double sum1 = 0             # <<<<<<<<<<<<<<
@@ -7687,7 +7878,7 @@ static double __pyx_f_8binstats_sem_weighted(PyArrayObject *__pyx_v_values, PyAr
  */
   __pyx_v_sum1 = 0.0;
 
-  /* "binstats.pyx":191
+  /* "binstats.pyx":202
  *     cdef double[::1] view_w = weights
  *     cdef double sum1 = 0
  *     cdef double sum2 = 0             # <<<<<<<<<<<<<<
@@ -7696,7 +7887,7 @@ static double __pyx_f_8binstats_sem_weighted(PyArrayObject *__pyx_v_values, PyAr
  */
   __pyx_v_sum2 = 0.0;
 
-  /* "binstats.pyx":192
+  /* "binstats.pyx":203
  *     cdef double sum1 = 0
  *     cdef double sum2 = 0
  *     cdef double sum3 = 0             # <<<<<<<<<<<<<<
@@ -7705,7 +7896,7 @@ static double __pyx_f_8binstats_sem_weighted(PyArrayObject *__pyx_v_values, PyAr
  */
   __pyx_v_sum3 = 0.0;
 
-  /* "binstats.pyx":193
+  /* "binstats.pyx":204
  *     cdef double sum2 = 0
  *     cdef double sum3 = 0
  *     for i in range(N):             # <<<<<<<<<<<<<<
@@ -7717,7 +7908,7 @@ static double __pyx_f_8binstats_sem_weighted(PyArrayObject *__pyx_v_values, PyAr
   for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
     __pyx_v_i = __pyx_t_4;
 
-    /* "binstats.pyx":194
+    /* "binstats.pyx":205
  *     cdef double sum3 = 0
  *     for i in range(N):
  *         sum1 += view_w[i] * view_w[i] * view_v[i] * view_v[i] - 2 * view_w[i] * view_v[i] * w_mean * xW_mean + w_mean * w_mean * xW_mean * xW_mean             # <<<<<<<<<<<<<<
@@ -7732,7 +7923,7 @@ static double __pyx_f_8binstats_sem_weighted(PyArrayObject *__pyx_v_values, PyAr
     __pyx_t_10 = __pyx_v_i;
     __pyx_v_sum1 = (__pyx_v_sum1 + ((((((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_5)) ))) * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_6)) )))) * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_v.data) + __pyx_t_7)) )))) * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_v.data) + __pyx_t_8)) )))) - ((((2.0 * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_9)) )))) * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_v.data) + __pyx_t_10)) )))) * __pyx_v_w_mean) * __pyx_v_xW_mean)) + (((__pyx_v_w_mean * __pyx_v_w_mean) * __pyx_v_xW_mean) * __pyx_v_xW_mean)));
 
-    /* "binstats.pyx":195
+    /* "binstats.pyx":206
  *     for i in range(N):
  *         sum1 += view_w[i] * view_w[i] * view_v[i] * view_v[i] - 2 * view_w[i] * view_v[i] * w_mean * xW_mean + w_mean * w_mean * xW_mean * xW_mean
  *         sum2 += view_w[i] * view_w[i] * view_v[i] - view_w[i] * w_mean * xW_mean - view_w[i]* w_mean * view_v[i] + w_mean*w_mean * xW_mean             # <<<<<<<<<<<<<<
@@ -7747,7 +7938,7 @@ static double __pyx_f_8binstats_sem_weighted(PyArrayObject *__pyx_v_values, PyAr
     __pyx_t_5 = __pyx_v_i;
     __pyx_v_sum2 = (__pyx_v_sum2 + ((((((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_10)) ))) * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_9)) )))) * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_v.data) + __pyx_t_8)) )))) - (((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_7)) ))) * __pyx_v_w_mean) * __pyx_v_xW_mean)) - (((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_6)) ))) * __pyx_v_w_mean) * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_v.data) + __pyx_t_5)) ))))) + ((__pyx_v_w_mean * __pyx_v_w_mean) * __pyx_v_xW_mean)));
 
-    /* "binstats.pyx":196
+    /* "binstats.pyx":207
  *         sum1 += view_w[i] * view_w[i] * view_v[i] * view_v[i] - 2 * view_w[i] * view_v[i] * w_mean * xW_mean + w_mean * w_mean * xW_mean * xW_mean
  *         sum2 += view_w[i] * view_w[i] * view_v[i] - view_w[i] * w_mean * xW_mean - view_w[i]* w_mean * view_v[i] + w_mean*w_mean * xW_mean
  *         sum3 += view_w[i] * view_w[i] - 2* view_w[i] * w_mean + w_mean * w_mean             # <<<<<<<<<<<<<<
@@ -7760,7 +7951,7 @@ static double __pyx_f_8binstats_sem_weighted(PyArrayObject *__pyx_v_values, PyAr
     __pyx_v_sum3 = (__pyx_v_sum3 + ((((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_5)) ))) * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_6)) )))) - ((2.0 * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_7)) )))) * __pyx_v_w_mean)) + (__pyx_v_w_mean * __pyx_v_w_mean)));
   }
 
-  /* "binstats.pyx":197
+  /* "binstats.pyx":208
  *         sum2 += view_w[i] * view_w[i] * view_v[i] - view_w[i] * w_mean * xW_mean - view_w[i]* w_mean * view_v[i] + w_mean*w_mean * xW_mean
  *         sum3 += view_w[i] * view_w[i] - 2* view_w[i] * w_mean + w_mean * w_mean
  *     return N *  (sum1 -2*xW_mean*sum2 + xW_mean*xW_mean*sum3 ) / ((N-1) *  sum_of_weights* sum_of_weights)             # <<<<<<<<<<<<<<
@@ -7771,12 +7962,12 @@ static double __pyx_f_8binstats_sem_weighted(PyArrayObject *__pyx_v_values, PyAr
   __pyx_t_12 = (((__pyx_v_N - 1) * __pyx_v_sum_of_weights) * __pyx_v_sum_of_weights);
   if (unlikely(__pyx_t_12 == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-    __PYX_ERR(0, 197, __pyx_L1_error)
+    __PYX_ERR(0, 208, __pyx_L1_error)
   }
   __pyx_r = (__pyx_t_11 / __pyx_t_12);
   goto __pyx_L0;
 
-  /* "binstats.pyx":183
+  /* "binstats.pyx":194
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cpdef double sem_weighted(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights):             # <<<<<<<<<<<<<<
@@ -7808,8 +7999,8 @@ static double __pyx_f_8binstats_sem_weighted(PyArrayObject *__pyx_v_values, PyAr
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8binstats_37sem_weighted(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_8binstats_37sem_weighted(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8binstats_39sem_weighted(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_39sem_weighted(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_values = 0;
   PyArrayObject *__pyx_v_weights = 0;
   int __pyx_lineno = 0;
@@ -7841,11 +8032,11 @@ static PyObject *__pyx_pw_8binstats_37sem_weighted(PyObject *__pyx_self, PyObjec
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_weights)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("sem_weighted", 1, 2, 2, 1); __PYX_ERR(0, 183, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("sem_weighted", 1, 2, 2, 1); __PYX_ERR(0, 194, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "sem_weighted") < 0)) __PYX_ERR(0, 183, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "sem_weighted") < 0)) __PYX_ERR(0, 194, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -7858,15 +8049,15 @@ static PyObject *__pyx_pw_8binstats_37sem_weighted(PyObject *__pyx_self, PyObjec
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("sem_weighted", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 183, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("sem_weighted", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 194, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("binstats.sem_weighted", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 183, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 183, __pyx_L1_error)
-  __pyx_r = __pyx_pf_8binstats_36sem_weighted(__pyx_self, __pyx_v_values, __pyx_v_weights);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 194, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 194, __pyx_L1_error)
+  __pyx_r = __pyx_pf_8binstats_38sem_weighted(__pyx_self, __pyx_v_values, __pyx_v_weights);
 
   /* function exit code */
   goto __pyx_L0;
@@ -7877,7 +8068,7 @@ static PyObject *__pyx_pw_8binstats_37sem_weighted(PyObject *__pyx_self, PyObjec
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8binstats_36sem_weighted(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights) {
+static PyObject *__pyx_pf_8binstats_38sem_weighted(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_values;
   __Pyx_Buffer __pyx_pybuffer_values;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_weights;
@@ -7899,16 +8090,16 @@ static PyObject *__pyx_pf_8binstats_36sem_weighted(CYTHON_UNUSED PyObject *__pyx
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 183, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 194, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 183, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 194, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_8binstats_sem_weighted(__pyx_v_values, __pyx_v_weights, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 183, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_8binstats_sem_weighted(__pyx_v_values, __pyx_v_weights, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 194, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -7936,15 +8127,15 @@ static PyObject *__pyx_pf_8binstats_36sem_weighted(CYTHON_UNUSED PyObject *__pyx
   return __pyx_r;
 }
 
-/* "binstats.pyx":201
+/* "binstats.pyx":212
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
- * cpdef double sem_weighted_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights):             # <<<<<<<<<<<<<<
+ * cpdef double sem_weighted_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights):             # <<<<<<<<<<<<<<
  *     cdef double xW_mean = weighted_mean_sp(values, weights)
  *     cdef Py_ssize_t N = weights.shape[0]
  */
 
-static PyObject *__pyx_pw_8binstats_39sem_weighted_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_41sem_weighted_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static double __pyx_f_8binstats_sem_weighted_sp(PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights, CYTHON_UNUSED int __pyx_skip_dispatch) {
   double __pyx_v_xW_mean;
   Py_ssize_t __pyx_v_N;
@@ -7963,7 +8154,7 @@ static double __pyx_f_8binstats_sem_weighted_sp(PyArrayObject *__pyx_v_values, P
   double __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_memviewslice __pyx_t_1 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  __Pyx_memviewslice __pyx_t_2 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  Py_ssize_t __pyx_t_2;
   Py_ssize_t __pyx_t_3;
   Py_ssize_t __pyx_t_4;
   Py_ssize_t __pyx_t_5;
@@ -7972,9 +8163,8 @@ static double __pyx_f_8binstats_sem_weighted_sp(PyArrayObject *__pyx_v_values, P
   Py_ssize_t __pyx_t_8;
   Py_ssize_t __pyx_t_9;
   Py_ssize_t __pyx_t_10;
-  Py_ssize_t __pyx_t_11;
+  double __pyx_t_11;
   double __pyx_t_12;
-  double __pyx_t_13;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -7989,90 +8179,90 @@ static double __pyx_f_8binstats_sem_weighted_sp(PyArrayObject *__pyx_v_values, P
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 201, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 212, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 201, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 212, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
 
-  /* "binstats.pyx":202
+  /* "binstats.pyx":213
  * @cython.wraparound(False)
- * cpdef double sem_weighted_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights):
+ * cpdef double sem_weighted_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights):
  *     cdef double xW_mean = weighted_mean_sp(values, weights)             # <<<<<<<<<<<<<<
  *     cdef Py_ssize_t N = weights.shape[0]
- *     cdef double sum_of_weights = sum_weights(weights)
+ *     cdef double sum_of_weights = sum_weights_sp(weights)
  */
   __pyx_v_xW_mean = __pyx_f_8binstats_weighted_mean_sp(((PyArrayObject *)__pyx_v_values), ((PyArrayObject *)__pyx_v_weights), 0);
 
-  /* "binstats.pyx":203
- * cpdef double sem_weighted_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights):
+  /* "binstats.pyx":214
+ * cpdef double sem_weighted_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights):
  *     cdef double xW_mean = weighted_mean_sp(values, weights)
  *     cdef Py_ssize_t N = weights.shape[0]             # <<<<<<<<<<<<<<
- *     cdef double sum_of_weights = sum_weights(weights)
+ *     cdef double sum_of_weights = sum_weights_sp(weights)
  *     cdef double w_mean = sum_of_weights/ N
  */
   __pyx_v_N = (__pyx_v_weights->dimensions[0]);
 
-  /* "binstats.pyx":204
+  /* "binstats.pyx":215
  *     cdef double xW_mean = weighted_mean_sp(values, weights)
  *     cdef Py_ssize_t N = weights.shape[0]
- *     cdef double sum_of_weights = sum_weights(weights)             # <<<<<<<<<<<<<<
+ *     cdef double sum_of_weights = sum_weights_sp(weights)             # <<<<<<<<<<<<<<
  *     cdef double w_mean = sum_of_weights/ N
  *     cdef float[::1] view_v = values
  */
-  __pyx_v_sum_of_weights = __pyx_f_8binstats_sum_weights(((PyArrayObject *)__pyx_v_weights), 0);
+  __pyx_v_sum_of_weights = __pyx_f_8binstats_sum_weights_sp(((PyArrayObject *)__pyx_v_weights), 0);
 
-  /* "binstats.pyx":205
+  /* "binstats.pyx":216
  *     cdef Py_ssize_t N = weights.shape[0]
- *     cdef double sum_of_weights = sum_weights(weights)
+ *     cdef double sum_of_weights = sum_weights_sp(weights)
  *     cdef double w_mean = sum_of_weights/ N             # <<<<<<<<<<<<<<
  *     cdef float[::1] view_v = values
- *     cdef double[::1] view_w = weights
+ *     cdef float[::1] view_w = weights
  */
   if (unlikely(__pyx_v_N == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-    __PYX_ERR(0, 205, __pyx_L1_error)
+    __PYX_ERR(0, 216, __pyx_L1_error)
   }
   __pyx_v_w_mean = (__pyx_v_sum_of_weights / __pyx_v_N);
 
-  /* "binstats.pyx":206
- *     cdef double sum_of_weights = sum_weights(weights)
+  /* "binstats.pyx":217
+ *     cdef double sum_of_weights = sum_weights_sp(weights)
  *     cdef double w_mean = sum_of_weights/ N
  *     cdef float[::1] view_v = values             # <<<<<<<<<<<<<<
- *     cdef double[::1] view_w = weights
+ *     cdef float[::1] view_w = weights
  *     cdef double sum1 = 0
  */
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_float(((PyObject *)__pyx_v_values), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 206, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_float(((PyObject *)__pyx_v_values), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 217, __pyx_L1_error)
   __pyx_v_view_v = __pyx_t_1;
   __pyx_t_1.memview = NULL;
   __pyx_t_1.data = NULL;
 
-  /* "binstats.pyx":207
+  /* "binstats.pyx":218
  *     cdef double w_mean = sum_of_weights/ N
  *     cdef float[::1] view_v = values
- *     cdef double[::1] view_w = weights             # <<<<<<<<<<<<<<
+ *     cdef float[::1] view_w = weights             # <<<<<<<<<<<<<<
  *     cdef double sum1 = 0
  *     cdef double sum2 = 0
  */
-  __pyx_t_2 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(((PyObject *)__pyx_v_weights), PyBUF_WRITABLE); if (unlikely(!__pyx_t_2.memview)) __PYX_ERR(0, 207, __pyx_L1_error)
-  __pyx_v_view_w = __pyx_t_2;
-  __pyx_t_2.memview = NULL;
-  __pyx_t_2.data = NULL;
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_float(((PyObject *)__pyx_v_weights), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 218, __pyx_L1_error)
+  __pyx_v_view_w = __pyx_t_1;
+  __pyx_t_1.memview = NULL;
+  __pyx_t_1.data = NULL;
 
-  /* "binstats.pyx":208
+  /* "binstats.pyx":219
  *     cdef float[::1] view_v = values
- *     cdef double[::1] view_w = weights
+ *     cdef float[::1] view_w = weights
  *     cdef double sum1 = 0             # <<<<<<<<<<<<<<
  *     cdef double sum2 = 0
  *     cdef double sum3 = 0
  */
   __pyx_v_sum1 = 0.0;
 
-  /* "binstats.pyx":209
- *     cdef double[::1] view_w = weights
+  /* "binstats.pyx":220
+ *     cdef float[::1] view_w = weights
  *     cdef double sum1 = 0
  *     cdef double sum2 = 0             # <<<<<<<<<<<<<<
  *     cdef double sum3 = 0
@@ -8080,7 +8270,7 @@ static double __pyx_f_8binstats_sem_weighted_sp(PyArrayObject *__pyx_v_values, P
  */
   __pyx_v_sum2 = 0.0;
 
-  /* "binstats.pyx":210
+  /* "binstats.pyx":221
  *     cdef double sum1 = 0
  *     cdef double sum2 = 0
  *     cdef double sum3 = 0             # <<<<<<<<<<<<<<
@@ -8089,78 +8279,78 @@ static double __pyx_f_8binstats_sem_weighted_sp(PyArrayObject *__pyx_v_values, P
  */
   __pyx_v_sum3 = 0.0;
 
-  /* "binstats.pyx":211
+  /* "binstats.pyx":222
  *     cdef double sum2 = 0
  *     cdef double sum3 = 0
  *     for i in range(N):             # <<<<<<<<<<<<<<
  *         sum1 += view_w[i] * view_w[i] * view_v[i] * view_v[i] - 2 * view_w[i] * view_v[i] * w_mean * xW_mean + w_mean * w_mean * xW_mean * xW_mean
  *         sum2 += view_w[i] * view_w[i] * view_v[i] - view_w[i] * w_mean * xW_mean - view_w[i]* w_mean * view_v[i] + w_mean*w_mean * xW_mean
  */
-  __pyx_t_3 = __pyx_v_N;
-  __pyx_t_4 = __pyx_t_3;
-  for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
-    __pyx_v_i = __pyx_t_5;
+  __pyx_t_2 = __pyx_v_N;
+  __pyx_t_3 = __pyx_t_2;
+  for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
+    __pyx_v_i = __pyx_t_4;
 
-    /* "binstats.pyx":212
+    /* "binstats.pyx":223
  *     cdef double sum3 = 0
  *     for i in range(N):
  *         sum1 += view_w[i] * view_w[i] * view_v[i] * view_v[i] - 2 * view_w[i] * view_v[i] * w_mean * xW_mean + w_mean * w_mean * xW_mean * xW_mean             # <<<<<<<<<<<<<<
  *         sum2 += view_w[i] * view_w[i] * view_v[i] - view_w[i] * w_mean * xW_mean - view_w[i]* w_mean * view_v[i] + w_mean*w_mean * xW_mean
  *         sum3 += view_w[i] * view_w[i] - 2* view_w[i] * w_mean + w_mean * w_mean
  */
+    __pyx_t_5 = __pyx_v_i;
     __pyx_t_6 = __pyx_v_i;
     __pyx_t_7 = __pyx_v_i;
     __pyx_t_8 = __pyx_v_i;
     __pyx_t_9 = __pyx_v_i;
     __pyx_t_10 = __pyx_v_i;
-    __pyx_t_11 = __pyx_v_i;
-    __pyx_v_sum1 = (__pyx_v_sum1 + ((((((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_6)) ))) * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_7)) )))) * (*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_v.data) + __pyx_t_8)) )))) * (*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_v.data) + __pyx_t_9)) )))) - ((((2.0 * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_10)) )))) * (*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_v.data) + __pyx_t_11)) )))) * __pyx_v_w_mean) * __pyx_v_xW_mean)) + (((__pyx_v_w_mean * __pyx_v_w_mean) * __pyx_v_xW_mean) * __pyx_v_xW_mean)));
+    __pyx_v_sum1 = (__pyx_v_sum1 + ((((((*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_w.data) + __pyx_t_5)) ))) * (*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_w.data) + __pyx_t_6)) )))) * (*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_v.data) + __pyx_t_7)) )))) * (*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_v.data) + __pyx_t_8)) )))) - ((((2.0 * (*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_w.data) + __pyx_t_9)) )))) * (*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_v.data) + __pyx_t_10)) )))) * __pyx_v_w_mean) * __pyx_v_xW_mean)) + (((__pyx_v_w_mean * __pyx_v_w_mean) * __pyx_v_xW_mean) * __pyx_v_xW_mean)));
 
-    /* "binstats.pyx":213
+    /* "binstats.pyx":224
  *     for i in range(N):
  *         sum1 += view_w[i] * view_w[i] * view_v[i] * view_v[i] - 2 * view_w[i] * view_v[i] * w_mean * xW_mean + w_mean * w_mean * xW_mean * xW_mean
  *         sum2 += view_w[i] * view_w[i] * view_v[i] - view_w[i] * w_mean * xW_mean - view_w[i]* w_mean * view_v[i] + w_mean*w_mean * xW_mean             # <<<<<<<<<<<<<<
  *         sum3 += view_w[i] * view_w[i] - 2* view_w[i] * w_mean + w_mean * w_mean
  *     return N *  (sum1 -2*xW_mean*sum2 + xW_mean*xW_mean*sum3 ) / ((N-1) *  sum_of_weights* sum_of_weights)
  */
-    __pyx_t_11 = __pyx_v_i;
     __pyx_t_10 = __pyx_v_i;
     __pyx_t_9 = __pyx_v_i;
     __pyx_t_8 = __pyx_v_i;
     __pyx_t_7 = __pyx_v_i;
     __pyx_t_6 = __pyx_v_i;
-    __pyx_v_sum2 = (__pyx_v_sum2 + ((((((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_11)) ))) * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_10)) )))) * (*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_v.data) + __pyx_t_9)) )))) - (((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_8)) ))) * __pyx_v_w_mean) * __pyx_v_xW_mean)) - (((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_7)) ))) * __pyx_v_w_mean) * (*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_v.data) + __pyx_t_6)) ))))) + ((__pyx_v_w_mean * __pyx_v_w_mean) * __pyx_v_xW_mean)));
+    __pyx_t_5 = __pyx_v_i;
+    __pyx_v_sum2 = (__pyx_v_sum2 + ((((((*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_w.data) + __pyx_t_10)) ))) * (*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_w.data) + __pyx_t_9)) )))) * (*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_v.data) + __pyx_t_8)) )))) - (((*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_w.data) + __pyx_t_7)) ))) * __pyx_v_w_mean) * __pyx_v_xW_mean)) - (((*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_w.data) + __pyx_t_6)) ))) * __pyx_v_w_mean) * (*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_v.data) + __pyx_t_5)) ))))) + ((__pyx_v_w_mean * __pyx_v_w_mean) * __pyx_v_xW_mean)));
 
-    /* "binstats.pyx":214
+    /* "binstats.pyx":225
  *         sum1 += view_w[i] * view_w[i] * view_v[i] * view_v[i] - 2 * view_w[i] * view_v[i] * w_mean * xW_mean + w_mean * w_mean * xW_mean * xW_mean
  *         sum2 += view_w[i] * view_w[i] * view_v[i] - view_w[i] * w_mean * xW_mean - view_w[i]* w_mean * view_v[i] + w_mean*w_mean * xW_mean
  *         sum3 += view_w[i] * view_w[i] - 2* view_w[i] * w_mean + w_mean * w_mean             # <<<<<<<<<<<<<<
  *     return N *  (sum1 -2*xW_mean*sum2 + xW_mean*xW_mean*sum3 ) / ((N-1) *  sum_of_weights* sum_of_weights)
  */
+    __pyx_t_5 = __pyx_v_i;
     __pyx_t_6 = __pyx_v_i;
     __pyx_t_7 = __pyx_v_i;
-    __pyx_t_8 = __pyx_v_i;
-    __pyx_v_sum3 = (__pyx_v_sum3 + ((((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_6)) ))) * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_7)) )))) - ((2.0 * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_view_w.data) + __pyx_t_8)) )))) * __pyx_v_w_mean)) + (__pyx_v_w_mean * __pyx_v_w_mean)));
+    __pyx_v_sum3 = (__pyx_v_sum3 + ((((*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_w.data) + __pyx_t_5)) ))) * (*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_w.data) + __pyx_t_6)) )))) - ((2.0 * (*((float *) ( /* dim=0 */ ((char *) (((float *) __pyx_v_view_w.data) + __pyx_t_7)) )))) * __pyx_v_w_mean)) + (__pyx_v_w_mean * __pyx_v_w_mean)));
   }
 
-  /* "binstats.pyx":215
+  /* "binstats.pyx":226
  *         sum2 += view_w[i] * view_w[i] * view_v[i] - view_w[i] * w_mean * xW_mean - view_w[i]* w_mean * view_v[i] + w_mean*w_mean * xW_mean
  *         sum3 += view_w[i] * view_w[i] - 2* view_w[i] * w_mean + w_mean * w_mean
  *     return N *  (sum1 -2*xW_mean*sum2 + xW_mean*xW_mean*sum3 ) / ((N-1) *  sum_of_weights* sum_of_weights)             # <<<<<<<<<<<<<<
  */
-  __pyx_t_12 = (__pyx_v_N * ((__pyx_v_sum1 - ((2.0 * __pyx_v_xW_mean) * __pyx_v_sum2)) + ((__pyx_v_xW_mean * __pyx_v_xW_mean) * __pyx_v_sum3)));
-  __pyx_t_13 = (((__pyx_v_N - 1) * __pyx_v_sum_of_weights) * __pyx_v_sum_of_weights);
-  if (unlikely(__pyx_t_13 == 0)) {
+  __pyx_t_11 = (__pyx_v_N * ((__pyx_v_sum1 - ((2.0 * __pyx_v_xW_mean) * __pyx_v_sum2)) + ((__pyx_v_xW_mean * __pyx_v_xW_mean) * __pyx_v_sum3)));
+  __pyx_t_12 = (((__pyx_v_N - 1) * __pyx_v_sum_of_weights) * __pyx_v_sum_of_weights);
+  if (unlikely(__pyx_t_12 == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-    __PYX_ERR(0, 215, __pyx_L1_error)
+    __PYX_ERR(0, 226, __pyx_L1_error)
   }
-  __pyx_r = (__pyx_t_12 / __pyx_t_13);
+  __pyx_r = (__pyx_t_11 / __pyx_t_12);
   goto __pyx_L0;
 
-  /* "binstats.pyx":201
+  /* "binstats.pyx":212
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
- * cpdef double sem_weighted_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights):             # <<<<<<<<<<<<<<
+ * cpdef double sem_weighted_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights):             # <<<<<<<<<<<<<<
  *     cdef double xW_mean = weighted_mean_sp(values, weights)
  *     cdef Py_ssize_t N = weights.shape[0]
  */
@@ -8168,7 +8358,6 @@ static double __pyx_f_8binstats_sem_weighted_sp(PyArrayObject *__pyx_v_values, P
   /* function exit code */
   __pyx_L1_error:;
   __PYX_XDEC_MEMVIEW(&__pyx_t_1, 1);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_2, 1);
   { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
     __Pyx_PyThreadState_declare
     __Pyx_PyThreadState_assign
@@ -8190,8 +8379,8 @@ static double __pyx_f_8binstats_sem_weighted_sp(PyArrayObject *__pyx_v_values, P
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8binstats_39sem_weighted_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_8binstats_39sem_weighted_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8binstats_41sem_weighted_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8binstats_41sem_weighted_sp(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_values = 0;
   PyArrayObject *__pyx_v_weights = 0;
   int __pyx_lineno = 0;
@@ -8223,11 +8412,11 @@ static PyObject *__pyx_pw_8binstats_39sem_weighted_sp(PyObject *__pyx_self, PyOb
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_weights)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("sem_weighted_sp", 1, 2, 2, 1); __PYX_ERR(0, 201, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("sem_weighted_sp", 1, 2, 2, 1); __PYX_ERR(0, 212, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "sem_weighted_sp") < 0)) __PYX_ERR(0, 201, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "sem_weighted_sp") < 0)) __PYX_ERR(0, 212, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -8240,15 +8429,15 @@ static PyObject *__pyx_pw_8binstats_39sem_weighted_sp(PyObject *__pyx_self, PyOb
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("sem_weighted_sp", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 201, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("sem_weighted_sp", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 212, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("binstats.sem_weighted_sp", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 201, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 201, __pyx_L1_error)
-  __pyx_r = __pyx_pf_8binstats_38sem_weighted_sp(__pyx_self, __pyx_v_values, __pyx_v_weights);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_values), __pyx_ptype_5numpy_ndarray, 1, "values", 0))) __PYX_ERR(0, 212, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 212, __pyx_L1_error)
+  __pyx_r = __pyx_pf_8binstats_40sem_weighted_sp(__pyx_self, __pyx_v_values, __pyx_v_weights);
 
   /* function exit code */
   goto __pyx_L0;
@@ -8259,7 +8448,7 @@ static PyObject *__pyx_pw_8binstats_39sem_weighted_sp(PyObject *__pyx_self, PyOb
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8binstats_38sem_weighted_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights) {
+static PyObject *__pyx_pf_8binstats_40sem_weighted_sp(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_values, PyArrayObject *__pyx_v_weights) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_values;
   __Pyx_Buffer __pyx_pybuffer_values;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_weights;
@@ -8281,16 +8470,16 @@ static PyObject *__pyx_pf_8binstats_38sem_weighted_sp(CYTHON_UNUSED PyObject *__
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 201, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_values.rcbuffer->pybuffer, (PyObject*)__pyx_v_values, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 212, __pyx_L1_error)
   }
   __pyx_pybuffernd_values.diminfo[0].strides = __pyx_pybuffernd_values.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_values.diminfo[0].shape = __pyx_pybuffernd_values.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 201, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_float, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 212, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_8binstats_sem_weighted_sp(__pyx_v_values, __pyx_v_weights, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 201, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_8binstats_sem_weighted_sp(__pyx_v_values, __pyx_v_weights, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 212, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -23105,25 +23294,26 @@ static PyTypeObject __pyx_type___pyx_memoryviewslice = {
 
 static PyMethodDef __pyx_methods[] = {
   {"sum_weights", (PyCFunction)__pyx_pw_8binstats_1sum_weights, METH_O, 0},
-  {"sum", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_3sum, METH_VARARGS|METH_KEYWORDS, 0},
-  {"sum_sp", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_5sum_sp, METH_VARARGS|METH_KEYWORDS, 0},
-  {"weighted_mean", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_7weighted_mean, METH_VARARGS|METH_KEYWORDS, 0},
-  {"weighted_mean_sp", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_9weighted_mean_sp, METH_VARARGS|METH_KEYWORDS, 0},
-  {"demeaned", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_11demeaned, METH_VARARGS|METH_KEYWORDS, 0},
-  {"demeaned_sp", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_13demeaned_sp, METH_VARARGS|METH_KEYWORDS, 0},
-  {"sumsquares", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_15sumsquares, METH_VARARGS|METH_KEYWORDS, 0},
-  {"sumsquares_sp", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_17sumsquares_sp, METH_VARARGS|METH_KEYWORDS, 0},
-  {"sigma", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_19sigma, METH_VARARGS|METH_KEYWORDS, 0},
-  {"sigma_sp", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_21sigma_sp, METH_VARARGS|METH_KEYWORDS, 0},
-  {"var_ddof", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_23var_ddof, METH_VARARGS|METH_KEYWORDS, 0},
-  {"var_ddof_sp", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_25var_ddof_sp, METH_VARARGS|METH_KEYWORDS, 0},
-  {"std_ddof", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_27std_ddof, METH_VARARGS|METH_KEYWORDS, 0},
-  {"std_ddof_sp", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_29std_ddof_sp, METH_VARARGS|METH_KEYWORDS, 0},
-  {"sem", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_31sem, METH_VARARGS|METH_KEYWORDS, 0},
-  {"sem_sp", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_33sem_sp, METH_VARARGS|METH_KEYWORDS, 0},
-  {"propagated_error", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_35propagated_error, METH_VARARGS|METH_KEYWORDS, 0},
-  {"sem_weighted", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_37sem_weighted, METH_VARARGS|METH_KEYWORDS, 0},
-  {"sem_weighted_sp", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_39sem_weighted_sp, METH_VARARGS|METH_KEYWORDS, 0},
+  {"sum_weights_sp", (PyCFunction)__pyx_pw_8binstats_3sum_weights_sp, METH_O, 0},
+  {"sum", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_5sum, METH_VARARGS|METH_KEYWORDS, 0},
+  {"sum_sp", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_7sum_sp, METH_VARARGS|METH_KEYWORDS, 0},
+  {"weighted_mean", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_9weighted_mean, METH_VARARGS|METH_KEYWORDS, 0},
+  {"weighted_mean_sp", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_11weighted_mean_sp, METH_VARARGS|METH_KEYWORDS, 0},
+  {"demeaned", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_13demeaned, METH_VARARGS|METH_KEYWORDS, 0},
+  {"demeaned_sp", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_15demeaned_sp, METH_VARARGS|METH_KEYWORDS, 0},
+  {"sumsquares", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_17sumsquares, METH_VARARGS|METH_KEYWORDS, 0},
+  {"sumsquares_sp", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_19sumsquares_sp, METH_VARARGS|METH_KEYWORDS, 0},
+  {"sigma", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_21sigma, METH_VARARGS|METH_KEYWORDS, 0},
+  {"sigma_sp", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_23sigma_sp, METH_VARARGS|METH_KEYWORDS, 0},
+  {"var_ddof", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_25var_ddof, METH_VARARGS|METH_KEYWORDS, 0},
+  {"var_ddof_sp", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_27var_ddof_sp, METH_VARARGS|METH_KEYWORDS, 0},
+  {"std_ddof", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_29std_ddof, METH_VARARGS|METH_KEYWORDS, 0},
+  {"std_ddof_sp", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_31std_ddof_sp, METH_VARARGS|METH_KEYWORDS, 0},
+  {"sem", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_33sem, METH_VARARGS|METH_KEYWORDS, 0},
+  {"sem_sp", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_35sem_sp, METH_VARARGS|METH_KEYWORDS, 0},
+  {"propagated_error", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_37propagated_error, METH_VARARGS|METH_KEYWORDS, 0},
+  {"sem_weighted", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_39sem_weighted, METH_VARARGS|METH_KEYWORDS, 0},
+  {"sem_weighted_sp", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8binstats_41sem_weighted_sp, METH_VARARGS|METH_KEYWORDS, 0},
   {0, 0, 0, 0}
 };
 

@@ -17,7 +17,6 @@ from attrs import Factory
 from attrs import define, validators, field, cmp_using, fields
 from pathlib import Path
 import numpy as np
-import pandas as pd
 from typing import List, Optional, Any, NoReturn
 from collections.abc import Iterable
 
@@ -130,6 +129,11 @@ class scatteringDataObj(gimmeItems):
         eq=cmp_using(eq=np.array_equal),
         converter=np.array,
     )
+    wt: Optional[np.ndarray] = field(
+        default=None,
+        validator=validators.optional(IChecker),
+        eq=cmp_using(eq=np.array_equal),
+    )
     Mask: Optional[np.ndarray] = field(
         default=None,
         validator=validators.optional(IChecker),
@@ -183,35 +187,31 @@ class scatteringDataObj(gimmeItems):
         """Return the length of the data array"""
         return len(self.Q)
 
-    def asPandas(
-        self, maskArray: Optional[np.ndarray] = None, scaling: float = 1.0
-    ) -> pd.DataFrame:
-        """Return the data as a pandas dataframe instance"""
+    def updateScaledMaskedValues(
+            self, maskArray: Optional[np.ndarray] = None, scaling: float = 1.0
+    ) -> None:
+        """
+        Updates the attributes of the class with some scaling and mask (if present)
+        """
         if maskArray is None:
-            return pd.DataFrame(
-                data={
-                    "Q": self.Q,
-                    "QSigma": self.QSigma,
-                    "I": self.I * scaling,
-                    "ISigma": self.ISigma * scaling,
-                    "mask": self.Mask,
-                }
-            ).copy()
-        if isinstance(maskArray, np.ndarray):
+            self.Q = self.Q.copy()
+            self.QSigma = self.QSigma.copy()
+            self.I = self.I * scaling
+            self.ISigma = self.ISigma * scaling
+            self.Mask = self.Mask
+        elif  isinstance(maskArray, np.ndarray):
             assert (
                 maskArray.shape == self.Q.shape
             ), "Mask array supplied to scatteringDataObj.asPandas must conform to the data shape"
-            return pd.DataFrame(
-                data={
-                    "Q": self.Q[~maskArray],
-                    "QSigma": self.QSigma[~maskArray],
-                    "I": self.I[~maskArray] * scaling,
-                    "ISigma": self.ISigma[~maskArray] * scaling,
-                    "mask": self.Mask[~maskArray],
-                }
-            ).copy()
+            self.Q = self.Q[~maskArray]
+            self.QSigma = self.QSigma[~maskArray]
+            self.I = self.I[~maskArray] * scaling
+            self.ISigma = self.ISigma[~maskArray] * scaling
+            self.Mask = self.Mask[~maskArray]
         else:
-            assert False, "No valid mask array fed into scatteringDataObj.asPandas()"
+            assert False, "Not a valid mask"
+
+
 
     def qMin(self) -> float:
         """Return the minimum Q"""
@@ -403,17 +403,10 @@ class mergeConfigObj(gimmeItems):
         validator=[validators.ge(0), validators.instance_of(float)],
         converter=float,
     )
-
-    df: Optional[pd.DataFrame] = field(
-        default=None,
-        validator=validators.optional(validators.instance_of(pd.DataFrame)),
-    )
-
     outputRanges: Optional[List[outputRangeObj]] = field(
         default=None,
         validator=validators.optional(validators.instance_of(list)),
     )
-
     ranges: Optional[List[rangeConfigObj]] = field(
         default=None,
         validator=validators.optional(validators.instance_of(list)),
