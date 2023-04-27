@@ -22,6 +22,17 @@ cpdef double sum_weights(np.ndarray[double, ndim=1] weights):
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
+cpdef double sum_weights_sp(np.ndarray[float, ndim=1] weights):
+    cdef double sum_weights = 0
+    cdef Py_ssize_t i
+    cdef Py_ssize_t N = weights.shape[0]
+    cdef float[::1] view_w = weights
+    for i in range(N):
+        sum_weights += view_w[i]
+    return sum_weights
+
+@cython.boundscheck(False)
+@cython.wraparound(False)
 cpdef double sum(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] weights):
     cdef double sum = 0
     cdef Py_ssize_t i
@@ -34,12 +45,12 @@ cpdef double sum(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] w
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cpdef double sum_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights):
+cpdef double sum_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights):
     cdef double sum = 0
     cdef Py_ssize_t i
     cdef Py_ssize_t N = weights.shape[0]
     cdef float[::1] view_v = values
-    cdef double[::1] view_w = weights
+    cdef float[::1] view_w = weights
     for i in range(N):
         sum += view_v[i]* view_w[i]
     return sum
@@ -51,8 +62,8 @@ cpdef double weighted_mean(np.ndarray[double, ndim=1] values, np.ndarray[double,
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cpdef double weighted_mean_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights):
-    return sum_sp(values, weights) / sum_weights(weights)
+cpdef double weighted_mean_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights):
+    return sum_sp(values, weights) / sum_weights_sp(weights)
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
@@ -66,7 +77,7 @@ cpdef double[::1] demeaned(np.ndarray[double, ndim=1] values, np.ndarray[double,
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cpdef float[::1] demeaned_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights):
+cpdef float[::1] demeaned_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights):
     cdef double w_mean = weighted_mean_sp(values, weights)
     cdef Py_ssize_t N = weights.shape[0]
     cdef float[::1] view_v = values
@@ -88,9 +99,9 @@ cpdef double sumsquares(np.ndarray[double, ndim=1] values, np.ndarray[double, nd
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cpdef double sumsquares_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights):
+cpdef double sumsquares_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights):
     cdef float[::1] view_demeaned = demeaned_sp(values, weights)
-    cdef double[::1] view_w = weights
+    cdef float[::1] view_w = weights
     cdef double sum = 0
     cdef Py_ssize_t i
     cdef Py_ssize_t N = weights.shape[0]
@@ -113,15 +124,15 @@ cpdef double sigma(np.ndarray[double, ndim=1] sigma_values, np.ndarray[double, n
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cpdef double sigma_sp(np.ndarray[float, ndim=1] sigma_values, np.ndarray[double, ndim=1] weights):
+cpdef double sigma_sp(np.ndarray[float, ndim=1] sigma_values, np.ndarray[float, ndim=1] weights):
     cdef float[::1] view_sigma = sigma_values
-    cdef double[::1] view_w = weights
+    cdef float[::1] view_w = weights
     cdef double sum = 0
     cdef Py_ssize_t i
     cdef Py_ssize_t N = weights.shape[0]
     for i in range(N):
         sum+=  view_sigma[i]* view_sigma[i]* view_w[i]* view_w[i]
-    return sqrt(sum)/sum_weights(weights)
+    return sqrt(sum)/sum_weights_sp(weights)
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
@@ -130,8 +141,8 @@ cpdef double var_ddof(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cpdef double var_ddof_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof =0):
-    return sumsquares_sp(values, weights)/(sum_weights(weights) - ddof)
+cpdef double var_ddof_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights, int ddof =0):
+    return sumsquares_sp(values, weights)/(sum_weights_sp(weights) - ddof)
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
@@ -140,7 +151,7 @@ cpdef double std_ddof(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cpdef double std_ddof_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof =0):
+cpdef double std_ddof_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights, int ddof =0):
     return sqrt(var_ddof_sp(values, weights, ddof))
 
 @cython.boundscheck(False)
@@ -157,12 +168,12 @@ cpdef double sem(np.ndarray[double, ndim=1] values, np.ndarray[double, ndim=1] w
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cpdef double sem_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights, int ddof = 0):
-    cdef double weights_sum = sum_weights(weights)
+cpdef double sem_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights, int ddof = 0):
+    cdef double weights_sum = sum_weights_sp(weights)
     cdef double sum_squared_weights = 0
     cdef Py_ssize_t i
     cdef Py_ssize_t N = weights.shape[0]
-    cdef double[::1] view_w = weights
+    cdef float[::1] view_w = weights
     for i in range(N):
         sum_squared_weights += view_w[i] * view_w[i]
     return std_ddof_sp(values, weights, ddof) * sqrt(sum_squared_weights / (weights_sum*weights_sum))
@@ -198,13 +209,13 @@ cpdef double sem_weighted(np.ndarray[double, ndim=1] values, np.ndarray[double, 
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cpdef double sem_weighted_sp(np.ndarray[float, ndim=1] values, np.ndarray[double, ndim=1] weights):
+cpdef double sem_weighted_sp(np.ndarray[float, ndim=1] values, np.ndarray[float, ndim=1] weights):
     cdef double xW_mean = weighted_mean_sp(values, weights)
     cdef Py_ssize_t N = weights.shape[0]
-    cdef double sum_of_weights = sum_weights(weights)
+    cdef double sum_of_weights = sum_weights_sp(weights)
     cdef double w_mean = sum_of_weights/ N
     cdef float[::1] view_v = values
-    cdef double[::1] view_w = weights
+    cdef float[::1] view_w = weights
     cdef double sum1 = 0
     cdef double sum2 = 0
     cdef double sum3 = 0

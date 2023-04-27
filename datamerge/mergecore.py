@@ -4,7 +4,6 @@ import logging
 import time
 from attrs import field, define, validators, Factory
 import numpy as np
-import pandas as pd
 from .findscaling import findScaling
 from .dataclasses import (
     mergeConfigObj,
@@ -12,13 +11,14 @@ from .dataclasses import (
     scatteringDataObj,
     rangeConfigObj,
 )
-from typing import List, Optional
+
 from statsmodels.stats.weightstats import DescrStatsW
+from typing import List, Optional
 from multiprocessing.pool import ThreadPool as Pool
 import importlib.util
 import sys
-
-
+import warnings
+warnings.filterwarnings("error")
 @define
 class mergeCore:
     """The core merging function, most of the actual action happens here"""
@@ -30,9 +30,10 @@ class mergeCore:
     dataList: List[scatteringDataObj] = field(validator=validators.instance_of(list))
     # the following will be constructed in here:
     ranges: list = field(default=Factory(list), validator=validators.instance_of(list))
-    preMData: Optional[pd.DataFrame] = field(
+
+    preMData: Optional[scatteringDataObj] = field(
         default=None,
-        validator=validators.optional(validators.instance_of(pd.DataFrame)),
+        validator=validators.optional(validators.instance_of(scatteringDataObj)),
     )
     mData: mergedDataObj = field(
         default=Factory(mergedDataObj), validator=validators.instance_of(mergedDataObj)
@@ -114,9 +115,9 @@ class mergeCore:
                 ]
         return
 
-    def rangeObjAsDataframe(self, rangeObj: rangeConfigObj) -> pd.DataFrame:
+    def rangeObjUpdate(self, rangeObj: rangeConfigObj) -> rangeConfigObj.scatteringData:
         """
-        Returns a dataframe from the rangeobj, with all the corrections and adjustments applied:
+        corrections and adjustments  are applied from the rangeobj:
           - scatteringData.mask
           - qMin, qMax
           - scale factor (if applicable)
@@ -126,16 +127,15 @@ class mergeCore:
         assert rangeObj.scatteringData is not None, logging.error(
             "ScatteringData cannot be none when exporting range object as DataFrame"
         )
-        df = rangeObj.scatteringData.asPandas(
-            maskArray=rangeObj.scatteringData.Mask
-            | rangeObj.scatteringData.returnMaskByQRange(
-                qMin=rangeObj.qMinPreset, qMax=rangeObj.qMaxPreset
-            ),
+        rangeObj.scatteringData.updateScaledMaskedValues(
+            maskArray=rangeObj.scatteringData.Mask  | rangeObj.scatteringData.returnMaskByQRange(qMin=rangeObj.qMinPreset, qMax=rangeObj.qMaxPreset ),
             scaling=rangeObj.scale,
         )
-        df.ISigma.clip(lower=self.mergeConfig.eMin * df.I, inplace=True)
-        df.QSigma.clip(lower=self.mergeConfig.qeMin * df.Q, inplace=True)
-        return df
+        rangeObj.scatteringData.ISigma = np.clip(rangeObj.scatteringData.ISigma, self.mergeConfig.eMin * rangeObj.scatteringData.I, None)
+        rangeObj.scatteringData.QSigma = np.clip(rangeObj.scatteringData.QSigma, self.mergeConfig.qeMin * rangeObj.scatteringData.Q, None)
+
+        return rangeObj.scatteringData
+
 
     def autoScale(self) -> None:
         # if any of the autoscaling dials is set to something else than itself, find the scaling factor between those datasets
@@ -174,20 +174,60 @@ class mergeCore:
         """
         # nothing to do
         if len(self.ranges) == 1:
-            df = self.rangeObjAsDataframe(self.ranges[0])
+            scattering_data = self.rangeObjUpdate(self.ranges[0])
         else:
             with Pool(self.poolSize) as pool:
-                dfs = [
+                scattering_data_per_range = [
                     d
-                    for d in pool.imap_unordered(self.rangeObjAsDataframe, self.ranges)
+                    for d in pool.imap_unordered(self.rangeObjUpdate, self.ranges)
                 ]
-            df = pd.concat(dfs, ignore_index=True, sort=False)
-        self.preMData = df.dropna(thresh=2)
+            try:
+                scattering_data = scatteringDataObj(
+                    filename='',
+                    Q= np.array([i.Q for i in scattering_data_per_range ]).flatten(),
+                    I=np.array([i.I for i in scattering_data_per_range ]).flatten(),
+                    ISigma=np.array([i.ISigma for i in scattering_data_per_range ]).flatten(),
+                    QSigma=np.array([i.QSigma for i in scattering_data_per_range ]).flatten(),
+                    Mask=np.array([i.Mask for i in scattering_data_per_range ]).flatten(),
+                    sampleName='simulation',
+                    sampleOwner='Sofya',
+                    configuration=1,
+                )
+            except np.VisibleDeprecationWarning:
+                scattering_data = scatteringDataObj(
+                    filename='',
+                    Q= np.array([t for sd in scattering_data_per_range  for t in sd.Q]),
+                    I=np.array([t for sd in scattering_data_per_range  for t in sd.I]),
+                    ISigma=np.array([t for sd in scattering_data_per_range  for t in sd.ISigma]),
+                    QSigma=np.array([t for sd in scattering_data_per_range  for t in sd.QSigma]),
+                    Mask=np.array([t for sd in scattering_data_per_range  for t in sd.Mask]),
+                    sampleName='simulation',
+                    sampleOwner='Sofya',
+                    configuration=1,
+                )
+            
+        # drop empty rows (Q and I are nan)
+        nonempty_bin_index = np.argwhere(~(np.isnan(scattering_data.Q)&np.isnan(scattering_data.I))).flatten()
+        self.preMData = scatteringDataObj(
+            filename='',
+            Q= scattering_data.Q[nonempty_bin_index],
+            I=scattering_data.I[nonempty_bin_index],
+            ISigma=scattering_data.ISigma[nonempty_bin_index],
+            QSigma=scattering_data.QSigma[nonempty_bin_index],
+            Mask=scattering_data.Mask[nonempty_bin_index],
+            sampleName='simulation',
+            sampleOwner='Sofya',
+            configuration=1,
+            )
         return
 
     def sortUnmergedData(self) -> None:
-        if self.preMData is not None:
-            self.preMData.sort_values(by="Q", inplace=True)
+        sorter = np.argsort(self.preMData.Q)        
+        self.preMData.Q = self.preMData.Q[sorter]
+        self.preMData.I = self.preMData.I[sorter]
+        self.preMData.ISigma = self.preMData.ISigma[sorter]
+        self.preMData.QSigma =self.preMData.QSigma[sorter]
+        self.preMData.Mask = self.preMData.Mask[sorter]
         return
 
     def nonZeroQMin(self) -> float:
@@ -241,28 +281,29 @@ class mergeCore:
         be[-1] = be[-1] + 1e-3 * (be[-1] - be[-2])
         return be
 
+    def SEMw(x, w):
+        """
+        function adapted from: https://stats.stackexchange.com/questions/25895/computing-standard-error-in-weighted-mean-estimation
+        citing: The main reference is this paper, by Donald F. Gatz and Luther Smith, where 3 formula based estimators are compared with bootstrap results. The best approximation to the bootstrap result comes from Cochran (1977):
+        side note: this provides rubbish results.
+        """
+        n = len(w)
+        # dummy = [print(f"x: {xi}, {wi}") for xi, wi in zip(x, w)]
+        xWbar = np.average(x, weights=w)
+        wbar = np.mean(w)
+        out = (
+            n
+            / ((n - 1) * np.sum(w) ** 2)
+            * (
+                np.sum((w * x - wbar * xWbar) ** 2)
+                - 2 * xWbar * np.sum((w - wbar) * (w * x - wbar * xWbar))
+                + xWbar**2 * np.sum((w - wbar) ** 2)
+            )
+        )
+        return out
+    
     def mergyMagic(self, binEdges: np.ndarray, calcSEMw: bool = False) -> None:
         # define weighted standard error on the mean:
-        def SEMw(x, w):
-            """
-            function adapted from: https://stats.stackexchange.com/questions/25895/computing-standard-error-in-weighted-mean-estimation
-            citing: The main reference is this paper, by Donald F. Gatz and Luther Smith, where 3 formula based estimators are compared with bootstrap results. The best approximation to the bootstrap result comes from Cochran (1977):
-            side note: this provides rubbish results.
-            """
-            n = len(w)
-            # dummy = [print(f"x: {xi}, {wi}") for xi, wi in zip(x, w)]
-            xWbar = np.average(x, weights=w)
-            wbar = np.mean(w)
-            out = (
-                n
-                / ((n - 1) * np.sum(w) ** 2)
-                * (
-                    np.sum((w * x - wbar * xWbar) ** 2)
-                    - 2 * xWbar * np.sum((w - wbar) * (w * x - wbar * xWbar))
-                    + xWbar**2 * np.sum((w - wbar) ** 2)
-                )
-            )
-            return out
 
         self.mData = mergedDataObj(
             Q=np.full(len(binEdges) - 1, np.nan),
@@ -288,37 +329,34 @@ class mergeCore:
         )
 
         edgeIndices = np.searchsorted(
-            self.preMData.Q.values, binEdges
+            self.preMData.Q, binEdges
         )  # last edge should be slightly outside last
         # we can precalculate the weights for all datapoints:
         if self.mergeConfig.IEWeighting:
-            self.preMData["wt"] = np.abs(
+            self.preMData.wt = np.abs(
                 self.preMData.I / (self.preMData.ISigma**2)
             )  # inverse relative weight per point if desired.
         else:
-            self.preMData["wt"] = np.abs(
-                self.preMData.I * 0.0 + 1
-            )  # no datapoint weighting
+            self.preMData.wt = np.ones_like(self.preMData.I)  # no datapoint weighting
 
         def binDfRangeByIndex(binN: int) -> None:
             lowerIndex, upperIndex = edgeIndices[binN], edgeIndices[binN + 1]
             rangeLen = upperIndex - lowerIndex
             if rangeLen == 0:  # nothing in bin
                 return
-            dfRange = self.preMData.iloc[lowerIndex:upperIndex, :]
             if rangeLen == 1:  # one datapoint in bin
                 # might not be necessary to do this..
                 # can't do stats on this:
-                self.mData.Q[binN] = float(dfRange.Q)
-                self.mData.I[binN] = float(dfRange.I)
-                self.mData.IStd[binN] = float(dfRange.ISigma)
-                self.mData.ISEM[binN] = float(dfRange.ISigma)
-                self.mData.ISEMw[binN] = float(dfRange.ISigma)
-                self.mData.IEPropagated[binN] = float(dfRange.ISigma)
-                self.mData.ISigma[binN] = float(dfRange.ISigma)
-                self.mData.QStd[binN] = float(dfRange.QSigma)
-                self.mData.QSEM[binN] = float(dfRange.QSigma)
-                self.mData.QSigma[binN] = float(dfRange.QSigma)
+                self.mData.Q[binN] = float(self.preMData.Q[lowerIndex:upperIndex])
+                self.mData.I[binN] = float(self.preMData.I[lowerIndex:upperIndex])
+                self.mData.IStd[binN] = float(self.preMData.ISigma[lowerIndex:upperIndex])
+                self.mData.ISEM[binN] = float(self.preMData.ISigma[lowerIndex:upperIndex])
+                self.mData.ISEMw[binN] = float(self.preMData.ISigma[lowerIndex:upperIndex])
+                self.mData.IEPropagated[binN] = float(self.preMData.ISigma[lowerIndex:upperIndex])
+                self.mData.ISigma[binN] = float(self.preMData.ISigma[lowerIndex:upperIndex])
+                self.mData.QStd[binN] = float(self.preMData.QSigma[lowerIndex:upperIndex])
+                self.mData.QSEM[binN] = float(self.preMData.QSigma[lowerIndex:upperIndex])
+                self.mData.QSigma[binN] = float(self.preMData.QSigma[lowerIndex:upperIndex])
                 self.mData.Singles[binN] = True
                 self.mData.Mask[binN] = False
                 return
@@ -330,56 +368,66 @@ class mergeCore:
                     module = importlib.util.module_from_spec(spec)
                     sys.modules[name] = module
                     spec.loader.exec_module(module)
-                    I_values = dfRange.I.values
-                    Q_values = dfRange.Q.values
-                    I_sigma = dfRange.ISigma.values
-                    weights = dfRange.wt.values
-
-                    if self.preMData.dtypes.I == 'float64':
-                        self.mData.I[binN] = module.weighted_mean(I_values, weights)
-                        self.mData.IStd[binN] = module.std_ddof(I_values, weights)
+                    if self.preMData.I.dtype == 'float64':
+                        self.mData.I[binN] = module.weighted_mean(self.preMData.I[lowerIndex:upperIndex], self.preMData.wt[lowerIndex:upperIndex])
+                        self.mData.IStd[binN] = module.std_ddof(self.preMData.I[lowerIndex:upperIndex], self.preMData.wt[lowerIndex:upperIndex])
                         # following suggestion regarding V1/V2 from: https://groups.google.com/forum/#!topic/medstats/H4SFKPBDAAM
-                        self.mData.ISEM[binN] = module.sem(I_values, weights)
+                        self.mData.ISEM[binN] = module.sem(self.preMData.I[lowerIndex:upperIndex], self.preMData.wt[lowerIndex:upperIndex])
                         
                         if calcSEMw:
-                            self.mData.ISEMw[binN] = module.sem_weighted(I_values, weights)
+                            self.mData.ISEMw[binN] = module.sem_weighted(self.preMData.I[lowerIndex:upperIndex], self.preMData.wt[lowerIndex:upperIndex])
                     else:
-                        self.mData.I[binN] = module.weighted_mean_sp(I_values, weights)
-                        self.mData.IStd[binN] = module.std_ddof_sp(I_values, weights)
-                        self.mData.ISEM[binN] = module.sem_sp(I_values, weights)
+                        self.mData.I[binN] = module.weighted_mean_sp(self.preMData.I[lowerIndex:upperIndex], self.preMData.wt[lowerIndex:upperIndex])
+                        self.mData.IStd[binN] = module.std_ddof_sp(self.preMData.I[lowerIndex:upperIndex], self.preMData.wt[lowerIndex:upperIndex])
+                        self.mData.ISEM[binN] = module.sem_sp(self.preMData.I[lowerIndex:upperIndex], self.preMData.wt[lowerIndex:upperIndex])
                         
                         if calcSEMw:
-                            self.mData.ISEMw[binN] = module.sem_weighted_sp(I_values, weights)
+                            self.mData.ISEMw[binN] = module.sem_weighted_sp(self.preMData.I[lowerIndex:upperIndex], self.preMData.wt[lowerIndex:upperIndex])
 
-                    if self.preMData.dtypes.ISigma == 'float64':
-                        self.mData.ISigma[binN] = module.sigma(I_sigma, weights)
+                    if self.preMData.ISigma.dtype == 'float64':
+                        self.mData.ISigma[binN] = module.sigma(self.preMData.ISigma[lowerIndex:upperIndex], self.preMData.wt[lowerIndex:upperIndex])
                     else: 
-                        self.mData.ISigma[binN] = module.sigma_sp(I_sigma, weights)
+                        self.mData.ISigma[binN] = module.sigma_sp(self.preMData.ISigma[lowerIndex:upperIndex], self.preMData.wt[lowerIndex:upperIndex])
                     self.mData.IEPropagated[binN] = module.propagated_error(self.mData.ISEM[binN], self.mData.ISigma[binN], self.mData.I[binN], self.mergeConfig.eMin)
 
-                    self.mData.Q[binN] = module.weighted_mean(Q_values, weights)
-                    self.mData.QStd[binN] = module.std_ddof(Q_values, weights)
-                    self.mData.QSEM[binN] = module.sem(Q_values, weights)
+                    if self.preMData.Q.dtype == 'float64' and self.preMData.wt.dtype == 'float64':
+                        self.mData.Q[binN] = module.weighted_mean(self.preMData.Q[lowerIndex:upperIndex], self.preMData.wt[lowerIndex:upperIndex])
+                        self.mData.QStd[binN] = module.std_ddof(self.preMData.Q[lowerIndex:upperIndex], self.preMData.wt[lowerIndex:upperIndex])
+                        self.mData.QSEM[binN] = module.sem(self.preMData.Q[lowerIndex:upperIndex], self.preMData.wt[lowerIndex:upperIndex])
+                    elif self.preMData.Q.dtype == 'float32' and self.preMData.wt.dtype == 'float32':
+                        self.mData.Q[binN] = module.weighted_mean_sp(self.preMData.Q[lowerIndex:upperIndex], self.preMData.wt[lowerIndex:upperIndex])
+                        self.mData.QStd[binN] = module.std_ddof_sp(self.preMData.Q[lowerIndex:upperIndex], self.preMData.wt[lowerIndex:upperIndex])
+                        self.mData.QSEM[binN] = module.sem_sp(self.preMData.Q[lowerIndex:upperIndex], self.preMData.wt[lowerIndex:upperIndex])
+                    elif self.preMData.Q.dtype == 'float32':
+                        self.mData.Q[binN] = module.weighted_mean_sp(self.preMData.Q[lowerIndex:upperIndex], self.preMData.wt[lowerIndex:upperIndex].astype('float32'))
+                        self.mData.QStd[binN] = module.std_ddof_sp(self.preMData.Q[lowerIndex:upperIndex], self.preMData.wt[lowerIndex:upperIndex].astype('float32'))
+                        self.mData.QSEM[binN] = module.sem_sp(self.preMData.Q[lowerIndex:upperIndex], self.preMData.wt[lowerIndex:upperIndex].astype('float32'))
+                    else:
+                        self.mData.Q[binN] = module.weighted_mean(self.preMData.Q[lowerIndex:upperIndex], self.preMData.wt[lowerIndex:upperIndex].astype('float64'))
+                        self.mData.QStd[binN] = module.std_ddof(self.preMData.Q[lowerIndex:upperIndex], self.preMData.wt[lowerIndex:upperIndex].astype('float64'))
+                        self.mData.QSEM[binN] = module.sem(self.preMData.Q[lowerIndex:upperIndex], self.preMData.wt[lowerIndex:upperIndex].astype('float64'))
+
+                        
                     self.mData.QSigma[binN] = module.propagated_error(self.mData.QSEM[binN], -0.1, self.mData.Q[binN], self.mergeConfig.eMin) # instead of second value which was I sigma in the above call of the func, set to negative
                     self.mData.Mask[binN] = False
                 else:
                     # exploit the DescrStatsW package from statsmodels
-                    DSI = DescrStatsW(dfRange.I, weights=dfRange.wt)
-                    DSQ = DescrStatsW(dfRange.Q, weights=dfRange.wt)
+                    DSI = DescrStatsW(self.preMData.I[lowerIndex:upperIndex], weights=self.preMData.wt[lowerIndex:upperIndex])
+                    DSQ = DescrStatsW(self.preMData.Q[lowerIndex:upperIndex], weights=self.preMData.wt[lowerIndex:upperIndex])
                     self.mData.Q[binN] = DSQ.mean
                     self.mData.I[binN] = DSI.mean
                     self.mData.ISigma[binN] = (
-                        np.sqrt(((dfRange.wt * dfRange.ISigma) ** 2).sum())
-                        / dfRange.wt.sum()
+                        np.sqrt(((self.preMData.wt[lowerIndex:upperIndex] * self.preMData.ISigma[lowerIndex:upperIndex]) ** 2).sum())
+                        / self.preMData.wt[lowerIndex:upperIndex].sum()
                     )
                     self.mData.IStd[binN] = DSI.std
                     # following suggestion regarding V1/V2 from: https://groups.google.com/forum/#!topic/medstats/H4SFKPBDAAM
                     self.mData.ISEM[binN] = DSI.std * np.sqrt(
-                        (dfRange.wt**2).sum() / (dfRange.wt.sum()) ** 2
+                        (self.preMData.wt[lowerIndex:upperIndex]**2).sum() / (self.preMData.wt[lowerIndex:upperIndex].sum()) ** 2
                     )
                     if calcSEMw:
                         self.mData.ISEMw[binN] = SEMw(
-                            dfRange.I, dfRange.wt
+                            self.preMData.I[lowerIndex:upperIndex], self.preMData.wt[lowerIndex:upperIndex]
                         )  # adds considerable time, and we're not using it at the mo.
                     self.mData.IEPropagated[binN] = np.max(
                         [
@@ -390,7 +438,7 @@ class mergeCore:
                     )
                     self.mData.QStd[binN] = DSQ.std
                     self.mData.QSEM[binN] = DSQ.std * np.sqrt(
-                        (dfRange.wt**2).sum() / (dfRange.wt.sum()) ** 2
+                        (self.preMData.wt[lowerIndex:upperIndex]**2).sum() / (self.preMData.wt[lowerIndex:upperIndex].sum()) ** 2
                     )
                     self.mData.QSigma[binN] = np.max(
                         [self.mData.QSEM[binN], DSQ.mean * self.mergeConfig.qeMin]
@@ -438,10 +486,10 @@ class mergeCore:
         # config is already read, and the raw data has been loaded into a list of scatteringData objects
         # construct initial list of ranges
         starttime = time.time()
-        logging.info("1. constructing ranges. t=0")
+        #logging.info("1. constructing ranges. t=0")
         self.constructRanges(self.dataList)
         # sort by qMin so that index 0 is the one with the smallest qMin
-        logging.info(f"2. sorting ranges. t={time.time() - starttime}")
+        #logging.info(f"2. sorting ranges. t={time.time() - starttime}")
         self.sortRanges()
         [
             logging.debug(
@@ -451,40 +499,38 @@ class mergeCore:
         ]
         # update ranges with custom configuration if necessary
         if self.mergeConfig.ranges is not None:
-            logging.info(f"2.1 updating ranges. t={time.time() - starttime}")
+            #logging.info(f"2.1 updating ranges. t={time.time() - starttime}")
             logging.debug(f"{self.mergeConfig.ranges=}")
             self.updateRanges(self.mergeConfig.ranges)
         # determine scaling factors
-        logging.info(f"3. applying autoscaling, t={time.time() - starttime}")
+        #logging.info(f"3. applying autoscaling, t={time.time() - starttime}")
         # self.autoScale()
         # just checking it makes it to here.
         o = [
             f"{dr.rangeId}({dr.scatteringData.configuration}): {dr.scale}"
             for dr in self.ranges
         ]
-        logging.info(f"AutoScale done, scaling factors: {o}")
-        logging.debug(f"{self.mergeConfig.outputRanges=}")
+        #logging.info(f"AutoScale done, scaling factors: {o}")
+        #logging.debug(f"{self.mergeConfig.outputRanges=}")
         # do I need to resort the data by Q? I don't think so... was part of the original though.
         # read all the data into a single dataframe, taking care of scaling, clipping and masking
-        logging.info(f"4. concatenating original data, t={time.time() - starttime}")
+        #logging.info(f"4. concatenating original data, t={time.time() - starttime}")
         self.concatAllUnmergedData()
         # Sort for posterity
-        logging.info(f"5. Sorting unmerged data, t={time.time() - starttime}")
+        #logging.info(f"5. Sorting unmerged data, t={time.time() - starttime}")
         self.sortUnmergedData()
         # apply mergyMagic to the list of q Edges.
-        logging.info(f"6. creating bin edges, t={time.time() - starttime}")
+        #logging.info(f"6. creating bin edges, t={time.time() - starttime}")
         binEdges = self.createBinEdges()
-        logging.info(f"6. merging within bin edges, t={time.time() - starttime}")
+        #logging.info(f"6. merging within bin edges, t={time.time() - starttime}")
         # this is the bottleneck... not surprising but still.
         self.mergyMagic(binEdges=binEdges)
         # filter result
-        logging.info(
-            f"7. filtering out invalid points from merged data with {self.mergeConfig.maskMasked=} and {self.mergeConfig.maskSingles=}, t={time.time() - starttime}"
-        )
+        #logging.info(f"7. filtering out invalid points from merged data with {self.mergeConfig.maskMasked=} and {self.mergeConfig.maskSingles=}, t={time.time() - starttime}" )
         filteredMDO = self.returnMaskedOutput(
             maskMasked=self.mergeConfig.maskMasked,
             maskSingles=self.mergeConfig.maskSingles,
         )
-        logging.info(f"7.1 done filtering, t={time.time() - starttime}")
+        #logging.info(f"7.1 done filtering, t={time.time() - starttime}")
 
         return filteredMDO
