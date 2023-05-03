@@ -135,7 +135,7 @@ if __name__ == "__main__":
     # export to the final files
     ofname = Path(adict["outputFile"])
     logging.debug(f"8. Storing result in output file {ofname}")
-    outputToNX(
+    ofname = outputToNX(
         ofname=ofname,
         mco=m.mergeConfig,
         mdo=filteredMDO,
@@ -144,4 +144,4 @@ if __name__ == "__main__":
         writeOriginalData=adict["writeOriginalData"],
     )
     # make the plots.
-    plotFigure(m, ofname=Path(adict["outputFile"]))
+    plotFigure(m, ofname=ofname)
