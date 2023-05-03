@@ -10,6 +10,7 @@ from .dataclasses import (
     mergedDataObj,
     scatteringDataObj,
     rangeConfigObj,
+    supplementaryDataObj,
 )
 
 from statsmodels.stats.weightstats import DescrStatsW
@@ -40,6 +41,9 @@ class mergeCore:
     )
     poolSize: int = field(
         default=50, validator=validators.instance_of(int), converter=int
+    )
+    supplementaryData: supplementaryDataObj = field(
+        default=Factory(supplementaryDataObj), validator=validators.instance_of(supplementaryDataObj)
     )
 
     def constructRanges(self, dataList: list) -> None:
@@ -230,7 +234,12 @@ class mergeCore:
                     configuration=-1,
                     configurations=cfgs
                 )
-            
+        
+        self.supplementaryData = supplementaryDataObj(
+            configurations=cfgs,
+            sampleName=scattering_data.sampleName, #  not sure how this deals with none
+            sampleOwner=scattering_data.sampleOwner,
+            )
         # drop empty rows (Q and I are nan)
         nonempty_bin_index = np.argwhere(~(np.isnan(scattering_data.Q)&np.isnan(scattering_data.I))).flatten()
         self.preMData = scatteringDataObj(
@@ -240,9 +249,10 @@ class mergeCore:
             ISigma=scattering_data.ISigma[nonempty_bin_index],
             QSigma=scattering_data.QSigma[nonempty_bin_index],
             Mask=scattering_data.Mask[nonempty_bin_index],
-            sampleName='simulation',
-            sampleOwner='Sofya',
-            configuration=1,
+            sampleName=scattering_data.sampleName, #  not sure how this deals with none
+            sampleOwner=scattering_data.sampleOwner,
+            configuration=-1,
+            configurations=cfgs
             )
         return
 
@@ -352,6 +362,11 @@ class mergeCore:
         assert self.preMData is not None, logging.warning(
             "self.preMData cannot be none at the merging step"
         )
+
+        # # set the supplementary information:
+        # self.mData.sampleName=self.preMData.sampleName #  not sure how this deals with none
+        # self.mData.sampleOwner=self.preMData.sampleOwner
+        # self.mData.configurations=self.preMData.configurations
 
         edgeIndices = np.searchsorted(
             self.preMData.Q, binEdges
@@ -558,4 +573,4 @@ class mergeCore:
         )
         #logging.info(f"7.1 done filtering, t={time.time() - starttime}")
 
-        return filteredMDO
+        return filteredMDO, self.supplementaryData
