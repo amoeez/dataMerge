@@ -154,7 +154,6 @@ class scatteringDataObj(gimmeItems):
     filename: Optional[Path] = field(
         default=None,
         validator=validators.optional(validators.instance_of(Path)),
-        converter=Path,
     )
     sampleName: Optional[str] = field(
         default=None,

@@ -72,10 +72,14 @@ def outputToNX(
         # "automatically determine an output name if the stem is called automatic"
         FileString = 'merged_'
         if supplementaryData.sampleOwner is not None: 
-            FileString += "".join( x for x in supplementaryData.sampleOwner.decode('utf-8') if (x.isalnum() or x in "._- "))
+            sstr = supplementaryData.sampleOwner
+            if isinstance(sstr, bytes): sstr=sstr.decode('utf-8')
+            FileString += "".join( x for x in sstr if (x.isalnum() or x in "._- "))
         FileString += "_"
         if supplementaryData.sampleName is not None: 
-            FileString += "".join( x for x in supplementaryData.sampleName.decode('utf-8') if (x.isalnum() or x in "._- "))
+            sstr = supplementaryData.sampleName
+            if isinstance(sstr, bytes): sstr=sstr.decode('utf-8')
+            FileString += "".join( x for x in sstr if (x.isalnum() or x in "._- "))
         FileString += "_"
         followInt = 0
         unique=False

@@ -4,7 +4,7 @@ import logging
 import time
 from attrs import field, define, validators, Factory
 import numpy as np
-from .findscaling import findScaling
+from .findscaling import findScaling, findScaling_noPandas
 from .dataclasses import (
     mergeConfigObj,
     mergedDataObj,
@@ -155,15 +155,12 @@ class mergeCore:
                     self.ranges
                 ), f"{drange.autoscaleToRange=} must refer to an index within the number of ranges available {len(self.ranges)}"
                 oRange = self.ranges[drange.autoscaleToRange]
-                fs = findScaling(
-                    self.rangeObjAsDataframe(
-                        oRange
-                    ),  # original data, asPandas() returns copy
-                    self.rangeObjAsDataframe(
-                        drange
-                    ),  # data to scale, asPandas() returns a copy
+                fs = findScaling_noPandas(
+                    oRange.scatteringData,  # original data, asPandas() returns copy
+                    drange.scatteringData,
                     backgroundFit=False,  # just the scaling factor, please, no additional background.
                 )
+                fs.run()
                 drange.scale = float(fs.sc[0])
                 logging.info(
                     f"Scaling added to rangeindex: {drange.rangeId}: {float(fs.sc[0])}"
@@ -197,7 +194,6 @@ class mergeCore:
             try:
                 
                 scattering_data = scatteringDataObj(
-                    filename='',
                     Q=np.concatenate([i.Q for i in scattering_data_per_range ], axis=None, dtype=scattering_data_per_range[0].Q.dtype),
                     I=np.concatenate([i.I for i in scattering_data_per_range ], axis=None, dtype=scattering_data_per_range[0].I.dtype),
                     ISigma=np.concatenate([i.ISigma for i in scattering_data_per_range ], axis=None, dtype=scattering_data_per_range[0].ISigma.dtype),
@@ -217,7 +213,6 @@ class mergeCore:
                 )
             except np.VisibleDeprecationWarning: # when would this occur?
                 scattering_data = scatteringDataObj(
-                    filename='',
                     # Q=np.array([t for sd in scattering_data_per_range  for t in sd.Q]),
                     # I=np.array([t for sd in scattering_data_per_range  for t in sd.I]),
                     # ISigma=np.array([t for sd in scattering_data_per_range  for t in sd.ISigma]),
@@ -243,7 +238,6 @@ class mergeCore:
         # drop empty rows (Q and I are nan)
         nonempty_bin_index = np.argwhere(~(np.isnan(scattering_data.Q)&np.isnan(scattering_data.I))).flatten()
         self.preMData = scatteringDataObj(
-            filename='',
             Q= scattering_data.Q[nonempty_bin_index],
             I=scattering_data.I[nonempty_bin_index],
             ISigma=scattering_data.ISigma[nonempty_bin_index],
@@ -544,7 +538,7 @@ class mergeCore:
             self.updateRanges(self.mergeConfig.ranges)
         # determine scaling factors
         #logging.info(f"3. applying autoscaling, t={time.time() - starttime}")
-        # self.autoScale()
+        self.autoScale()
         # just checking it makes it to here.
         o = [
             f"{dr.rangeId}({dr.scatteringData.configuration}): {dr.scale}"
