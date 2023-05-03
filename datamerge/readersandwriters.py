@@ -16,7 +16,7 @@ __status__ = "beta"
 
 
 import numpy as np
-from .dataclasses import HDFDefaultsObj, HDFPathsObj, outputRangeObj, readConfigObj
+from .dataclasses import HDFDefaultsObj, HDFPathsObj, outputRangeObj, readConfigObj, supplementaryDataObj
 from .dataclasses import rangeConfigObj
 from .dataclasses import (
     scatteringDataObj,
@@ -61,6 +61,7 @@ def outputToNX(
     mco: mergeConfigObj,
     mdo: mergedDataObj,
     rangeList: List[rangeConfigObj],
+    supplementaryData: supplementaryDataObj,
     writeOriginalData: bool = True,
 ) -> None:
     """
@@ -131,6 +132,10 @@ def outputToNX(
         axes=(nx.NXfield(mdo.Q, name="Q")),
         errors=nx.NXfield(mdo.ISigma, name="ISigma"),
     )  # ISigma is the combined uncertainty estimate
+
+    nxf[f"/datamerge/result"].attrs["sampleName"]=supplementaryData.sampleName
+    nxf[f"/datamerge/result"].attrs["sampleOwner"]=supplementaryData.sampleOwner
+    nxf[f"/datamerge/result"].attrs["configurations"]=supplementaryData.configurations
 
     # store the remainder of the merged data object:
     for key, val in mdo.items():

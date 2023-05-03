@@ -34,7 +34,7 @@ def test_integral() -> None:
             )
         ],
         "globKey": "*processed.nxs",
-        "outputFile": Path("Y:/Measurements/SAXS002/processingCode/dataMerge/test.nxs"),
+        "outputFile": Path("Y:/Measurements/SAXS002/processingCode/dataMerge/automatic.nxs"),
         "configFile": Path(
             "Y:/Measurements/SAXS002/processingCode/dataMerge/tests/mergeConfigExample.yaml"
         ),
@@ -47,10 +47,32 @@ def test_integral() -> None:
         mergeConfig=dm.readersandwriters.mergeConfigObjFromYaml(adict["configFile"]),
         dataList=dataList,
     )
-    filteredMDO = m.run()
-    ofname = Path(adict["outputFile"])
+    filteredMDO, supplementaryData = m.run()
+    if Path(adict["outputFile"]).stem == 'automatic':
+        # "automatically determine an output name if the stem is called automatic"
+        FileString = 'merged_'
+        if supplementaryData.sampleOwner is not None: 
+            FileString += "".join( x for x in supplementaryData.sampleOwner if (x.isalnum() or x in "._- "))
+        FileString += "_"
+        if supplementaryData.sampleName is not None: 
+            FileString += "".join( x for x in supplementaryData.sampleName if (x.isalnum() or x in "._- "))
+        FileString += "_"
+        followInt = 0
+        unique=False
+        while not unique:
+            ofname = Path(adict["outputFile"].parent, f'{FileString}{followInt}{adict["outputFile"].suffix}')
+            if ofname.exists():
+                followInt +=1
+            else:
+                unique=True
+    else:
+        ofname = Path(adict["outputFile"])
     dm.readersandwriters.outputToNX(
-        ofname=ofname, mco=m.mergeConfig, mdo=filteredMDO, rangeList=m.ranges
+        ofname=ofname, 
+        mco=m.mergeConfig, 
+        mdo=filteredMDO, 
+        supplementaryData=supplementaryData,
+        rangeList=m.ranges
     )
     dm.plotting.plotFigure(m, ofname=Path(adict["outputFile"]))
     return

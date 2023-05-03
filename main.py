@@ -131,7 +131,7 @@ if __name__ == "__main__":
         mergeConfig=mergeConfigObjFromYaml(adict["configFile"]),
         dataList=dataList,
     )
-    filteredMDO = m.run()
+    filteredMDO, supplementaryData = m.run()
     # export to the final files
     ofname = Path(adict["outputFile"])
     logging.debug(f"8. Storing result in output file {ofname}")
@@ -140,6 +140,7 @@ if __name__ == "__main__":
         mco=m.mergeConfig,
         mdo=filteredMDO,
         rangeList=m.ranges,
+        supplementaryData=supplementaryData,
         writeOriginalData=adict["writeOriginalData"],
     )
     # make the plots.

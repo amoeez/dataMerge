@@ -445,6 +445,25 @@ class mergeConfigObj(gimmeItems):
             return -1
         return len(self.ranges)
 
+@define
+class supplementaryDataObj(gimmeItems):
+    """
+    sample information
+    """
+    # supplementary information
+    configurations: List[int] = field( # in case it's a merged dataset containing multiple configurations
+        default=Factory(list), validator=validators.instance_of(list)
+    )
+    sampleName: Optional[str] = field(
+        default=None,
+        validator=validators.optional(validators.instance_of(str)),
+        converter=str,
+    )
+    sampleOwner: Optional[str] = field(
+        default=None,
+        validator=validators.optional(validators.instance_of(str)),
+        converter=str,
+    )
 
 @define
 class mergedDataObj(gimmeItems):
@@ -491,3 +510,4 @@ class mergedDataObj(gimmeItems):
     Singles: Optional[np.ndarray] = field(
         default=None, validator=validators.optional(IChecker)
     )  # bin value computed from a single DIAB only
+
