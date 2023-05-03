@@ -198,7 +198,7 @@ def outputToNX(
     # nxf["/datamerge/result/ISigma"].attrs["units"] = mco.outputIUnits
     # nxf['/datamerge/result/IE'].attrs['units'] = "1/m"
     nxf.close()
-    return
+    return ofname
 
 
 def readConfigObjFromYaml(filename: Path) -> readConfigObj:

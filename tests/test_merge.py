@@ -50,7 +50,7 @@ def test_integral() -> None:
     filteredMDO, supplementaryData = m.run()
 
     ofname = Path(adict["outputFile"])
-    dm.readersandwriters.outputToNX(
+    ofname = dm.readersandwriters.outputToNX(
         ofname=ofname,
         mco=m.mergeConfig, 
         mdo=filteredMDO, 
@@ -58,7 +58,7 @@ def test_integral() -> None:
         rangeList=m.ranges,
         CheckAutomaticName=True,
     )
-    dm.plotting.plotFigure(m, ofname=Path(adict["outputFile"]))
+    dm.plotting.plotFigure(m, ofname=ofname)
     return
 
 
