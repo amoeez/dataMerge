@@ -68,7 +68,7 @@ def outputToNX(
     """
     Stores the configuration, data and range list in the output file.
     """
-    if ofname.stem == 'automatic':
+    if ofname.stem == 'automatic' and CheckAutomaticName:
         # "automatically determine an output name if the stem is called automatic"
         FileString = 'merged_'
         if supplementaryData.sampleOwner is not None: 
