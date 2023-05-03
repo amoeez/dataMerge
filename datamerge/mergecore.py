@@ -181,29 +181,54 @@ class mergeCore:
                     d
                     for d in pool.imap_unordered(self.rangeObjUpdate, self.ranges)
                 ]
+            
+            # determine configurations that went in to the concatenated data:
+            cfgs = []
+            for sd in scattering_data_per_range:
+                if sd.configuration != -1:
+                    cfgs += [sd.configuration]
+                if len(sd.configurations) > 0:
+                    cfgs += [i for i in sd.configurations]
+                
             try:
+                
                 scattering_data = scatteringDataObj(
                     filename='',
-                    Q= np.array([i.Q for i in scattering_data_per_range ]).flatten(),
-                    I=np.array([i.I for i in scattering_data_per_range ]).flatten(),
-                    ISigma=np.array([i.ISigma for i in scattering_data_per_range ]).flatten(),
-                    QSigma=np.array([i.QSigma for i in scattering_data_per_range ]).flatten(),
-                    Mask=np.array([i.Mask for i in scattering_data_per_range ]).flatten(),
-                    sampleName='simulation',
-                    sampleOwner='Sofya',
-                    configuration=1,
+                    Q=np.concatenate([i.Q for i in scattering_data_per_range ], axis=None, dtype=scattering_data_per_range[0].Q.dtype),
+                    I=np.concatenate([i.I for i in scattering_data_per_range ], axis=None, dtype=scattering_data_per_range[0].I.dtype),
+                    ISigma=np.concatenate([i.ISigma for i in scattering_data_per_range ], axis=None, dtype=scattering_data_per_range[0].ISigma.dtype),
+                    QSigma=np.concatenate([i.QSigma for i in scattering_data_per_range ], axis=None, dtype=scattering_data_per_range[0].QSigma.dtype),
+                    Mask=np.concatenate([i.Mask for i in scattering_data_per_range ], axis=None, dtype=scattering_data_per_range[0].Mask.dtype),
+                    # Q= np.array([i.Q for i in scattering_data_per_range ]).flatten(),
+                    # I=np.array([i.I for i in scattering_data_per_range ]).flatten(),
+                    # ISigma=np.array([i.ISigma for i in scattering_data_per_range ]).flatten(),
+                    # QSigma=np.array([i.QSigma for i in scattering_data_per_range ]).flatten(),
+                    # Mask=np.array([i.Mask for i in scattering_data_per_range ]).flatten(),
+                    # sampleName=scattering_data_per_range[0].sampleName if scattering_data_per_range[0].sampleName is not None else 'na',
+                    # sampleOwner=scattering_data_per_range[0].sampleOwner if scattering_data_per_range[0].sampleOwner is not None else 'na',
+                    sampleName=scattering_data_per_range[0].sampleName, #  not sure how this deals with none
+                    sampleOwner=scattering_data_per_range[0].sampleOwner,
+                    configuration=-1, # unspecified
+                    configurations=cfgs
                 )
-            except np.VisibleDeprecationWarning:
+            except np.VisibleDeprecationWarning: # when would this occur?
                 scattering_data = scatteringDataObj(
                     filename='',
-                    Q= np.array([t for sd in scattering_data_per_range  for t in sd.Q]),
-                    I=np.array([t for sd in scattering_data_per_range  for t in sd.I]),
-                    ISigma=np.array([t for sd in scattering_data_per_range  for t in sd.ISigma]),
-                    QSigma=np.array([t for sd in scattering_data_per_range  for t in sd.QSigma]),
-                    Mask=np.array([t for sd in scattering_data_per_range  for t in sd.Mask]),
-                    sampleName='simulation',
-                    sampleOwner='Sofya',
-                    configuration=1,
+                    # Q=np.array([t for sd in scattering_data_per_range  for t in sd.Q]),
+                    # I=np.array([t for sd in scattering_data_per_range  for t in sd.I]),
+                    # ISigma=np.array([t for sd in scattering_data_per_range  for t in sd.ISigma]),
+                    # QSigma=np.array([t for sd in scattering_data_per_range  for t in sd.QSigma]),
+                    # Mask=np.array([t for sd in scattering_data_per_range  for t in sd.Mask]),
+                    Q=np.concatenate([t for sd in scattering_data_per_range  for t in sd.Q], axis=None, dtype=scattering_data_per_range[0].Q.dtype),
+                    I=np.concatenate([t for sd in scattering_data_per_range  for t in sd.I], axis=None, dtype=scattering_data_per_range[0].I.dtype),
+                    ISigma=np.concatenate([t for sd in scattering_data_per_range  for t in sd.ISigma], axis=None, dtype=scattering_data_per_range[0].ISigma.dtype),
+                    QSigma=np.concatenate([t for sd in scattering_data_per_range  for t in sd.QSigma], axis=None, dtype=scattering_data_per_range[0].QSigma.dtype),
+                    Mask=np.concatenate([t for sd in scattering_data_per_range  for t in sd.Mask], axis=None, dtype=scattering_data_per_range[0].Mask.dtype),
+
+                    sampleName=scattering_data_per_range[0].sampleName, #  not sure how this deals with none
+                    sampleOwner=scattering_data_per_range[0].sampleOwner,
+                    configuration=-1,
+                    configurations=cfgs
                 )
             
         # drop empty rows (Q and I are nan)

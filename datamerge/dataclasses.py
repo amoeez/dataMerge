@@ -17,7 +17,7 @@ from attrs import Factory
 from attrs import define, validators, field, cmp_using, fields
 from pathlib import Path
 import numpy as np
-from typing import List, Optional, Any, NoReturn
+from typing import List, Optional, Any, NoReturn, Union
 from collections.abc import Iterable
 
 
@@ -147,6 +147,9 @@ class scatteringDataObj(gimmeItems):
     )
     configuration: int = field(
         default=-1, validator=validators.instance_of(int), converter=int
+    )
+    configurations: List[int] = field( # in case it's a merged dataset containing multiple configurations
+        default=Factory(list), validator=validators.instance_of(list)
     )
     filename: Optional[Path] = field(
         default=None,
