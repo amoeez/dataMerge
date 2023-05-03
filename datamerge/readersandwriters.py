@@ -63,10 +63,30 @@ def outputToNX(
     rangeList: List[rangeConfigObj],
     supplementaryData: supplementaryDataObj,
     writeOriginalData: bool = True,
+    CheckAutomaticName:bool=True
 ) -> None:
     """
     Stores the configuration, data and range list in the output file.
     """
+    if ofname.stem == 'automatic':
+        # "automatically determine an output name if the stem is called automatic"
+        FileString = 'merged_'
+        if supplementaryData.sampleOwner is not None: 
+            FileString += "".join( x for x in supplementaryData.sampleOwner if (x.isalnum() or x in "._- "))
+        FileString += "_"
+        if supplementaryData.sampleName is not None: 
+            FileString += "".join( x for x in supplementaryData.sampleName if (x.isalnum() or x in "._- "))
+        FileString += "_"
+        followInt = 0
+        unique=False
+        while not unique:
+            newofname = Path(ofname.parent, f'{FileString}{followInt}{ofname.suffix}')
+            if newofname.exists():
+                followInt +=1
+            else:
+                unique=True
+        ofname = newofname
+
     # remove if output file already exists:
     if ofname.is_file():
         ofname.unlink()
