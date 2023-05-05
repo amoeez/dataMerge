@@ -51,6 +51,8 @@ def scatteringDataObjFromNX(
                     f"NeXus file {filename=} does not contain information for {key=} at specified HDF5 Path {hPath}"
                 )
                 val = getattr(readConfig.hdfDefaults, key)
+            # convert bytestrings to normal strings assuming utf-8:
+            if isinstance(val, bytes): val=val.decode('utf-8')
             kvs.update({key: val})
 
     return scatteringDataObj(filename=filename, **kvs)
