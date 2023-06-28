@@ -14,7 +14,7 @@ from .dataclasses import (
 )
 
 from statsmodels.stats.weightstats import DescrStatsW
-from typing import List, Optional
+from typing import List, Optional, Union
 from multiprocessing.pool import ThreadPool as Pool
 import importlib.util
 import sys
@@ -71,6 +71,33 @@ class mergeCore:
         [setattr(drange, "rangeId", rid) for rid, drange in enumerate(self.ranges)]
         return
 
+    def findRangeByConfig(self, config:str, Highlander:bool=True):
+        # Returns the range matching a configuration number. The Highlander option returns a single entry, 
+        # will return a list, RangeConfigObj or None
+        resultList = [
+                    drange
+                    for drange in self.ranges
+                    if drange.scatteringData.configuration == config
+                ]
+        if len(resultList) == 0:
+                    # logging.debug(
+                    #     f"Did not find a matching range for {rangeConfig.findByConfig=}"
+                    # )
+                    return None  # Nothing to do, no matching ranges found
+        elif (len(resultList)==1) and Highlander: 
+            return resultList[0] # return the one and only index. 
+        
+        else:
+            if not Highlander: 
+                return resultList
+            else:
+                logging.debug(
+                    f"Found multiple entries matching configuration {config}, but a single entry requested. cannot do anything with this"
+                )
+                return None  # Failure
+        
+        
+
     def updateRanges(self, rangesConfigList: list) -> None:
         """
         Gets the ranges list from the configuration yaml, and applies the requested
@@ -85,13 +112,9 @@ class mergeCore:
                 assert (
                     rangeConfig.findByConfig is not None
                 ), "if rangeId is set to -1, a findByConfig number must be specified"
-                resultList = [
-                    drange
-                    for drange in self.ranges
-                    if drange.scatteringData.configuration == rangeConfig.findByConfig
-                ]
+                resultList=self.findRangeByConfig(config=rangeConfig.findByConfig, Highlander=False)
                 # assert len(resultList)>=1, 'findByConfig should result in at least one unique datafile. Did not find any matches'
-                if len(resultList) == 0:
+                if resultList is None:
                     logging.debug(
                         f"Did not find a matching range for {rangeConfig.findByConfig=}"
                     )
@@ -146,15 +169,18 @@ class mergeCore:
         for drange in self.ranges:  # dfn = drange.rangeId, idf = drange
             drange.scale = 1.0  # reset in case of change of heart
             # if self.rangesDf.loc[dfn, 'autoscaletorange'] != dfn:
-            if drange.autoscaleToRange is not None:
+            if drange.autoscaleToConfig is not None:
                 logging.debug(
-                    f"autoscaling range: {drange.rangeId} to index {drange.autoscaleToRange}"
+                    f"autoscaling range: {drange.rangeId} to config {drange.autoscaleToConfig}"
                 )
-                # find scaling factor
-                assert drange.autoscaleToRange <= len(
-                    self.ranges
-                ), f"{drange.autoscaleToRange=} must refer to an index within the number of ranges available {len(self.ranges)}"
-                oRange = self.ranges[drange.autoscaleToRange]
+                # find index of range to scale to
+                oRange = self.findRangeByConfig(drange.autoscaleToConfig)
+                assert oRange is not None, f'Cannot find a singular matching dataset with configuration {drange.autoscaleToConfig} to scale to, maybe none, maybe too many?'
+                
+                # assert drange.autoscaleToRange <= len(
+                #     self.ranges
+                # ), f"{drange.autoscaleToRange=} must refer to an index within the number of ranges available {len(self.ranges)}"
+                # oRange = self.ranges[drange.autoscaleToRange]
                 fs = findScaling_noPandas(
                     oRange.scatteringData,  # original data, asPandas() returns copy
                     drange.scatteringData,

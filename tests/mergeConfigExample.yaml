@@ -24,11 +24,11 @@ ranges:
   - rangeId: -1 # sorted by q range, 0 is the dataset with the smallest availalbe qmin. can also be left -1 to determine range by config
     qMinPreset: null # null takes the minimum available
     qMaxPreset: null # ibid
-    autoscaleToRange: null # no autoscaling
+    autoscaleToConfig: null # no autoscaling
     findByConfig: 127 # for example, the long config 
   - rangeId: 2 # not every range needs presets
     qMinPreset: 0.01 # not every setting needs specifying
-    autoscaleToRange: 3
+    autoscaleToConfig: 127
 # we define the output binning here. These are range segments, ending where the next range begins. 
 outputRanges: # list of range or ranges defining the output binning, from smallest q to largest q. 
   - outputRangeId: 0 # start from zero, add as many as you need. 

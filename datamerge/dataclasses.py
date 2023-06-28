@@ -269,7 +269,7 @@ class rangeConfigObj(gimmeItems):
             [validators.ge(0), validators.instance_of(float)]
         ),
     )
-    autoscaleToRange: Optional[int] = field(
+    autoscaleToConfig: Optional[int] = field(
         default=None,
         validator=validators.optional(validators.instance_of(int)),
         # converter=int,
