@@ -87,6 +87,9 @@ class findScaling_noPandas(object):
     def scale(self) -> np.ndarray:
         # match the curves
         iMask = np.invert(self.Mask)
+        if sum(iMask)==0: 
+            logging.warning('No overlapping data found for scaling datasets, leaving scaling at 1.0')
+            return np.array((1.0, 0.0), dtype=float)
         sc = np.zeros(2)
         sc[1] = self.dataset1.I[iMask].min() - self.dataset2.I[iMask].min()
         sc[0] = (self.dataset1.I[iMask] / self.dataset2.I[iMask]).mean()
