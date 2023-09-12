@@ -148,7 +148,9 @@ class scatteringDataObj(gimmeItems):
     configuration: int = field(
         default=-1, validator=validators.instance_of(int), converter=int
     )
-    configurations: List[int] = field( # in case it's a merged dataset containing multiple configurations
+    configurations: List[
+        int
+    ] = field(  # in case it's a merged dataset containing multiple configurations
         default=Factory(list), validator=validators.instance_of(list)
     )
     filename: Optional[Path] = field(
@@ -190,7 +192,7 @@ class scatteringDataObj(gimmeItems):
         return len(self.Q)
 
     def updateScaledMaskedValues(
-            self, maskArray: Optional[np.ndarray] = None, scaling: float = 1.0
+        self, maskArray: Optional[np.ndarray] = None, scaling: float = 1.0
     ) -> None:
         """
         Updates the attributes of the class with some scaling and mask (if present)
@@ -201,7 +203,7 @@ class scatteringDataObj(gimmeItems):
             self.I = self.I * scaling
             self.ISigma = self.ISigma * scaling
             self.Mask = self.Mask
-        elif  isinstance(maskArray, np.ndarray):
+        elif isinstance(maskArray, np.ndarray):
             assert (
                 maskArray.shape == self.Q.shape
             ), "Mask array supplied to scatteringDataObj.asPandas must conform to the data shape"
@@ -212,8 +214,6 @@ class scatteringDataObj(gimmeItems):
             self.Mask = self.Mask[~maskArray]
         else:
             assert False, "Not a valid mask"
-
-
 
     def qMin(self) -> float:
         """Return the minimum Q"""
@@ -444,13 +444,17 @@ class mergeConfigObj(gimmeItems):
             return -1
         return len(self.ranges)
 
+
 @define
 class supplementaryDataObj(gimmeItems):
     """
     sample information
     """
+
     # supplementary information
-    configurations: List[int] = field( # in case it's a merged dataset containing multiple configurations
+    configurations: List[
+        int
+    ] = field(  # in case it's a merged dataset containing multiple configurations
         default=Factory(list), validator=validators.instance_of(list)
     )
     sampleName: Optional[str] = field(
@@ -463,6 +467,7 @@ class supplementaryDataObj(gimmeItems):
         validator=validators.optional(validators.instance_of(str)),
         converter=str,
     )
+
 
 @define
 class mergedDataObj(gimmeItems):
@@ -509,4 +514,3 @@ class mergedDataObj(gimmeItems):
     Singles: Optional[np.ndarray] = field(
         default=None, validator=validators.optional(IChecker)
     )  # bin value computed from a single DIAB only
-

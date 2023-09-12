@@ -16,7 +16,13 @@ __status__ = "beta"
 
 
 import numpy as np
-from .dataclasses import HDFDefaultsObj, HDFPathsObj, outputRangeObj, readConfigObj, supplementaryDataObj
+from .dataclasses import (
+    HDFDefaultsObj,
+    HDFPathsObj,
+    outputRangeObj,
+    readConfigObj,
+    supplementaryDataObj,
+)
 from .dataclasses import rangeConfigObj
 from .dataclasses import (
     scatteringDataObj,
@@ -42,19 +48,25 @@ def scatteringDataObjFromNX(
         kvs = {}
         for key in readConfig.hdfPaths.keys():
             hPath = getattr(readConfig.hdfPaths, key)
+
             if hPath in h5f:
                 val = h5f[hPath][()]
                 if isinstance(val, np.ndarray):
                     val = val.flatten()
             else:
                 assert key in readConfig.hdfDefaults.keys(), logging.error(
-                    f"NeXus file {filename=} does not contain information for {key=} at specified HDF5 Path {hPath}"
+                    f"NeXus file {filename=} does not contain information for {key=} at specified HDF5 Path {hPath}, filling in the default value."
                 )
                 val = getattr(readConfig.hdfDefaults, key)
             # convert bytestrings to normal strings assuming utf-8:
-            if isinstance(val, bytes): val=val.decode('utf-8')
-            kvs.update({key: val})
+            if isinstance(val, bytes):
+                val = val.decode("utf-8")
 
+            if key in readConfig.hdfDefaults:
+                if not isinstance(getattr(readConfig.hdfDefaults, key), np.ndarray):
+                    val = val[0]  # numpy limitation: no longer casts arrays to scalars.
+
+            kvs.update({key: val})
     return scatteringDataObj(filename=filename, **kvs)
 
 
@@ -65,32 +77,34 @@ def outputToNX(
     rangeList: List[rangeConfigObj],
     supplementaryData: supplementaryDataObj,
     writeOriginalData: bool = True,
-    CheckAutomaticName:bool=True
+    CheckAutomaticName: bool = True,
 ) -> None:
     """
     Stores the configuration, data and range list in the output file.
     """
-    if ofname.stem == 'automatic' and CheckAutomaticName:
+    if ofname.stem == "automatic" and CheckAutomaticName:
         # "automatically determine an output name if the stem is called automatic"
-        FileString = 'merged_'
-        if supplementaryData.sampleOwner is not None: 
+        FileString = "merged_"
+        if supplementaryData.sampleOwner is not None:
             sstr = supplementaryData.sampleOwner
-            if isinstance(sstr, bytes): sstr=sstr.decode('utf-8')
-            FileString += "".join( x for x in sstr if (x.isalnum() or x in "._- "))
+            if isinstance(sstr, bytes):
+                sstr = sstr.decode("utf-8")
+            FileString += "".join(x for x in sstr if (x.isalnum() or x in "._- "))
         FileString += "_"
-        if supplementaryData.sampleName is not None: 
+        if supplementaryData.sampleName is not None:
             sstr = supplementaryData.sampleName
-            if isinstance(sstr, bytes): sstr=sstr.decode('utf-8')
-            FileString += "".join( x for x in sstr if (x.isalnum() or x in "._- "))
+            if isinstance(sstr, bytes):
+                sstr = sstr.decode("utf-8")
+            FileString += "".join(x for x in sstr if (x.isalnum() or x in "._- "))
         FileString += "_"
         followInt = 0
-        unique=False
+        unique = False
         while not unique:
-            newofname = Path(ofname.parent, f'{FileString}{followInt}{ofname.suffix}')
+            newofname = Path(ofname.parent, f"{FileString}{followInt}{ofname.suffix}")
             if newofname.exists():
-                followInt +=1
+                followInt += 1
             else:
-                unique=True
+                unique = True
         ofname = newofname
 
     # remove if output file already exists:
@@ -159,9 +173,9 @@ def outputToNX(
         errors=nx.NXfield(mdo.ISigma, name="ISigma"),
     )  # ISigma is the combined uncertainty estimate
 
-    nxf[f"/datamerge/result"].attrs["sampleName"]=supplementaryData.sampleName
-    nxf[f"/datamerge/result"].attrs["sampleOwner"]=supplementaryData.sampleOwner
-    nxf[f"/datamerge/result"].attrs["configurations"]=supplementaryData.configurations
+    nxf[f"/datamerge/result"].attrs["sampleName"] = supplementaryData.sampleName
+    nxf[f"/datamerge/result"].attrs["sampleOwner"] = supplementaryData.sampleOwner
+    nxf[f"/datamerge/result"].attrs["configurations"] = supplementaryData.configurations
 
     # store the remainder of the merged data object:
     for key, val in mdo.items():
@@ -287,6 +301,7 @@ def SDOListFromFiles(
         assert (
             fname.is_file()
         ), f"filename {fname} does not exist. Please supply valid filenames"
+        print(fname)
         scatteringDataList += [scatteringDataObjFromNX(fname, readConfig)]
     return scatteringDataList
 
@@ -297,10 +312,10 @@ if __name__ == "__main__":
         Path(".")
         / "tests"
         / "data"
-        / "20220925"
+        / "20230830"
         / "autoproc"
-        / "group_6"
-        / "20220925_42_expanded_stacked_processed.nxs"
+        / "Thuenemann_ERM-FD-121"
+        / "20230830_109_expanded_stacked_processed.nxs"
     )
 
     mco = mergeConfigObjFromYaml(Path(".", "tests", "mergeConfigExample.yaml"))
