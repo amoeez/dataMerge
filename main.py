@@ -100,7 +100,6 @@ def configureParser() -> argparse.ArgumentParser:
 
 
 if __name__ == "__main__":
-
     parser = configureParser()
 
     try:
@@ -112,6 +111,7 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 
     adict = vars(args)
+    print(adict)
 
     try:
         dataList = SDOListFromFiles(
@@ -143,5 +143,5 @@ if __name__ == "__main__":
         supplementaryData=supplementaryData,
         writeOriginalData=adict["writeOriginalData"],
     )
-    # make the plots.
-    plotFigure(m, ofname=ofname)
+    # make the plots. Disabled for now as there's a py23 depreciationwarning that needs resolving in fontTools...
+    # plotFigure(m, ofname=ofname)
