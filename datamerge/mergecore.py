@@ -216,6 +216,7 @@ class mergeCore:
         ready to be merged.
         """
         # nothing to do
+        cfgs = []
         if len(self.ranges) == 1:
             scattering_data = self.rangeObjUpdate(self.ranges[0])
             cfgs += [scattering_data.configuration]
@@ -226,7 +227,6 @@ class mergeCore:
                 ]
 
             # determine configurations that went in to the concatenated data:
-            cfgs = []
             for sd in scattering_data_per_range:
                 if sd.configuration != -1:
                     cfgs += [sd.configuration]
