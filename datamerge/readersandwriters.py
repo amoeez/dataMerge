@@ -63,8 +63,10 @@ def scatteringDataObjFromNX(
                 val = val.decode("utf-8")
 
             if key in readConfig.hdfDefaults:
-                if not isinstance(getattr(readConfig.hdfDefaults, key), np.ndarray):
+                if isinstance(val, np.ndarray) and val.size == 1:
                     val = val[0]  # numpy limitation: no longer casts arrays to scalars.
+                else:
+                    pass
 
             kvs.update({key: val})
     return scatteringDataObj(filename=filename, **kvs)
