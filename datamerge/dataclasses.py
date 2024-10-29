@@ -146,7 +146,7 @@ class scatteringDataObj(gimmeItems):
         eq=cmp_using(eq=np.array_equal),
     )
     configuration: int = field(
-        default=-1, validator=validators.instance_of(int), converter=int
+        default=-1, validator=validators.instance_of(str), converter=str
     )
     configurations: List[
         int
@@ -271,7 +271,7 @@ class rangeConfigObj(gimmeItems):
     )
     autoscaleToConfig: Optional[int] = field(
         default=None,
-        validator=validators.optional(validators.instance_of(int)),
+        validator=validators.optional(validators.instance_of(str)),
         # converter=int,
     )
     scale: float = field(
@@ -281,7 +281,7 @@ class rangeConfigObj(gimmeItems):
     )
     findByConfig: Optional[int] = field(
         default=None,
-        validator=validators.optional(validators.instance_of(int)),
+        validator=validators.optional(validators.instance_of(str)),
         # converter=int,
     )
 
